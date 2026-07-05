@@ -1,0 +1,72 @@
+package com.ogoma.marketing.api.configs;
+
+import com.ogoma.marketing.core.abstractions.CommandDispatcher;
+import com.ogoma.marketing.core.abstractions.CommandHandler;
+import com.ogoma.marketing.core.abstractions.QueryDispatcher;
+import com.ogoma.marketing.core.abstractions.QueryHandler;
+import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
+import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
+import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQueryHandler;
+import com.ogoma.marketing.core.application.sms.CreateSmsTemplateCommandHandler;
+import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommandHandler;
+import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesQueryHandler;
+import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
+import com.ogoma.marketing.core.domain.sms.SmsTemplateRepository;
+import com.ogoma.marketing.core.implentations.CommandDispatcherImpl;
+import com.ogoma.marketing.core.implentations.QueryDispatcherImpl;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+
+import java.util.List;
+
+@Configuration
+@EnableJdbcRepositories(basePackages = "com.ogoma.marketing")
+@EntityScan(basePackages = "com.ogoma.marketing")
+@ComponentScan(basePackages = "com.ogoma.marketing")
+public class CompositionRoot {
+
+    @Bean
+    CommandDispatcher commandDispatcher(List<CommandHandler<?, ?>> handlers) {
+        return new CommandDispatcherImpl(handlers);
+    }
+
+    @Bean
+    QueryDispatcher queryDispatcher(List<QueryHandler<?, ?>> handlers) {
+        return new QueryDispatcherImpl(handlers);
+    }
+
+    @Bean
+    CreateEmailTemplateCommandHandler createEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
+        return new CreateEmailTemplateCommandHandler(emailTemplateRepository);
+    }
+
+    @Bean
+    GetEmailTemplateByIDQueryHandler getEmailTemplateByIDQueryHandler(EmailTemplateRepository emailTemplateRepository) {
+        return new GetEmailTemplateByIDQueryHandler(emailTemplateRepository);
+    }
+
+    @Bean
+    CloneEmailTemplateCommandHandler cloneEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
+        return new CloneEmailTemplateCommandHandler(emailTemplateRepository);
+    }
+
+    @Bean
+    CreateSmsTemplateCommandHandler createSmsTemplateCommandHandler(SmsTemplateRepository smsTemplateRepository) {
+        return new CreateSmsTemplateCommandHandler(smsTemplateRepository);
+    }
+
+    @Bean
+    GetSmsTemplatesQueryHandler getSmsTemplatesQueryHandler(SmsTemplateRepository smsTemplateRepository) {
+        return new GetSmsTemplatesQueryHandler(smsTemplateRepository);
+    }
+
+    @Bean
+    DuplicateSmsTemplateCommandHandler duplicateSmsTemplateCommandHandler(SmsTemplateRepository smsTemplateRepository) {
+        return new DuplicateSmsTemplateCommandHandler(smsTemplateRepository);
+    }
+
+}
