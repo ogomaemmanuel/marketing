@@ -1,24 +1,22 @@
 package com.ogoma.marketing.api.configs;
 
-import com.ogoma.marketing.core.abstractions.CommandDispatcher;
-import com.ogoma.marketing.core.abstractions.CommandHandler;
-import com.ogoma.marketing.core.abstractions.QueryDispatcher;
-import com.ogoma.marketing.core.abstractions.QueryHandler;
+import com.ogoma.marketing.core.abstractions.*;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQueryHandler;
 import com.ogoma.marketing.core.application.sms.CreateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesQueryHandler;
+import com.ogoma.marketing.core.application.transactionalmessages.SendSmsTransactionalCommandHandler;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateRepository;
-import com.ogoma.marketing.core.implentations.CommandDispatcherImpl;
-import com.ogoma.marketing.core.implentations.QueryDispatcherImpl;
+import com.ogoma.marketing.core.implementations.CommandDispatcherImpl;
+import com.ogoma.marketing.core.implementations.MessageRouterImpl;
+import com.ogoma.marketing.core.implementations.QueryDispatcherImpl;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 
 import java.util.List;
@@ -67,6 +65,22 @@ public class CompositionRoot {
     @Bean
     DuplicateSmsTemplateCommandHandler duplicateSmsTemplateCommandHandler(SmsTemplateRepository smsTemplateRepository) {
         return new DuplicateSmsTemplateCommandHandler(smsTemplateRepository);
+    }
+
+    @Bean
+    MessageRouter messageRouter(List<MessageSenderService<? extends Message>> messageSenderServices) {
+        return new MessageRouterImpl(messageSenderServices);
+    }
+
+    @Bean
+    SendSmsTransactionalCommandHandler sendSmsTransactionalCommandHandler(
+            MessageRouter messageRouter, SmsTemplateRepository smsTemplateRepository, TemplateRenderer templateRenderer) {
+        return new SendSmsTransactionalCommandHandler(smsTemplateRepository, messageRouter, templateRenderer);
+    }
+
+    @Bean
+    TemplateRenderer templateRenderer() {
+        return new TemplateRenderer();
     }
 
 }

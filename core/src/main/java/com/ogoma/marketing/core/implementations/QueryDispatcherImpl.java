@@ -1,10 +1,9 @@
-package com.ogoma.marketing.core.implentations;
+package com.ogoma.marketing.core.implementations;
 
 import com.ogoma.marketing.core.abstractions.Query;
 import com.ogoma.marketing.core.abstractions.QueryDispatcher;
 import com.ogoma.marketing.core.abstractions.QueryHandler;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

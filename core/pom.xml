@@ -29,6 +29,7 @@
     <properties>
         <java.version>26</java.version>
         <lombok.version>1.18.42</lombok.version>
+        <pebble.version>4.1.2</pebble.version>
     </properties>
     <dependencies>
         <dependency>
@@ -40,6 +41,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/io.pebbletemplates/pebble -->
+        <dependency>
+            <groupId>io.pebbletemplates</groupId>
+            <artifactId>pebble</artifactId>
+          <version>${pebble.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

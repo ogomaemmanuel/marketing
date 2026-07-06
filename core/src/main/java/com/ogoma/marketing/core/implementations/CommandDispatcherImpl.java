@@ -1,4 +1,4 @@
-package com.ogoma.marketing.core.implentations;
+package com.ogoma.marketing.core.implementations;
 
 import com.ogoma.marketing.core.abstractions.Command;
 import com.ogoma.marketing.core.abstractions.CommandDispatcher;

@@ -11,9 +11,29 @@ services:
       postgres-db:
         condition: service_healthy
     environment:
-      DB_URL: postgres-db:5432/marketing-main?currentSchema=public
+      DB_URL: ${DB_URL:-postgres-db:5432/marketing-main?currentSchema=public}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_USERNAME: ${DB_USERNAME}
+      EMAIL_HOST: ${EMAIL_HOST:-mailpit}
+      EMAIL_PORT: ${EMAIL_PORT:-1025}
+      EMAIL_USERNAME: ${EMAIL_USERNAME:-testuser@gmail.com}
+      EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-test@noreply.com}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    restart: unless-stopped
+    networks:
+      - marketing
+    volumes:
+      - ./mailpit-data:/data
+    ports:
+      - "6025:8025" # Web U
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
   postgres-db:
     container_name: postgres-db
     image: postgres:15.3-alpine
@@ -31,7 +51,7 @@ services:
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d marketing-main" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d marketing-main" ]
       interval: 30s
       timeout: 10s
       retries: 3

@@ -1,0 +1,18 @@
+package com.ogoma.marketing.core.application.transactionalmessages;
+
+import com.ogoma.marketing.core.abstractions.Command;
+import com.ogoma.marketing.core.domain.sms.SmsTemplateID;
+
+import java.util.Map;
+
+
+public record SendSmsTransactionalCommand(
+
+        String recipient,
+        SmsTemplateID templateID,
+
+
+        Map<String, Object> params
+) implements Command<Void> {
+
+}
