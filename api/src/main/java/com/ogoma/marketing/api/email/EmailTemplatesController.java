@@ -7,7 +7,7 @@ import com.ogoma.marketing.core.abstractions.QueryDispatcher;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommand;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQuery;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDView;
-import com.ogoma.marketing.core.domain.email.EmailTemplateEntityID;
+import com.ogoma.marketing.core.domain.email.EmailTemplateID;
 import com.ogoma.marketing.core.domain.email.valueobjects.EmailTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,17 +43,17 @@ public class EmailTemplatesController {
 
     @GetMapping("/{id}")
     public Optional<GetEmailTemplateByIDView> getEmailTemplateByIDView(@PathVariable UUID id) {
-        return this.queryDispatcher.dispatch(new GetEmailTemplateByIDQuery(new EmailTemplateEntityID(id)));
+        return this.queryDispatcher.dispatch(new GetEmailTemplateByIDQuery(new EmailTemplateID(id)));
     }
 
     @GetMapping(value = "/{id}/preview", produces = MediaType.TEXT_HTML_VALUE)
     public String preview(@PathVariable UUID id) {
-        return this.queryDispatcher.dispatch(new GetEmailTemplateByIDQuery(new EmailTemplateEntityID(id)))
+        return this.queryDispatcher.dispatch(new GetEmailTemplateByIDQuery(new EmailTemplateID(id)))
                 .map(GetEmailTemplateByIDView::emailTemplate).map(EmailTemplate::renderHtml).orElse("");
     }
 
     @PostMapping(value = "/{id}/clone")
     public Void clone(@PathVariable UUID id, CloneEmailTemplateRequest request, String userID) {
-        return this.commandDispatcher.dispatch(new CloneEmailTemplateCommand(new EmailTemplateEntityID(id), request.suggestedName(), userID));
+        return this.commandDispatcher.dispatch(new CloneEmailTemplateCommand(new EmailTemplateID(id), request.suggestedName(), userID));
     }
 }

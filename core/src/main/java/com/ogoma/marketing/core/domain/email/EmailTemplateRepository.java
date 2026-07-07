@@ -10,5 +10,5 @@ public interface EmailTemplateRepository {
 
     EmailTemplateEntity saveTemplate(EmailTemplateEntity emailTemplateEntity);
 
-    Optional<EmailTemplateEntity> getTemplateByID(EmailTemplateEntityID id);
+    Optional<EmailTemplateEntity> getTemplateByID(EmailTemplateID id);
 }

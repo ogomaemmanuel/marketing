@@ -1,7 +1,7 @@
 package com.ogoma.marketing.infrastructure.email;
 
 import com.ogoma.marketing.core.domain.email.EmailTemplateEntity;
-import com.ogoma.marketing.core.domain.email.EmailTemplateEntityID;
+import com.ogoma.marketing.core.domain.email.EmailTemplateID;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +29,7 @@ public class EmailTemplateRepositoryJDBCAdapter implements EmailTemplateReposito
     }
 
     @Override
-    public Optional<EmailTemplateEntity> getTemplateByID(EmailTemplateEntityID id) {
+    public Optional<EmailTemplateEntity> getTemplateByID(EmailTemplateID id) {
         return this.jdbcRepository.findById(id);
     }
 }

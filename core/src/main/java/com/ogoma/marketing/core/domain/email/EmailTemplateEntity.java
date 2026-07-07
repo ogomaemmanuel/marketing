@@ -15,7 +15,7 @@ import java.time.Instant;
 public class EmailTemplateEntity {
     @Id
     @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
-    private EmailTemplateEntityID id;
+    private EmailTemplateID id;
     @Version
     private Long version;
     private String name;
@@ -27,7 +27,7 @@ public class EmailTemplateEntity {
 
     private EmailTemplateEntity() {
         var now = Instant.now();
-        id = new EmailTemplateEntityID();
+        id = new EmailTemplateID();
         version = null;
         createdAt = now;
         updatedAt = now;
