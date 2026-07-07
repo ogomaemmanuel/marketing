@@ -7,46 +7,52 @@ jobs:
     name: Unit test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      name: Checkout
-    - name: Set up java
-      uses: actions/setup-java@v3
-      with:
-        distribution: temurin
-        java-version: 26
-        cache: maven
-#    - name: Maven Verify
-#      run: mvn -B clean verify
-    - name: Maven Package
-      run: mvn -B clean package -DskipTests
-    - name: Archive jar files to be used in deploy step
-      uses: actions/upload-artifact@v4
-      with:
-        name: marketing-jars
-        path: api/target/*.jar
+      - uses: actions/checkout@v3
+        name: Checkout
+      - name: Set up java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 26
+          cache: maven
+      #    - name: Maven Verify
+      #      run: mvn -B clean verify
+      - name: Maven Package
+        run: mvn -B clean package -DskipTests
+      - name: Archive jar files to be used in deploy step
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketing-jars
+          path: api/target/*.jar
   push-image-to-docker-hub:
     needs: test
     name: Push to Docker hub
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    - name: Login to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USER }}
-        password: ${{ secrets.DOCKER_PASS }}
-    - name: Maven Package
-      run: mvn -B clean package -DskipTests
-    - name: Build and push
-      uses: docker/build-push-action@v3
-      with:
-        platforms: linux/amd64,linux/arm64
-        context: "./api"
-        push: true
-        tags: mudho/maketing-api:latest
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+      - name: Set up java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 26
+          cache: maven
+      - name: Maven Package
+        run: mvn -B clean package -DskipTests
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: "./api"
+          push: true
+          tags: mudho/maketing-api:latest
 
