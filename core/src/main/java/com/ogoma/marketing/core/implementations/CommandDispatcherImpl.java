@@ -20,8 +20,10 @@ public class CommandDispatcherImpl implements CommandDispatcher {
     @Override
     @SuppressWarnings("unchecked")
     public <C extends Command<R>, R> R dispatch(C command) {
-        return ((CommandHandler<C, R>) this.commandHandlerRegistry.get(command.getClass()))
-                .handle(command);
-
+        var handler = ((CommandHandler<C, R>) this.commandHandlerRegistry.get(command.getClass()));
+        if (handler == null) {
+            throw new IllegalStateException(String.format("Command Handler not for %s", command.getClass().getSimpleName()));
+        }
+        return handler.handle(command);
     }
 }
