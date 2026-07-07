@@ -10,7 +10,7 @@ A modular Java-based marketing application. This repository contains multiple mo
 - pom.xml, mvnw, mvnw.cmd — Maven wrapper and parent POM
 
 ## Prerequisites
-- Java 17+ (or the version declared in pom.xml)
+- Java 26+ (or the version declared in pom.xml)
 - Maven (optional if using the included Maven wrapper)
 - Docker & Docker Compose (if you plan to run via docker-compose-run.sh)
 

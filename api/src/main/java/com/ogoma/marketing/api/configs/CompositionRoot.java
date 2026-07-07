@@ -9,8 +9,10 @@ import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommandHandl
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesQueryHandler;
 import com.ogoma.marketing.core.application.transactionalmessages.SendSmsTransactionalCommandHandler;
 import com.ogoma.marketing.core.application.transactionalmessages.SendTransactionalEmailCommandHandler;
+import com.ogoma.marketing.core.application.users.SyncUserInfoCommandHandler;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateRepository;
+import com.ogoma.marketing.core.domain.users.UsersRepository;
 import com.ogoma.marketing.core.implementations.CommandDispatcherImpl;
 import com.ogoma.marketing.core.implementations.MessageRouterImpl;
 import com.ogoma.marketing.core.implementations.QueryDispatcherImpl;
@@ -84,6 +86,11 @@ public class CompositionRoot {
             MessageRouter messageRouter, EmailTemplateRepository emailTemplateRepository, TemplateRenderer templateRenderer
     ) {
         return new SendTransactionalEmailCommandHandler(emailTemplateRepository, templateRenderer, messageRouter);
+    }
+
+    @Bean
+    SyncUserInfoCommandHandler syncUserInfoCommandHandler(UsersRepository usersRepository) {
+        return new SyncUserInfoCommandHandler(usersRepository);
     }
 
     @Bean

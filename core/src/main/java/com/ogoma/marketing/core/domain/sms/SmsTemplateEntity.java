@@ -7,8 +7,6 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
-import java.time.Clock;
 import java.time.Instant;
 
 

@@ -19,7 +19,6 @@ public class MarketingApiExceptionHandler {
     @ExceptionHandler(WebExchangeBindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Mono<Map<String, List<String>>> handleInvalidArgs(WebExchangeBindException ex) {
-        // log.error("Validation exception", ex);
         Map<String, List<String>> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()

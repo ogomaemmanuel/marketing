@@ -2,6 +2,7 @@ package com.ogoma.marketing.core.application.email.commands;
 
 import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
+import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;
 
 public class CloneEmailTemplateCommandHandler implements CommandHandler<CloneEmailTemplateCommand, Void> {
     private final EmailTemplateRepository emailTemplateRepository;
@@ -17,9 +18,8 @@ public class CloneEmailTemplateCommandHandler implements CommandHandler<CloneEma
 
     @Override
     public Void handle(CloneEmailTemplateCommand command) {
-        this.emailTemplateRepository.getTemplateByID(command.id()).map(emailTemplateEntity ->
-                emailTemplateRepository.saveTemplate(emailTemplateEntity.clone(command.suggestedName(), command.user()))
-        );
+        var emailTemplateEntity = this.emailTemplateRepository.getTemplateByID(command.id()).orElseThrow(() -> new RecordNotFoundException("Email Template not found"));
+        emailTemplateRepository.saveTemplate(emailTemplateEntity.clone(command.suggestedName(), command.user()));
         return null;
     }
 }

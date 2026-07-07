@@ -6,6 +6,8 @@ import lombok.Setter;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.annotation.JsonSerialize;
 
+import java.io.Serializable;
+
 
 @Getter
 @Setter
@@ -27,7 +29,7 @@ public class SocialShareBlock extends BaseEmailBlock {
 
     @Setter
     @Getter
-    public static class Platforms {
+    public static class Platforms implements Serializable {
         // Getters and Setters
         private Platform facebook;
         private TwitterPlatform twitter;
@@ -42,7 +44,7 @@ public class SocialShareBlock extends BaseEmailBlock {
 
     @Setter
     @Getter
-    public static class Platform {
+    public static class Platform implements Serializable {
         // Getters and Setters
         private boolean enabled;
         private String url;
@@ -58,7 +60,7 @@ public class SocialShareBlock extends BaseEmailBlock {
 
     @Setter
     @Getter
-    public static class EmailPlatform {
+    public static class EmailPlatform implements Serializable {
         private boolean enabled;
         private String subject;
         private String body;

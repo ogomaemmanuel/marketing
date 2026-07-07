@@ -5,7 +5,6 @@ import org.postgresql.util.PGobject;
 import org.springframework.core.convert.converter.Converter;
 
 import org.springframework.data.convert.ReadingConverter;
-import org.springframework.data.jdbc.core.mapping.JdbcValue;
 import tools.jackson.databind.json.JsonMapper;
 
 @ReadingConverter

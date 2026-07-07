@@ -34,7 +34,7 @@ public class EmailTemplateEntity {
     }
 
     private EmailTemplateEntity(String name, String createdBy, EmailTemplate emailTemplate) {
-        Assert.hasText(name, "Template name is require");
+        Assert.hasText(name, "Template name is required");
         Assert.hasText(createdBy, "Template creator  is required");
         Assert.notNull(emailTemplate, "Email Template is required");
         this();
@@ -52,7 +52,8 @@ public class EmailTemplateEntity {
 
     public void updateDetails(String name, String actor, EmailTemplate emailTemplate) {
         Assert.hasText(name, "Template name is required");
-        Assert.notNull(name, "Email Template is required");
+        Assert.notNull(emailTemplate, "Email Template is required");
+        Assert.notNull(actor, "UserID  is required");
         this.name = name;
         this.updatedAt = Instant.now();
         this.emailTemplate = emailTemplate;
