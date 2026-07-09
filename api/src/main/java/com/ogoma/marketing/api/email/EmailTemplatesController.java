@@ -19,17 +19,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/email-templates")
 @PreAuthorize("isFullyAuthenticated()")
-public class EmailTemplatesController {
-
-    private final CommandDispatcher commandDispatcher;
-
-    private final QueryDispatcher queryDispatcher;
-
-    public EmailTemplatesController(CommandDispatcher commandDispatcher, QueryDispatcher queryDispatcher) {
-        this.commandDispatcher = commandDispatcher;
-        this.queryDispatcher = queryDispatcher;
-    }
-
+public record EmailTemplatesController(
+        CommandDispatcher commandDispatcher,
+        QueryDispatcher queryDispatcher
+) {
 
     @PostMapping
     public Void createEmailTemplate(@RequestBody CreateEmailTemplateRequest createEmailTemplateRequest, @CurrentUser String username) {

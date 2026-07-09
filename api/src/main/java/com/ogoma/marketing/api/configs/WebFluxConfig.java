@@ -1,5 +1,6 @@
 package com.ogoma.marketing.api.configs;
 
+import com.ogoma.marketing.api.resolvers.CurrentUserArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.ReactivePageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.ReactiveSortHandlerMethodArgumentResolver;
@@ -13,5 +14,6 @@ public class WebFluxConfig implements WebFluxConfigurer {
     public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
         configurer.addCustomResolver(new ReactivePageableHandlerMethodArgumentResolver());
         configurer.addCustomResolver(new ReactiveSortHandlerMethodArgumentResolver());
+        configurer.addCustomResolver(new CurrentUserArgumentResolver());
     }
 }
