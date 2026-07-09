@@ -26,6 +26,7 @@
     </scm>
     <properties>
         <java.version>26</java.version>
+        <temporal.version>1.35.0</temporal.version>
     </properties>
 
 
@@ -38,11 +39,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.ogoma.marketing</groupId>
             <artifactId>core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.temporal</groupId>
+            <artifactId>temporal-sdk</artifactId>
+            <version>${temporal.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -62,6 +68,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.temporal</groupId>
+            <artifactId>temporal-testing</artifactId>
+            <version>${temporal.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
