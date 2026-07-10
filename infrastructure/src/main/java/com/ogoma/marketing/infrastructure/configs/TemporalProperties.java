@@ -5,5 +5,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 
 @ConfigurationProperties(prefix = "marketing.temporal")
-public record TemporalProperties(String address, String namespace) {
+public record TemporalProperties(String address, String namespace, String messageSenderQueue) {
 }

@@ -48,7 +48,6 @@
         <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-sdk</artifactId>
-            <version>${temporal.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -73,7 +72,6 @@
         <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-testing</artifactId>
-            <version>${temporal.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

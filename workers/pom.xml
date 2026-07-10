@@ -28,16 +28,10 @@
     <properties>
         <java.version>25</java.version>
     </properties>
+    <modules>
+        <module>transactional-message-sender</module>
+    </modules>
     <dependencies>
-        <dependency>
-            <groupId>com.ogoma.marketing</groupId>
-            <artifactId>infrastructure</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ogoma.marketing</groupId>
-            <artifactId>core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+
     </dependencies>
 </project>

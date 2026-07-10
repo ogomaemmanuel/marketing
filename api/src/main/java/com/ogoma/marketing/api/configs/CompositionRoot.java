@@ -76,16 +76,15 @@ public class CompositionRoot {
     }
 
     @Bean
-    SendSmsTransactionalCommandHandler sendSmsTransactionalCommandHandler(
-            MessageRouter messageRouter, SmsTemplateRepository smsTemplateRepository, TemplateRenderer templateRenderer) {
-        return new SendSmsTransactionalCommandHandler(smsTemplateRepository, messageRouter, templateRenderer);
+    SendSmsTransactionalCommandHandler sendSmsTransactionalCommandHandler(NotificationWorkflowStarterService notificationWorkflowStarterService) {
+        return new SendSmsTransactionalCommandHandler(notificationWorkflowStarterService);
     }
 
     @Bean
     SendTransactionalEmailCommandHandler sendTransactionalEmailCommandHandler(
-            MessageRouter messageRouter, EmailTemplateRepository emailTemplateRepository, TemplateRenderer templateRenderer
+            NotificationWorkflowStarterService notificationWorkflowStarterService
     ) {
-        return new SendTransactionalEmailCommandHandler(emailTemplateRepository, templateRenderer, messageRouter);
+        return new SendTransactionalEmailCommandHandler(notificationWorkflowStarterService);
     }
 
     @Bean

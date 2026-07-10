@@ -14,16 +14,31 @@
     <packaging>pom</packaging>
     <name>marketing</name>
     <description>marketing</description>
+    <properties>
+        <temporal.version>1.36.0</temporal.version>
+    </properties>
     <modules>
         <module>core</module>
         <module>infrastructure</module>
         <module>api</module>
+        <module>workers</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.temporal</groupId>
+                <artifactId>temporal-bom</artifactId>
+                <version>${temporal.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>
             <plugins>
-
             </plugins>
         </pluginManagement>
     </build>
