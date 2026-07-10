@@ -4,13 +4,9 @@ import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;
 
-public class CloneEmailTemplateCommandHandler implements CommandHandler<CloneEmailTemplateCommand, Void> {
-    private final EmailTemplateRepository emailTemplateRepository;
-
-    public CloneEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
-        this.emailTemplateRepository = emailTemplateRepository;
-    }
-
+public record CloneEmailTemplateCommandHandler(
+        EmailTemplateRepository emailTemplateRepository
+) implements CommandHandler<CloneEmailTemplateCommand, Void> {
     @Override
     public Class<CloneEmailTemplateCommand> supports() {
         return CloneEmailTemplateCommand.class;
