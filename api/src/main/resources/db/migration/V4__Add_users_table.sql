@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS marketing_main.users
+CREATE TABLE IF NOT EXISTS users
 (
     id          uuid,
     email       text,

@@ -3,6 +3,7 @@ package com.ogoma.marketing.api.configs;
 import com.ogoma.marketing.core.abstractions.*;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
+import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQueryHandler;
 import com.ogoma.marketing.core.application.sms.CreateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommandHandler;
@@ -43,6 +44,11 @@ public class CompositionRoot {
     @Bean
     CreateEmailTemplateCommandHandler createEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
         return new CreateEmailTemplateCommandHandler(emailTemplateRepository);
+    }
+
+    @Bean
+    UpdateEmailTemplateCommandHandler updateEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
+        return new UpdateEmailTemplateCommandHandler(emailTemplateRepository);
     }
 
     @Bean

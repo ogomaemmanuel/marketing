@@ -30,8 +30,8 @@ public record EmailTemplatesController(
     }
 
     @PutMapping("/{id}")
-    public Void updateEmailTemplate(@PathVariable UUID id, @RequestBody CreateEmailTemplateRequest createEmailTemplateRequest, @CurrentUser String username) {
-        return this.commandDispatcher.dispatch(createEmailTemplateRequest.toCommandWith(username));
+    public Void updateEmailTemplate(@PathVariable UUID id, @RequestBody UpdateEmailTemplateRequest updateEmailTemplateRequest, @CurrentUser String username) {
+        return this.commandDispatcher.dispatch(updateEmailTemplateRequest.toCommandWith(new EmailTemplateID(id),username));
     }
 
     @GetMapping("/{id}")

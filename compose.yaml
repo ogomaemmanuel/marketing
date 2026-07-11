@@ -7,6 +7,8 @@ services:
       context: ./api
       dockerfile: Dockerfile
     restart: unless-stopped
+    ports:
+      - "7057:7056"
     depends_on:
       postgres-db:
         condition: service_healthy
@@ -16,9 +18,76 @@ services:
       DB_USERNAME: ${DB_USERNAME}
       EMAIL_HOST: ${EMAIL_HOST:-mailpit}
       EMAIL_PORT: ${EMAIL_PORT:-1025}
+      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal-server:7233}
       EMAIL_USERNAME: ${EMAIL_USERNAME:-testuser@gmail.com}
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-test@noreply.com}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
+      SERVER_PORT: 7056
+  notification-sender:
+    container_name: "notification-sender"
+    networks:
+      - marketing
+    build:
+      context: ./workers/transactional-message-sender
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      DB_URL: ${DB_URL:-postgres-db:5432/marketing-main?currentSchema=public}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      EMAIL_HOST: ${EMAIL_HOST:-mailpit}
+      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal-server:7233}
+      EMAIL_PORT: ${EMAIL_PORT:-1025}
+      EMAIL_USERNAME: ${EMAIL_USERNAME:-testuser@gmail.com}
+      EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-test@noreply.com}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
+  temporal-admin-tools:
+    image: temporalio/admin-tools:1.30
+    container_name: marketing-temporal-admin-tools
+    environment:
+      - SQL_PLUGIN=postgres
+      - SQL_HOST=postgres-db
+      - SQL_PORT=5432
+      - SQL_USER=${DB_USERNAME}
+      - SQL_PASSWORD=${DB_PASSWORD}
+      - TEMPORAL_ADDRESS=temporal-server:7233
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+  temporal-server:
+    image: temporalio/auto-setup:1.29.7
+    container_name: marketing-temporal-server
+    networks:
+      - marketing
+    volumes:
+      - ./dynamicconfig:/etc/temporal/config/dynamicconfig
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      POSTGRES_SEEDS: postgres-db
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PWD: ${DB_PASSWORD}
+      ENABLE_ES: "false"
+      # Fixed to use the absolute path matching the volume mount
+      DYNAMIC_CONFIG_FILE_PATH: /etc/temporal/config/dynamicconfig/development.yaml
+      TEMPORAL_ADDRESS: temporal-server:7233
+
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+  temporal-ui:
+    image: temporalio/ui:2.52.0
+    networks:
+      - marketing
+    ports:
+      - "8444:8080"
+    environment:
+      TEMPORAL_ADDRESS: temporal-server:7233
+    depends_on:
+      - temporal-server
   mailpit:
     image: axllent/mailpit:latest
     container_name: mailpit
