@@ -16,6 +16,7 @@
     <description>marketing</description>
     <properties>
         <temporal.version>1.36.0</temporal.version>
+        <springdoc.version>3.0.3</springdoc.version>
     </properties>
     <modules>
         <module>core</module>
@@ -30,6 +31,15 @@
                 <groupId>io.temporal</groupId>
                 <artifactId>temporal-bom</artifactId>
                 <version>${temporal.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Source: https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-bom -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-bom</artifactId>
+                <version>${springdoc.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
