@@ -11,5 +11,5 @@ public record SendTransactionalEmailCommand(
         EmailTemplateID templateID,
         List<String> recipients,
         Map<String, Object> params
-) implements Command<Void> {
+) implements Command<Void>, TransactionalNotification {
 }

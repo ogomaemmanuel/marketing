@@ -5,13 +5,9 @@ import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 
 import java.util.Optional;
 
-public class GetEmailTemplateByIDQueryHandler implements QueryHandler<GetEmailTemplateByIDQuery, Optional<GetEmailTemplateByIDView>> {
-    private final EmailTemplateRepository emailTemplateRepository;
-
-    public GetEmailTemplateByIDQueryHandler(EmailTemplateRepository emailTemplateRepository) {
-        this.emailTemplateRepository = emailTemplateRepository;
-    }
-
+public record GetEmailTemplateByIDQueryHandler(
+        EmailTemplateRepository emailTemplateRepository
+) implements QueryHandler<GetEmailTemplateByIDQuery, Optional<GetEmailTemplateByIDView>> {
     @Override
     public Class<GetEmailTemplateByIDQuery> supports() {
         return GetEmailTemplateByIDQuery.class;

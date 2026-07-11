@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 
-public class MarketingApiExceptionHandler {
-
+public record MarketingApiExceptionHandler(){
     @ExceptionHandler(WebExchangeBindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Mono<Map<String, List<String>>> handleInvalidArgs(WebExchangeBindException ex) {

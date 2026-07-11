@@ -10,14 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/transactional-messages")
-public class TransactionalMessageSenderController {
-
-    private final CommandDispatcher commandDispatcher;
-
-    public TransactionalMessageSenderController(CommandDispatcher commandDispatcher) {
-        this.commandDispatcher = commandDispatcher;
-    }
-
+public record TransactionalMessageSenderController(CommandDispatcher commandDispatcher) {
     @PostMapping
     public Void sendMessage(
             @Valid @RequestBody TransactionalMessageRequestBase transactionalMessageRequest,

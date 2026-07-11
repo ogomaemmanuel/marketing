@@ -6,7 +6,7 @@ MVN_ARGS="${MVN_ARGS:--DskipTests}"
 
 echo "📦 Packaging application..."
 
-./mvnw package "${MVN_ARGS}"
+./mvnw clean package "${MVN_ARGS}"
 
 echo "🚀 Starting Docker containers..."
 

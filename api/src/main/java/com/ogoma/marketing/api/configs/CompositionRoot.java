@@ -3,6 +3,7 @@ package com.ogoma.marketing.api.configs;
 import com.ogoma.marketing.core.abstractions.*;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
+import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQueryHandler;
 import com.ogoma.marketing.core.application.sms.CreateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommandHandler;
@@ -46,6 +47,11 @@ public class CompositionRoot {
     }
 
     @Bean
+    UpdateEmailTemplateCommandHandler updateEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
+        return new UpdateEmailTemplateCommandHandler(emailTemplateRepository);
+    }
+
+    @Bean
     GetEmailTemplateByIDQueryHandler getEmailTemplateByIDQueryHandler(EmailTemplateRepository emailTemplateRepository) {
         return new GetEmailTemplateByIDQueryHandler(emailTemplateRepository);
     }
@@ -76,16 +82,15 @@ public class CompositionRoot {
     }
 
     @Bean
-    SendSmsTransactionalCommandHandler sendSmsTransactionalCommandHandler(
-            MessageRouter messageRouter, SmsTemplateRepository smsTemplateRepository, TemplateRenderer templateRenderer) {
-        return new SendSmsTransactionalCommandHandler(smsTemplateRepository, messageRouter, templateRenderer);
+    SendSmsTransactionalCommandHandler sendSmsTransactionalCommandHandler(NotificationWorkflowStarterService notificationWorkflowStarterService) {
+        return new SendSmsTransactionalCommandHandler(notificationWorkflowStarterService);
     }
 
     @Bean
     SendTransactionalEmailCommandHandler sendTransactionalEmailCommandHandler(
-            MessageRouter messageRouter, EmailTemplateRepository emailTemplateRepository, TemplateRenderer templateRenderer
+            NotificationWorkflowStarterService notificationWorkflowStarterService
     ) {
-        return new SendTransactionalEmailCommandHandler(emailTemplateRepository, templateRenderer, messageRouter);
+        return new SendTransactionalEmailCommandHandler(notificationWorkflowStarterService);
     }
 
     @Bean

@@ -4,13 +4,9 @@ import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.email.EmailTemplateEntity;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 
-public class CreateEmailTemplateCommandHandler implements CommandHandler<CreateEmailTemplateCommand, Void> {
-    private final EmailTemplateRepository emailTemplateRepository;
-
-    public CreateEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
-        this.emailTemplateRepository = emailTemplateRepository;
-    }
-
+public record CreateEmailTemplateCommandHandler(
+        EmailTemplateRepository emailTemplateRepository
+) implements CommandHandler<CreateEmailTemplateCommand, Void> {
     @Override
     public Class<CreateEmailTemplateCommand> supports() {
         return CreateEmailTemplateCommand.class;

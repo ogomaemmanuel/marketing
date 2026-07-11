@@ -21,17 +21,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/sms-templates")
 @PreAuthorize("isFullyAuthenticated()")
-public class SmsTemplatesController {
-    private final CommandDispatcher commandDispatcher;
-    private final QueryDispatcher queryDispatcher;
-
-    public SmsTemplatesController(
-            CommandDispatcher commandDispatcher,
-            QueryDispatcher queryDispatcher) {
-        this.commandDispatcher = commandDispatcher;
-        this.queryDispatcher = queryDispatcher;
-    }
-
+public record SmsTemplatesController(
+        CommandDispatcher commandDispatcher,
+        QueryDispatcher queryDispatcher) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public SmsTemplateID createSmsTemplate(
@@ -39,7 +31,6 @@ public class SmsTemplatesController {
             @CurrentUser String username) {
         return this.commandDispatcher.dispatch(createSmsTemplateRequest.toCommandWith(username)).getId();
     }
-
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -54,8 +45,10 @@ public class SmsTemplatesController {
             @RequestBody @Valid DuplicateSmsTemplateRequest request,
             @CurrentUser String userId
     ) {
-        return this.commandDispatcher.dispatch(new DuplicateSmsTemplateCommand(new SmsTemplateID(id),
-                request.suggestedName(), userId));
+        return this.commandDispatcher.dispatch(new DuplicateSmsTemplateCommand(
+                new SmsTemplateID(id),
+                request.suggestedName(),
+                userId));
     }
 
 

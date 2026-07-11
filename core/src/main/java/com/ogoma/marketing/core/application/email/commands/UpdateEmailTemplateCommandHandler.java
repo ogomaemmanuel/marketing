@@ -4,12 +4,8 @@ import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;
 
-public class UpdateEmailTemplateCommandHandler implements CommandHandler<UpdateEmailTemplateCommand, Void> {
-    private final EmailTemplateRepository emailTemplateRepository;
-
-    public UpdateEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
-        this.emailTemplateRepository = emailTemplateRepository;
-    }
+public record UpdateEmailTemplateCommandHandler(
+        EmailTemplateRepository emailTemplateRepository) implements CommandHandler<UpdateEmailTemplateCommand, Void> {
 
     @Override
     public Class<UpdateEmailTemplateCommand> supports() {

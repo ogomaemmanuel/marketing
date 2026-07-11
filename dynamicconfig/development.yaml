@@ -1,0 +1,4 @@
+# dynamicconfig/development.yaml
+system.developmentMode:
+  - value: true
+    constraints: {}

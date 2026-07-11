@@ -13,6 +13,6 @@ public record SendSmsTransactionalCommand(
 
 
         Map<String, Object> params
-) implements Command<Void> {
+) implements Command<Void>, TransactionalNotification {
 
 }
