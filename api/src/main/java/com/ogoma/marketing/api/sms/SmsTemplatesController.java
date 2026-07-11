@@ -1,6 +1,8 @@
 package com.ogoma.marketing.api.sms;
 
 import com.ogoma.marketing.api.annotations.CurrentUser;
+import com.ogoma.marketing.api.sms.requests.CreateSmsTemplateRequest;
+import com.ogoma.marketing.api.sms.requests.DuplicateSmsTemplateRequest;
 import com.ogoma.marketing.core.abstractions.CommandDispatcher;
 import com.ogoma.marketing.core.abstractions.QueryDispatcher;
 import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommand;
