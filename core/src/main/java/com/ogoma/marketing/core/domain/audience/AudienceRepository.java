@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface AudienceRepository {
     AudienceEntity save(AudienceEntity audienceEntity);
+
     Optional<AudienceEntity> findById(AudienceId audienceID);
-    Page<AudienceEntity> findAllBy(Pageable pageable);
+
+    Page<AudienceEntity> findAllBy(String searchTerm, Pageable pageable);
 }

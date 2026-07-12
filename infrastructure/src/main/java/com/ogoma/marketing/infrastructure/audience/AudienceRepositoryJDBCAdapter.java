@@ -3,13 +3,15 @@ package com.ogoma.marketing.infrastructure.audience;
 import com.ogoma.marketing.core.domain.audience.AudienceEntity;
 import com.ogoma.marketing.core.domain.audience.AudienceId;
 import com.ogoma.marketing.core.domain.audience.AudienceRepository;
+import org.springframework.data.core.PropertyPath;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
-import org.springframework.data.relational.core.query.CriteriaDefinition;
+import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -27,9 +29,13 @@ public record AudienceRepositoryJDBCAdapter(JdbcAggregateTemplate jdbcAggregateT
     }
 
     @Override
-    public Page<AudienceEntity> findAllBy(Pageable pageable) {
-        var listQuery = Query.query(CriteriaDefinition.empty()).with(pageable);
-        var countQuery = Query.query(CriteriaDefinition.empty());
+    public Page<AudienceEntity> findAllBy(String searchTerm, Pageable pageable) {
+        Criteria criteria = Criteria.empty();
+        if (StringUtils.hasText(searchTerm)) {
+            criteria = Criteria.where(PropertyPath.of(AudienceEntity::getName)).like("%" + searchTerm + "%").ignoreCase(true);
+        }
+        var listQuery = Query.query(criteria).with(pageable);
+        var countQuery = Query.query(criteria);
         var count = jdbcAggregateTemplate.count(countQuery, AudienceEntity.class);
         if (count == 0L) {
             return new PageImpl<>(new ArrayList<>(), pageable, 0L);

@@ -1,4 +1,4 @@
 package com.ogoma.marketing.api.audience;
 
-public class GetAudiencesRequest {
+public record GetAudiencesRequest(String searchTerm) {
 }

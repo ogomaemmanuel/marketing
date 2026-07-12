@@ -4,6 +4,7 @@ import com.ogoma.marketing.core.abstractions.*;
 import com.ogoma.marketing.core.application.audience.commands.AddAudienceCommandHandler;
 import com.ogoma.marketing.core.application.audience.commands.UpdateAudienceCommandHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDQueryHandler;
+import com.ogoma.marketing.core.application.audience.queries.GetAudiencesQueryHandler;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
@@ -112,6 +113,11 @@ public class CompositionRoot {
     @Bean
     GetAudienceByIDQueryHandler getAudienceByIDQueryHandler(AudienceRepository audienceRepository) {
         return new GetAudienceByIDQueryHandler(audienceRepository);
+    }
+
+    @Bean
+    GetAudiencesQueryHandler getAudiencesQueryHandler(AudienceRepository audienceRepository) {
+        return new GetAudiencesQueryHandler(audienceRepository);
     }
 
     @Bean

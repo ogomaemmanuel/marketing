@@ -6,8 +6,12 @@ import com.ogoma.marketing.core.abstractions.CommandDispatcher;
 import com.ogoma.marketing.core.abstractions.QueryDispatcher;
 import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDQuery;
 import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDView;
+import com.ogoma.marketing.core.application.audience.queries.GetAudiencesQuery;
+import com.ogoma.marketing.core.application.audience.queries.GetAudiencesView;
 import com.ogoma.marketing.core.domain.audience.AudienceId;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +38,11 @@ public record AudienceController(
                 .buildAndExpand(audienceId.id())
                 .toUri();
         return ResponseEntity.created(location).body(new AddAudienceResponse(audienceId));
+    }
+
+    @GetMapping
+    public PagedModel<GetAudiencesView> getAudiences(Pageable pageable, @RequestParam(required = false) String searchTerm) {
+        return new PagedModel<>(this.queryDispatcher.dispatch(new GetAudiencesQuery(pageable, searchTerm)));
     }
 
     @PutMapping(value = "/{id}")
