@@ -1,5 +1,6 @@
 package com.ogoma.marketing.api.exceptions;
 
+import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 
-public record MarketingApiExceptionHandler(){
+public record MarketingApiExceptionHandler() {
     @ExceptionHandler(WebExchangeBindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Mono<Map<String, List<String>>> handleInvalidArgs(WebExchangeBindException ex) {
@@ -25,7 +26,11 @@ public record MarketingApiExceptionHandler(){
                         FieldError::getField,
                         Collectors.mapping(FieldError::getDefaultMessage, Collectors.toList())
                 ));
-
         return Mono.just(errors);
+    }
+
+    @ExceptionHandler(RecordNotFoundException.class)
+    public String handleRecordNotFoundException(RecordNotFoundException exception) {
+        return exception.getMessage();
     }
 }

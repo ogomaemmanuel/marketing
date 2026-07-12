@@ -1,6 +1,9 @@
 package com.ogoma.marketing.api.configs;
 
 import com.ogoma.marketing.core.abstractions.*;
+import com.ogoma.marketing.core.application.audience.commands.AddAudienceCommandHandler;
+import com.ogoma.marketing.core.application.audience.commands.UpdateAudienceCommandHandler;
+import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDQueryHandler;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
@@ -11,6 +14,7 @@ import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesQueryHand
 import com.ogoma.marketing.core.application.transactionalmessages.SendSmsTransactionalCommandHandler;
 import com.ogoma.marketing.core.application.transactionalmessages.SendTransactionalEmailCommandHandler;
 import com.ogoma.marketing.core.application.users.SyncUserInfoCommandHandler;
+import com.ogoma.marketing.core.domain.audience.AudienceRepository;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateRepository;
 import com.ogoma.marketing.core.domain.users.UsersRepository;
@@ -91,6 +95,23 @@ public class CompositionRoot {
             NotificationWorkflowStarterService notificationWorkflowStarterService
     ) {
         return new SendTransactionalEmailCommandHandler(notificationWorkflowStarterService);
+    }
+
+    @Bean
+    AddAudienceCommandHandler addAudienceCommandHandler(
+            AudienceRepository audienceRepository
+    ) {
+        return new AddAudienceCommandHandler(audienceRepository);
+    }
+
+    @Bean
+    UpdateAudienceCommandHandler updateAudienceCommandHandler(AudienceRepository audienceRepository) {
+        return new UpdateAudienceCommandHandler(audienceRepository);
+    }
+
+    @Bean
+    GetAudienceByIDQueryHandler getAudienceByIDQueryHandler(AudienceRepository audienceRepository) {
+        return new GetAudienceByIDQueryHandler(audienceRepository);
     }
 
     @Bean
