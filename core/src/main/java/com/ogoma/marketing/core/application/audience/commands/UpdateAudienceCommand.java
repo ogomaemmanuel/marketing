@@ -5,7 +5,8 @@ import com.ogoma.marketing.core.domain.audience.AudienceId;
 
 public record UpdateAudienceCommand(
         AudienceId audienceId,
-        String userId,
-        String name
-) implements Command<Void> {
+        String name,
+        String userId
+
+        ) implements Command<Void> {
 }

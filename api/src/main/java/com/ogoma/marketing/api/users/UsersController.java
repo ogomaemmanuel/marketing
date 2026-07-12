@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public record UsersController(CommandDispatcher commandDispatcher) {
     @PostMapping("/sync")
-    public UserID syncUserInfo( CurrentUserDetails currentUserDetails) {
+    public UserID syncUserInfo(CurrentUserDetails currentUserDetails) {
         return this.commandDispatcher.dispatch(new SyncUserInfoCommand(
                 currentUserDetails.email(),
                 currentUserDetails.firstName(),
