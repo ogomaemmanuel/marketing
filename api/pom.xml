@@ -196,6 +196,10 @@
                     <apiDocsUrl>http://localhost:${openapi.dynamic.port}/v3/api-docs</apiDocsUrl>
                     <outputFileName>openapi.yaml</outputFileName>
                     <outputDir>${project.build.directory}</outputDir>
+                    <arguments>
+                        <argument>--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration</argument>
+                        <argument>--spring.flyway.enabled=false</argument>
+                    </arguments>
                 </configuration>
             </plugin>
         </plugins>
