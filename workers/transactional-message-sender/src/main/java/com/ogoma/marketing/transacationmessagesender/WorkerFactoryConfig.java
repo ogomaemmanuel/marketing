@@ -25,12 +25,10 @@ import java.util.List;
 @EntityScan(basePackages = "com.ogoma.marketing")
 @ComponentScan(basePackages = "com.ogoma.marketing")
 public class WorkerFactoryConfig {
-
     @Bean
     public WorkerFactory workerFactory(WorkflowClient workflowClient) {
         return WorkerFactory.newInstance(workflowClient);
     }
-
     @Bean
     public Worker workflowWorker(
             WorkerFactory workerFactory,
@@ -53,7 +51,6 @@ public class WorkerFactoryConfig {
 
         return worker;
     }
-
     @Bean
     public ApplicationRunner workerStarter(
             WorkerFactory workerFactory
@@ -61,7 +58,6 @@ public class WorkerFactoryConfig {
 
         return args -> workerFactory.start();
     }
-
     @Bean
     TemplateRenderer templateRenderer() {
         return new TemplateRenderer();

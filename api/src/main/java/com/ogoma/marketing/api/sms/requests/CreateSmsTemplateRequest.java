@@ -1,4 +1,4 @@
-package com.ogoma.marketing.api.sms;
+package com.ogoma.marketing.api.sms.requests;
 
 import com.ogoma.marketing.core.application.sms.CreateSmsTemplateCommand;
 import jakarta.validation.constraints.NotBlank;
