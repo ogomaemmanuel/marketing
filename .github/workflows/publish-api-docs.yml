@@ -13,13 +13,14 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-java@v4
-        env:
-          SPRING_PROFILES_ACTIVE: "swagger"
+
         with:
           distribution: temurin
           java-version: 26
 
       - run: ./mvnw clean verify -Dspring.profiles.active=swagger  -DargLine="-Dspring.profiles.active=swagger"
+        env:
+          SPRING_PROFILES_ACTIVE: "swagger"
 
       - run: |
           mkdir -p docs
