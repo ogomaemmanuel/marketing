@@ -200,13 +200,45 @@
                 <configuration>
                     <apiDocsUrl>http://localhost:${openapi.dynamic.port}/v3/api-docs</apiDocsUrl>
                     <outputFileName>openapi.yaml</outputFileName>
-                    <outputDir>${project.build.directory}</outputDir>
+                    <outputDir>${project.build.directory}/generated-docs/swagger-ui</outputDir>
                     <arguments>
                         <argument>--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration</argument>
                         <argument>--spring.flyway.enabled=false</argument>
                     </arguments>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>unpack-swagger-ui</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>swagger-ui</artifactId>
+                                    <!-- Specify the version of Swagger UI you want -->
+                                    <version>5.17.14</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/generated-docs/swagger-ui</outputDirectory>
+                                    <includes>META-INF/resources/webjars/swagger-ui/5.17.14/**</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
         </plugins>
     </build>
 
