@@ -5,6 +5,8 @@ import com.ogoma.marketing.core.application.audience.commands.AddAudienceCommand
 import com.ogoma.marketing.core.application.audience.commands.UpdateAudienceCommandHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDQueryHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudiencesQueryHandler;
+import com.ogoma.marketing.core.application.contacts.commands.AddContactCommandHandler;
+import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDQueryHandler;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
@@ -16,6 +18,8 @@ import com.ogoma.marketing.core.application.transactionalmessages.SendSmsTransac
 import com.ogoma.marketing.core.application.transactionalmessages.SendTransactionalEmailCommandHandler;
 import com.ogoma.marketing.core.application.users.SyncUserInfoCommandHandler;
 import com.ogoma.marketing.core.domain.audience.AudienceRepository;
+import com.ogoma.marketing.core.domain.contacts.AudienceMembershipRepository;
+import com.ogoma.marketing.core.domain.contacts.ContactRepository;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateRepository;
 import com.ogoma.marketing.core.domain.users.UsersRepository;
@@ -118,6 +122,21 @@ public class CompositionRoot {
     @Bean
     GetAudiencesQueryHandler getAudiencesQueryHandler(AudienceRepository audienceRepository) {
         return new GetAudiencesQueryHandler(audienceRepository);
+    }
+
+    @Bean
+    AddContactCommandHandler addContactCommandHandler(
+            ContactRepository contactRepository,
+            AudienceRepository audienceRepository,
+            AudienceMembershipRepository audienceMembershipRepository,
+            UnitOfWork unitOfWork
+    ) {
+        return new AddContactCommandHandler(contactRepository, audienceRepository, audienceMembershipRepository, unitOfWork);
+    }
+
+    @Bean
+    GetContactByIDQueryHandler getContactByIDQueryHandler(ContactRepository contactRepository) {
+        return new GetContactByIDQueryHandler(contactRepository);
     }
 
     @Bean

@@ -14,10 +14,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
-public record AudienceRepositoryJDBCAdapter(JdbcAggregateTemplate jdbcAggregateTemplate) implements AudienceRepository {
+public record AudienceRepositoryJDBCAdapter(
+        JdbcAggregateTemplate jdbcAggregateTemplate,
+        AudienceJDBCRepository audienceJDBCRepository
+) implements AudienceRepository {
     @Override
     public AudienceEntity save(AudienceEntity audienceEntity) {
         return this.jdbcAggregateTemplate.save(audienceEntity);
@@ -26,6 +32,11 @@ public record AudienceRepositoryJDBCAdapter(JdbcAggregateTemplate jdbcAggregateT
     @Override
     public Optional<AudienceEntity> findById(AudienceId audienceID) {
         return Optional.ofNullable(jdbcAggregateTemplate.findById(audienceID, AudienceEntity.class));
+    }
+
+    @Override
+    public Set<AudienceId> findStaticAudienceIds(Collection<AudienceId> audienceIds) {
+        return audienceJDBCRepository.findAllByIdIn(audienceIds).stream().map(AudienceIDOnly::id).collect(Collectors.toSet());
     }
 
     @Override
