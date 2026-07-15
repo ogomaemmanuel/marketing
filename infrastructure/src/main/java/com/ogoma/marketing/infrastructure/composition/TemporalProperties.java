@@ -1,4 +1,4 @@
-package com.ogoma.marketing.infrastructure.configs;
+package com.ogoma.marketing.infrastructure.composition;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;

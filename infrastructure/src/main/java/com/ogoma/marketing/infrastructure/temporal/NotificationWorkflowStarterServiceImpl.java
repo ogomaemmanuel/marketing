@@ -3,7 +3,7 @@ package com.ogoma.marketing.infrastructure.temporal;
 import com.ogoma.marketing.core.abstractions.NotificationWorkflowStarterService;
 import com.ogoma.marketing.core.application.transactionalmessages.TransactionalNotification;
 import com.ogoma.marketing.infrastructure.workflows.abstractions.MessageSenderWorkflow;
-import com.ogoma.marketing.infrastructure.configs.TemporalProperties;
+import com.ogoma.marketing.infrastructure.composition.TemporalProperties;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import org.springframework.stereotype.Component;

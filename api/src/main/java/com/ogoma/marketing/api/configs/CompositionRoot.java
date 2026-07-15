@@ -6,6 +6,8 @@ import com.ogoma.marketing.core.application.audience.commands.UpdateAudienceComm
 import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDQueryHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudiencesQueryHandler;
 import com.ogoma.marketing.core.application.contacts.commands.AddContactCommandHandler;
+import com.ogoma.marketing.core.application.contacts.commands.AudienceMembershipValidator;
+import com.ogoma.marketing.core.application.contacts.commands.UpdateContactCommandHandler;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDQueryHandler;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
@@ -134,9 +136,28 @@ public class CompositionRoot {
         return new AddContactCommandHandler(contactRepository, audienceRepository, audienceMembershipRepository, unitOfWork);
     }
 
+
     @Bean
     GetContactByIDQueryHandler getContactByIDQueryHandler(ContactRepository contactRepository) {
         return new GetContactByIDQueryHandler(contactRepository);
+    }
+
+    @Bean
+    UpdateContactCommandHandler updateContactCommandHandler(
+            ContactRepository contactRepository,
+            AudienceMembershipValidator audienceMembershipValidator,
+            AudienceMembershipRepository audienceMembershipRepository,
+            UnitOfWork unitOfWork
+    ) {
+        return new UpdateContactCommandHandler(
+                contactRepository,
+                audienceMembershipValidator,
+                audienceMembershipRepository, unitOfWork);
+    }
+
+    @Bean
+    AudienceMembershipValidator audienceMembershipValidator(AudienceRepository audienceRepository) {
+        return new AudienceMembershipValidator(audienceRepository);
     }
 
     @Bean

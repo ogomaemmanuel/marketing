@@ -1,4 +1,4 @@
-package com.ogoma.marketing.infrastructure.configs;
+package com.ogoma.marketing.infrastructure.composition;
 
 import com.ogoma.marketing.infrastructure.converters.EmailTemplateToJsonWritingConverter;
 import com.ogoma.marketing.infrastructure.converters.EncryptedStringFieldToStringWritingConverter;
