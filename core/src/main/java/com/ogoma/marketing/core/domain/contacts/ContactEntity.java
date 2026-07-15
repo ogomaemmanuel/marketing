@@ -67,5 +67,19 @@ public class ContactEntity {
         return new ContactEntity(firstName, lastName, email, attributes, createdBy);
     }
 
+    public void update(
+            String firstName,
+            String lastName,
+            String email,
+            Map<String, String> attributes,
+            String lastUpdatedBy) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.attributes = attributes;
+        this.lastUpdatedBy = lastUpdatedBy;
+        this.lastUpdatedAt = Instant.now();
+    }
+
 
 }

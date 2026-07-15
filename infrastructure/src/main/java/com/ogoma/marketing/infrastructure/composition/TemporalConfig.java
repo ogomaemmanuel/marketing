@@ -1,4 +1,4 @@
-package com.ogoma.marketing.infrastructure.configs;
+package com.ogoma.marketing.infrastructure.composition;
 
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;

@@ -8,7 +8,10 @@ import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDQuery
 import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDView;
 import com.ogoma.marketing.core.domain.contacts.ContactEntity;
 import com.ogoma.marketing.core.domain.contacts.ContactID;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,7 +24,7 @@ import java.util.UUID;
 public record ContactsController(
         CommandDispatcher commandDispatcher,
         QueryDispatcher queryDispatcher
-        ) {
+) {
 
 
     @PostMapping
@@ -39,4 +42,20 @@ public record ContactsController(
     public GetContactByIDView getContactByID(@PathVariable UUID id) {
         return this.queryDispatcher.dispatch(new GetContactByIDQuery(new ContactID(id)));
     }
+
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateContact(
+            @Parameter(
+                    description = "Contact ID",
+                    schema = @Schema(type = "string", format = "uuid")
+            )
+            @PathVariable
+            ContactID id,
+            @RequestBody @Valid UpdateContactRequest updateContactRequest,
+            @CurrentUser String userId
+    ) {
+        this.commandDispatcher.dispatch(updateContactRequest.toCommand(id, userId));
+    }
+
 }

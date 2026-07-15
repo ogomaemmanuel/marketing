@@ -5,7 +5,7 @@ import com.ogoma.marketing.core.abstractions.MessageRouter;
 import com.ogoma.marketing.core.abstractions.MessageSenderService;
 import com.ogoma.marketing.core.abstractions.TemplateRenderer;
 import com.ogoma.marketing.core.implementations.MessageRouterImpl;
-import com.ogoma.marketing.infrastructure.configs.TemporalProperties;
+import com.ogoma.marketing.infrastructure.composition.TemporalProperties;
 import com.ogoma.marketing.infrastructure.workflows.abstractions.WorkflowActivity;
 import com.ogoma.marketing.infrastructure.workflows.implementations.MessageSenderWorkflowImpl;
 import io.temporal.client.WorkflowClient;
