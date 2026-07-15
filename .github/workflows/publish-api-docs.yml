@@ -24,7 +24,7 @@ jobs:
         uses: Legion2/swagger-ui-action@v1
         with:
           output: ./docs
-          spec-file: openapi.yaml
+          spec-file: ./docs/openapi.yaml
           version: 5.x
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: peaceiris/actions-gh-pages@v4
