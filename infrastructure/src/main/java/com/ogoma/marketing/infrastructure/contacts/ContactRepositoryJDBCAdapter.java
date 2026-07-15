@@ -35,9 +35,9 @@ public record ContactRepositoryJDBCAdapter(JdbcAggregateTemplate jdbcAggregateTe
     public Page<ContactEntity> findAllBy(String searchTerm, Pageable pageable) {
         Criteria criteria = Criteria.empty();
         if (StringUtils.hasText(searchTerm)) {
-            criteria = Criteria.where(PropertyPath.of(ContactEntity::getLastName)).like("%" + searchTerm.trim() + "%s").ignoreCase(true).
-                    or(Criteria.where(PropertyPath.of(ContactEntity::getFirstName)).like("%" + searchTerm.trim() + "%s").ignoreCase(true)
-                            .or(Criteria.where(PropertyPath.of(ContactEntity::getEmail)).like("%" + searchTerm.trim() + "%s"))
+            criteria = Criteria.where(PropertyPath.of(ContactEntity::getLastName)).like("%" + searchTerm.trim() + "%").ignoreCase(true).
+                    or(Criteria.where(PropertyPath.of(ContactEntity::getFirstName)).like("%" + searchTerm.trim() + "%").ignoreCase(true)
+                            .or(Criteria.where(PropertyPath.of(ContactEntity::getEmail)).like("%" + searchTerm.trim() + "%").ignoreCase(true))
                     );
         }
         var countQuery = Query.query(criteria);
