@@ -19,7 +19,7 @@ jobs:
           SPRING_PROFILES_ACTIVE: "swagger"
       - run: |
           mkdir -p docs
-          cp api/target/generated-docs/swagger-ui/openapi.yaml docs/api
+          cp api/target/generated-docs/swagger-ui/openapi.yaml docs
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         with:
