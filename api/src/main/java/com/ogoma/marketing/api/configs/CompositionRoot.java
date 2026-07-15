@@ -9,6 +9,7 @@ import com.ogoma.marketing.core.application.contacts.commands.AddContactCommandH
 import com.ogoma.marketing.core.application.contacts.commands.AudienceMembershipValidator;
 import com.ogoma.marketing.core.application.contacts.commands.UpdateContactCommandHandler;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDQueryHandler;
+import com.ogoma.marketing.core.application.contacts.queries.GetContactsQueryHandler;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
@@ -158,6 +159,11 @@ public class CompositionRoot {
     @Bean
     AudienceMembershipValidator audienceMembershipValidator(AudienceRepository audienceRepository) {
         return new AudienceMembershipValidator(audienceRepository);
+    }
+
+    @Bean
+    GetContactsQueryHandler getContactsQueryHandler(ContactRepository contactRepository) {
+        return new GetContactsQueryHandler(contactRepository);
     }
 
     @Bean

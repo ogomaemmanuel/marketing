@@ -6,11 +6,15 @@ import com.ogoma.marketing.core.abstractions.CommandDispatcher;
 import com.ogoma.marketing.core.abstractions.QueryDispatcher;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDQuery;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDView;
+import com.ogoma.marketing.core.application.contacts.queries.GetContactsQuery;
+import com.ogoma.marketing.core.application.contacts.queries.GetContactsView;
 import com.ogoma.marketing.core.domain.contacts.ContactEntity;
 import com.ogoma.marketing.core.domain.contacts.ContactID;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +45,11 @@ public record ContactsController(
     @GetMapping("/{id}")
     public GetContactByIDView getContactByID(@PathVariable UUID id) {
         return this.queryDispatcher.dispatch(new GetContactByIDQuery(new ContactID(id)));
+    }
+
+    @GetMapping
+    public PagedModel<GetContactsView> getContacts(@RequestParam(required = false) String searchTerm, Pageable pageable) {
+        return new PagedModel<>(this.queryDispatcher.dispatch(new GetContactsQuery(searchTerm, pageable)));
     }
 
     @PutMapping(value = "/{id}")
