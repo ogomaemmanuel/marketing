@@ -50,8 +50,7 @@ public record ContactsController(
                     description = "Contact ID",
                     schema = @Schema(type = "string", format = "uuid")
             )
-            @PathVariable
-            ContactID id,
+            @PathVariable ContactID id,
             @RequestBody @Valid UpdateContactRequest updateContactRequest,
             @CurrentUser String userId
     ) {

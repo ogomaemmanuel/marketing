@@ -13,7 +13,9 @@ import java.util.UUID;
 @JsonSubTypes(value = {
         @JsonSubTypes.Type(value = NumberAttribute.class, name = "number"),
         @JsonSubTypes.Type(value = BooleanAttribute.class, name = "boolean"),
-        @JsonSubTypes.Type(value = SelectionAttribute.class, name = "selection"),
+        @JsonSubTypes.Type(value = SingleSelectAttribute.class, name = "select"),
+        @JsonSubTypes.Type(value = MultiChoiceAttribute.class, name = "multi-choice"),
+        @JsonSubTypes.Type(value = DateAttribute.class, name = "date"),
         @JsonSubTypes.Type(value = TextAttribute.class, name = "text")
 })
 public abstract class CustomAttributeBase {

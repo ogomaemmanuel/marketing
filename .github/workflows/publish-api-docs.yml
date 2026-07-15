@@ -19,9 +19,14 @@ jobs:
           SPRING_PROFILES_ACTIVE: "swagger"
       - run: |
           mkdir -p docs
-          cp -r api/target/generated-docs/swagger-ui/META-INF/resources/webjars/swagger-ui/5.17.14/* docs/
           cp api/target/generated-docs/swagger-ui/openapi.yaml docs/
-          sed -i 's|url: "https://petstore.swagger.io/v2/swagger.json"|url: "openapi.yaml"|g' docs/swagger-initializer.js
+      - name: Generate Swagger UI
+        uses: Legion2/swagger-ui-action@v1
+        with:
+          output: ./docs
+          spec-file: openapi.yaml
+          version: 5.x
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
