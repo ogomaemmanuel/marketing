@@ -19,15 +19,18 @@ jobs:
           SPRING_PROFILES_ACTIVE: "swagger"
       - run: |
           mkdir -p docs
-          cp api/target/generated-docs/swagger-ui/openapi.yaml docs/
+          cp api/target/generated-docs/swagger-ui/openapi.yaml docs/api
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         with:
-          output: ./docs
+          output: ./swagger-ui
           spec-file: ./docs/openapi.yaml
           version: 5.x
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          cp -r ./docs swagger-ui
+
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./swagger-ui
