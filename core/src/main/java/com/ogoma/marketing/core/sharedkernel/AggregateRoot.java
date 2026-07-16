@@ -1,9 +1,12 @@
 package com.ogoma.marketing.core.sharedkernel;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.ArrayDeque;
 import java.util.List;
 
 public abstract class AggregateRoot<ID> extends Entity<ID> {
+    @Transient
     private final ArrayDeque<DomainEvent> domainEvents = new ArrayDeque<>();
 
     protected AggregateRoot(ID id) {

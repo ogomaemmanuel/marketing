@@ -61,7 +61,7 @@ public final class CustomAssert {
      * Asserts that a string has actual text (is not null, not empty, and not whitespace-only).
      */
     public static <X extends RuntimeException> void hasText(String text, Supplier<? extends X> exceptionSupplier) {
-        if (text == null || text.strip().isEmpty()) {
+        if (text == null || text.isBlank()) {
             throw exceptionSupplier.get();
         }
     }
