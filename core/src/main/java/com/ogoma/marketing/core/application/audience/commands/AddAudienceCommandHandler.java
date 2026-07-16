@@ -13,7 +13,7 @@ public record AddAudienceCommandHandler(AudienceRepository audienceRepository) i
 
     @Override
     public AudienceEntity handle(AddAudienceCommand command) {
-        AudienceEntity audienceEntity =  AudienceEntity.createNew(command.name(), command.userID());
+        AudienceEntity audienceEntity =  AudienceEntity.createStaticAudience(command.name(), command.userID());
         return this.audienceRepository.save(audienceEntity);
     }
 }
