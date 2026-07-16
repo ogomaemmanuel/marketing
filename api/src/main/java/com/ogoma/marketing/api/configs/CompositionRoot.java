@@ -5,6 +5,7 @@ import com.ogoma.marketing.core.application.audience.commands.AddAudienceCommand
 import com.ogoma.marketing.core.application.audience.commands.UpdateAudienceCommandHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDQueryHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudiencesQueryHandler;
+import com.ogoma.marketing.core.application.campaign.CreateCampaignCommandHandler;
 import com.ogoma.marketing.core.application.contacts.commands.AddContactCommandHandler;
 import com.ogoma.marketing.core.application.contacts.commands.AudienceMembershipValidator;
 import com.ogoma.marketing.core.application.contacts.commands.UpdateContactCommandHandler;
@@ -21,6 +22,7 @@ import com.ogoma.marketing.core.application.transactionalmessages.SendSmsTransac
 import com.ogoma.marketing.core.application.transactionalmessages.SendTransactionalEmailCommandHandler;
 import com.ogoma.marketing.core.application.users.SyncUserInfoCommandHandler;
 import com.ogoma.marketing.core.domain.audience.AudienceRepository;
+import com.ogoma.marketing.core.domain.campaigns.CampaignRepository;
 import com.ogoma.marketing.core.domain.contacts.AudienceMembershipRepository;
 import com.ogoma.marketing.core.domain.contacts.ContactRepository;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
@@ -164,6 +166,11 @@ public class CompositionRoot {
     @Bean
     GetContactsQueryHandler getContactsQueryHandler(ContactRepository contactRepository) {
         return new GetContactsQueryHandler(contactRepository);
+    }
+
+    @Bean
+    CreateCampaignCommandHandler createCampaignCommandHandler(CampaignRepository campaignRepository, UnitOfWork unitOfWork) {
+        return new CreateCampaignCommandHandler(campaignRepository, unitOfWork);
     }
 
     @Bean
