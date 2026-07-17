@@ -17,6 +17,8 @@ import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCo
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQueryHandler;
 import com.ogoma.marketing.core.application.sms.CreateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommandHandler;
+import com.ogoma.marketing.core.application.sms.UpdateSmsTemplateCommandHandler;
+import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplateByIDQueryHandler;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesQueryHandler;
 import com.ogoma.marketing.core.application.transactionalmessages.SendSmsTransactionalCommandHandler;
 import com.ogoma.marketing.core.application.transactionalmessages.SendTransactionalEmailCommandHandler;
@@ -127,6 +129,16 @@ public class CompositionRoot {
     @Bean
     GetAudiencesQueryHandler getAudiencesQueryHandler(AudienceRepository audienceRepository) {
         return new GetAudiencesQueryHandler(audienceRepository);
+    }
+
+    @Bean
+    UpdateSmsTemplateCommandHandler updateSmsTemplateCommandHandler(SmsTemplateRepository smsTemplateRepository) {
+        return new UpdateSmsTemplateCommandHandler(smsTemplateRepository);
+    }
+
+    @Bean
+    GetSmsTemplateByIDQueryHandler getSmsTemplateByIDQueryHandler(SmsTemplateRepository smsTemplateRepository) {
+        return new GetSmsTemplateByIDQueryHandler(smsTemplateRepository);
     }
 
     @Bean
