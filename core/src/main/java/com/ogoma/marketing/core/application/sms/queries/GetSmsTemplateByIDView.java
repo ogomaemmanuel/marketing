@@ -2,23 +2,20 @@ package com.ogoma.marketing.core.application.sms.queries;
 
 import com.ogoma.marketing.core.domain.sms.SmsTemplateEntity;
 
-import java.time.Instant;
 import java.util.UUID;
 
-public record GetSmsTemplatesView(
+public record GetSmsTemplateByIDView(
         UUID id,
         String name,
         String description,
-        String content,
-        Instant createdAt
+        String content
 ) {
 
-    public GetSmsTemplatesView(SmsTemplateEntity smsTemplateEntity) {
+    public GetSmsTemplateByIDView(SmsTemplateEntity smsTemplateEntity) {
         this(
                 smsTemplateEntity.getId().id(),
                 smsTemplateEntity.getName(),
                 smsTemplateEntity.getDescription(),
-                smsTemplateEntity.getContent(),
-                smsTemplateEntity.getCreatedAt());
+                smsTemplateEntity.getContent());
     }
 }

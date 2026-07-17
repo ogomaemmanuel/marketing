@@ -7,6 +7,8 @@ import com.ogoma.marketing.api.sms.requests.UpdateSmsTemplateRequest;
 import com.ogoma.marketing.core.abstractions.CommandDispatcher;
 import com.ogoma.marketing.core.abstractions.QueryDispatcher;
 import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommand;
+import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplateByIDQuery;
+import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplateByIDView;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesQuery;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesView;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateEntity;
@@ -39,11 +41,21 @@ public record SmsTemplatesController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PagedModel<GetSmsTemplatesView> getSmsTemplates(String searchTerm, Pageable pageable) {
+    public PagedModel<GetSmsTemplatesView> getSmsTemplates(
+            @RequestParam(required = false) String searchTerm, Pageable pageable) {
         return new PagedModel<>(this.queryDispatcher.dispatch(new GetSmsTemplatesQuery(searchTerm, pageable)));
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetSmsTemplateByIDView getSmsTemplateByID(@PathVariable @Parameter(schema = @Schema(type = "string", format = "uuid")) SmsTemplateID id) {
+        return  this.queryDispatcher.dispatch(new GetSmsTemplateByIDQuery(id));
+    }
+
+
+
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateSmsTemplate(
             @PathVariable @Parameter(schema = @Schema(type = "string", format = "uuid")) SmsTemplateID id,
             @RequestBody UpdateSmsTemplateRequest updateSmsTemplateRequest, @CurrentUser String userId) {

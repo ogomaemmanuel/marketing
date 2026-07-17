@@ -10,7 +10,6 @@ public record CreateSmsTemplateRequest(
         String content,
         String description
 ) {
-
     public CreateSmsTemplateCommand toCommandWith(String userId){
         return new CreateSmsTemplateCommand(name,description,content,userId);
     }
