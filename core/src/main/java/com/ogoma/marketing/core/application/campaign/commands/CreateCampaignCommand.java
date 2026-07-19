@@ -1,4 +1,4 @@
-package com.ogoma.marketing.core.application.campaign;
+package com.ogoma.marketing.core.application.campaign.commands;
 
 import com.ogoma.marketing.core.abstractions.Command;
 import com.ogoma.marketing.core.domain.audience.AudienceId;

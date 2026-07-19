@@ -6,7 +6,7 @@ import com.ogoma.marketing.api.sms.requests.DuplicateSmsTemplateRequest;
 import com.ogoma.marketing.api.sms.requests.UpdateSmsTemplateRequest;
 import com.ogoma.marketing.core.abstractions.CommandDispatcher;
 import com.ogoma.marketing.core.abstractions.QueryDispatcher;
-import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommand;
+import com.ogoma.marketing.core.application.sms.commands.DuplicateSmsTemplateCommand;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplateByIDQuery;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplateByIDView;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesQuery;

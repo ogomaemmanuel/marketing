@@ -5,8 +5,9 @@ import com.ogoma.marketing.core.application.audience.commands.AddAudienceCommand
 import com.ogoma.marketing.core.application.audience.commands.UpdateAudienceCommandHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDQueryHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudiencesQueryHandler;
-import com.ogoma.marketing.core.application.campaign.CreateCampaignCommandHandler;
-import com.ogoma.marketing.core.application.campaign.GetCampaignByIDQueryHandler;
+import com.ogoma.marketing.core.application.campaign.commands.CreateCampaignCommandHandler;
+import com.ogoma.marketing.core.application.campaign.queries.GetCampaignByIDQueryHandler;
+import com.ogoma.marketing.core.application.campaign.queries.GetCampaignsQueryHandler;
 import com.ogoma.marketing.core.application.contacts.commands.AddContactCommandHandler;
 import com.ogoma.marketing.core.application.contacts.commands.AudienceMembershipValidator;
 import com.ogoma.marketing.core.application.contacts.commands.UpdateContactCommandHandler;
@@ -16,9 +17,9 @@ import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCom
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQueryHandler;
-import com.ogoma.marketing.core.application.sms.CreateSmsTemplateCommandHandler;
-import com.ogoma.marketing.core.application.sms.DuplicateSmsTemplateCommandHandler;
-import com.ogoma.marketing.core.application.sms.UpdateSmsTemplateCommandHandler;
+import com.ogoma.marketing.core.application.sms.commands.CreateSmsTemplateCommandHandler;
+import com.ogoma.marketing.core.application.sms.commands.DuplicateSmsTemplateCommandHandler;
+import com.ogoma.marketing.core.application.sms.commands.UpdateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplateByIDQueryHandler;
 import com.ogoma.marketing.core.application.sms.queries.GetSmsTemplatesQueryHandler;
 import com.ogoma.marketing.core.application.transactionalmessages.SendSmsTransactionalCommandHandler;
@@ -189,6 +190,11 @@ public class CompositionRoot {
     @Bean
     GetCampaignByIDQueryHandler getCampaignByIDQueryHandler(CampaignRepository campaignRepository) {
         return new GetCampaignByIDQueryHandler(campaignRepository);
+    }
+
+    @Bean
+    GetCampaignsQueryHandler getCampaignsQueryHandler(CampaignRepository campaignRepository) {
+        return new GetCampaignsQueryHandler(campaignRepository);
     }
 
     @Bean

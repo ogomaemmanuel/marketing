@@ -1,6 +1,6 @@
 package com.ogoma.marketing.api.sms.requests;
 
-import com.ogoma.marketing.core.application.sms.UpdateSmsTemplateCommand;
+import com.ogoma.marketing.core.application.sms.commands.UpdateSmsTemplateCommand;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateID;
 
 public record UpdateSmsTemplateRequest(
