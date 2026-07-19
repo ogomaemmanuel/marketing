@@ -1,4 +1,4 @@
-package com.ogoma.marketing.core.application.campaign;
+package com.ogoma.marketing.core.application.campaign.queries;
 
 import com.ogoma.marketing.core.abstractions.Query;
 import com.ogoma.marketing.core.domain.campaigns.CampaignID;

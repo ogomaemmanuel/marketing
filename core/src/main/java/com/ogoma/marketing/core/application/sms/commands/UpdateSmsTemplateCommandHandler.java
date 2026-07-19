@@ -1,4 +1,4 @@
-package com.ogoma.marketing.core.application.sms;
+package com.ogoma.marketing.core.application.sms.commands;
 
 import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;

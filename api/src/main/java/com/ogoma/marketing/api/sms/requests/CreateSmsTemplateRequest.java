@@ -1,6 +1,6 @@
 package com.ogoma.marketing.api.sms.requests;
 
-import com.ogoma.marketing.core.application.sms.CreateSmsTemplateCommand;
+import com.ogoma.marketing.core.application.sms.commands.CreateSmsTemplateCommand;
 import jakarta.validation.constraints.NotBlank;
 
 public record CreateSmsTemplateRequest(

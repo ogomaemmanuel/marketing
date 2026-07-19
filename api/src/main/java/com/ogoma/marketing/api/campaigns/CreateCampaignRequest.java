@@ -1,6 +1,6 @@
 package com.ogoma.marketing.api.campaigns;
 
-import com.ogoma.marketing.core.application.campaign.CreateCampaignCommand;
+import com.ogoma.marketing.core.application.campaign.commands.CreateCampaignCommand;
 import com.ogoma.marketing.core.domain.audience.AudienceId;
 import com.ogoma.marketing.core.domain.campaigns.Channel;
 import com.ogoma.marketing.core.domain.email.EmailTemplateID;
