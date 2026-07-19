@@ -6,6 +6,7 @@ import com.ogoma.marketing.core.application.audience.commands.UpdateAudienceComm
 import com.ogoma.marketing.core.application.audience.queries.GetAudienceByIDQueryHandler;
 import com.ogoma.marketing.core.application.audience.queries.GetAudiencesQueryHandler;
 import com.ogoma.marketing.core.application.campaign.CreateCampaignCommandHandler;
+import com.ogoma.marketing.core.application.campaign.GetCampaignByIDQueryHandler;
 import com.ogoma.marketing.core.application.contacts.commands.AddContactCommandHandler;
 import com.ogoma.marketing.core.application.contacts.commands.AudienceMembershipValidator;
 import com.ogoma.marketing.core.application.contacts.commands.UpdateContactCommandHandler;
@@ -183,6 +184,11 @@ public class CompositionRoot {
     @Bean
     CreateCampaignCommandHandler createCampaignCommandHandler(CampaignRepository campaignRepository, UnitOfWork unitOfWork) {
         return new CreateCampaignCommandHandler(campaignRepository, unitOfWork);
+    }
+
+    @Bean
+    GetCampaignByIDQueryHandler getCampaignByIDQueryHandler(CampaignRepository campaignRepository) {
+        return new GetCampaignByIDQueryHandler(campaignRepository);
     }
 
     @Bean
