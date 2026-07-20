@@ -4,6 +4,7 @@ import com.ogoma.marketing.core.sharedkernel.CustomAssert;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
@@ -27,6 +28,7 @@ public class AudienceEntity {
     private String createdBy;
     private String updatedBy;
     private AudienceType type;
+    @Column("ruleset")
     private RuleSet ruleSet;
 
     private AudienceEntity() {
@@ -37,7 +39,7 @@ public class AudienceEntity {
         this.updatedAt = now;
     }
 
-    private AudienceEntity(String name, String createdBy, AudienceType audienceType) {
+    private AudienceEntity(String name,  String createdBy, AudienceType audienceType) {
         CustomAssert.hasText(name, () -> new IllegalArgumentException("Name is required"));
         CustomAssert.hasText(createdBy, () -> new IllegalArgumentException("Created by is required"));
         CustomAssert.notNull(audienceType, () -> new IllegalArgumentException("Audience type must not be null"));

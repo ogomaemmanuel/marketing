@@ -17,6 +17,7 @@ import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCom
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQueryHandler;
+import com.ogoma.marketing.core.application.segments.CreateSegmentCommandHandler;
 import com.ogoma.marketing.core.application.sms.commands.CreateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.commands.DuplicateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.commands.UpdateSmsTemplateCommandHandler;
@@ -178,6 +179,11 @@ public class CompositionRoot {
     }
 
     @Bean
+    CreateSegmentCommandHandler createSegmentCommandHandler(AudienceRepository audienceRepository){
+        return new CreateSegmentCommandHandler(audienceRepository);
+    }
+
+    @Bean
     GetContactsQueryHandler getContactsQueryHandler(ContactRepository contactRepository) {
         return new GetContactsQueryHandler(contactRepository);
     }
@@ -196,6 +202,7 @@ public class CompositionRoot {
     GetCampaignsQueryHandler getCampaignsQueryHandler(CampaignRepository campaignRepository) {
         return new GetCampaignsQueryHandler(campaignRepository);
     }
+
 
     @Bean
     SyncUserInfoCommandHandler syncUserInfoCommandHandler(UsersRepository usersRepository) {
