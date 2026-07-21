@@ -4,11 +4,14 @@ import com.ogoma.marketing.core.application.transactionalmessages.SendSmsTransac
 import com.ogoma.marketing.core.domain.sms.SmsTemplateID;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 import java.util.UUID;
 
-
+@Getter
+@Setter
 public final class SmsTransactionalMessageRequest extends TransactionalMessageRequestBase {
     @NotBlank
     private String recipient;
@@ -23,31 +26,8 @@ public final class SmsTransactionalMessageRequest extends TransactionalMessageRe
         return new SendSmsTransactionalCommand(
                 this.recipient,
                 new SmsTemplateID(this.templatedId),
-                Map.copyOf(params)
+                Map.copyOf(params),
+                this.getScheduledAt()
         );
-    }
-
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
-    }
-
-    public UUID getTemplatedId() {
-        return templatedId;
-    }
-
-    public void setTemplatedId(UUID templatedId) {
-        this.templatedId = templatedId;
-    }
-
-    public Map<String, Object> getParams() {
-        return params;
-    }
-
-    public void setParams(Map<String, Object> params) {
-        this.params = params;
     }
 }

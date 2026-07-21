@@ -24,12 +24,14 @@ public non-sealed class EmailTransactionalMessageRequest extends TransactionalMe
     @NotNull
     private Map<String, Object> params;
 
+
     @Override
     public Command<Void> asCommand(String userID) {
         return new SendTransactionalEmailCommand(
                 new EmailTemplateID(templatedId),
                 recipients,
-                Map.copyOf(params)
+                Map.copyOf(params),
+                this.getScheduledAt()
         );
     }
 }
