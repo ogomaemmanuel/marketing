@@ -1,18 +1,14 @@
 package com.ogoma.marketing.core.domain.campaigns;
 
 
-import com.ogoma.marketing.core.domain.email.EmailTemplateID;
-import com.ogoma.marketing.core.domain.sms.SmsTemplateID;
 import com.ogoma.marketing.core.sharedkernel.AggregateRoot;
 import com.ogoma.marketing.core.sharedkernel.CustomAssert;
 import lombok.Getter;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 @Table(name = "campaigns")
 @Getter
@@ -26,10 +22,12 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
     private Instant lastUpdatedAt;
     private String lastUpdatedBy;
     private Status status;
-    private UUID emailTemplateID;
-    private Set<Channel> channels;
+//    private UUID emailTemplateID;
+//    private Set<Channel> channels;
 
-    private UUID smsTemplateID;
+    @Embedded.Nullable()
+    CampaignConfiguration campaignConfiguration;
+//    private UUID smsTemplateID;
 
 
     private CampaignEntity() {
@@ -52,11 +50,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this();
         this.name = name;
         this.description = description;
-        this.emailTemplateID =
-                Optional.ofNullable(configuration.emailTemplateID()).map(EmailTemplateID::id).orElse(null);
-        this.smsTemplateID =
-                Optional.ofNullable( configuration.smsTemplateID()).map(SmsTemplateID::id).orElse(null);
-        this.channels = configuration.channels();
+        this.campaignConfiguration = configuration;
         this.createdBy = createdBy;
 
         this.lastUpdatedBy = createdBy;
@@ -82,11 +76,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         CustomAssert.hasLength(updatedBy, () -> new IllegalArgumentException("Created by is required"));
         this.name = name;
         this.description = description;
-        this.emailTemplateID =
-                Optional.ofNullable(configuration.emailTemplateID()).map(EmailTemplateID::id).orElse(null);
-        this.smsTemplateID =
-               Optional.ofNullable( configuration.smsTemplateID()).map(SmsTemplateID::id).orElse(null);
-        this.channels = configuration.channels();
+        this.campaignConfiguration = configuration;
         this.touch(updatedBy);
     }
 
