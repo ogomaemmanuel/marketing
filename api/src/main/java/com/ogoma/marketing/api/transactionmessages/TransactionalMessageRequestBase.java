@@ -25,7 +25,7 @@ import java.time.ZonedDateTime;
 @Setter
 public abstract sealed class TransactionalMessageRequestBase permits EmailTransactionalMessageRequest,
         SmsTransactionalMessageRequest {
-    @JsonPropertyDescription("Optional iso datetime string for scheduling the delivery of message")
+    @JsonPropertyDescription("Optional datetime string for scheduling the delivery of message in iso 8601 format ")
     private ZonedDateTime scheduledAt;
 
     public abstract Command<Void> asCommand(String userId);
