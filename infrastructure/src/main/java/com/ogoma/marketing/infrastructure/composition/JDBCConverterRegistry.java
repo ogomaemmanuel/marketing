@@ -18,7 +18,9 @@ public class JDBCConverterRegistry extends AbstractJdbcConfiguration {
                 new StringToEncryptedStringReadingConverter(),
                 new EncryptedStringFieldToStringWritingConverter(),
                 new RuleSetToJsonBWritingConverter(),
-                new JsonToRulesetReadingConverter()
+                new JsonToRulesetReadingConverter(),
+                new StronglyTypedIdWritingConverter(),
+                new StronglyTypedIdReadingConverter()
         );
     }
 }
