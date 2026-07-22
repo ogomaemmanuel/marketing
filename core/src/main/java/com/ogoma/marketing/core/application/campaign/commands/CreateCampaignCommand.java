@@ -25,7 +25,7 @@ public record CreateCampaignCommand(
 ) implements Command<CampaignID> {
     public CreateCampaignCommand {
         channels = channels == null ? Set.of() : Set.copyOf(channels);
-        targetAudienceIds = Set.copyOf(targetAudienceIds);
+        targetAudienceIds = targetAudienceIds == null ? Set.of() : Set.copyOf(targetAudienceIds);
     }
 
 }

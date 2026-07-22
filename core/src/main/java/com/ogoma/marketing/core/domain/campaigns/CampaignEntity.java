@@ -98,7 +98,6 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
     public Set<CampaignAudienceRef> getAudienceRefs() {
         return Collections.unmodifiableSet(this.audienceRefs);
     }
-
     private static Set<CampaignAudienceRef> toAudienceRefs(Set<AudienceId> ids) {
         if (ids == null) {
             return new HashSet<>();
