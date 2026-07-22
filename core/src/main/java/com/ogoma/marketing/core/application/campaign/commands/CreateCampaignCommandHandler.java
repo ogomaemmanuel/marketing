@@ -23,7 +23,7 @@ public record CreateCampaignCommandHandler(CampaignRepository campaignRepository
                     command.smsTemplateID()
             );
             CampaignEntity campaignEntity = CampaignEntity.createNew(command.name(),
-                    command.description(), configuration, command.userId());
+                    command.description(), command.targetAudienceIds(), configuration, command.userId());
             campaignRepository.save(campaignEntity);
             return campaignEntity.getId();
         });
