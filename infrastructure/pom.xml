@@ -27,6 +27,7 @@
     <properties>
         <java.version>26</java.version>
         <temporal.version>1.35.0</temporal.version>
+        <jdbc-querydsl.version>10.0.7</jdbc-querydsl.version>
     </properties>
 
 
@@ -74,10 +75,75 @@
             <artifactId>temporal-testing</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.infobip</groupId>
+            <artifactId>infobip-spring-data-jdbc-querydsl</artifactId>
+            <version>${jdbc-querydsl.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.4.8-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>com.infobip</groupId>
+            <artifactId>infobip-spring-data-jdbc-querydsl-boot-starter</artifactId>
+            <version>${jdbc-querydsl.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
-
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>default-compile</id>
+                <phase>compile</phase>
+                <goals>
+                    <goal>compile</goal>
+                </goals>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </execution>
+            <execution>
+                <id>default-testCompile</id>
+                <phase>test-compile</phase>
+                <goals>
+                    <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                        <path>
+                            <groupId>com.infobip</groupId>
+                            <artifactId>infobip-spring-data-jdbc-annotation-processor</artifactId>
+                            <version>${jdbc-querydsl.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+</plugins>
     </build>
 
 </project>

@@ -49,12 +49,14 @@ public record CreateCampaignRequest(
 
     public CreateCampaignCommand toCommand(String userId) {
         var audienceIds = targetAudienceIds.stream().map(AudienceId::new).collect(Collectors.toUnmodifiableSet());
+
         return new CreateCampaignCommand(
                 name,
                 description,
                 channels,
                 audienceIds,
-                new EmailTemplateID(emailTemplateID),
-                new SmsTemplateID(smsTemplateID), userId);
+                emailTemplateID == null ? null : new EmailTemplateID(emailTemplateID),
+                smsTemplateID == null ? null : new SmsTemplateID(smsTemplateID),
+                userId);
     }
 }
