@@ -102,31 +102,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-
-
-        <dependency>
-            <groupId>com.infobip</groupId>
-            <artifactId>infobip-spring-data-jdbc-querydsl</artifactId>
-            <version>${jdbc-querydsl.version}</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>33.4.8-jre</version>
-        </dependency>
-        <dependency>
-            <groupId>com.infobip</groupId>
-            <artifactId>infobip-spring-data-jdbc-querydsl-boot-starter</artifactId>
-            <version>${jdbc-querydsl.version}</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -144,11 +119,6 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
-                        </path>
-                        <path>
-                            <groupId>com.infobip</groupId>
-                            <artifactId>infobip-spring-data-jdbc-annotation-processor</artifactId>
-                            <version>${jdbc-querydsl.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
