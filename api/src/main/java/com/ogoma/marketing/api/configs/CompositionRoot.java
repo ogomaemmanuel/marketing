@@ -36,6 +36,7 @@ import com.ogoma.marketing.core.domain.users.UsersRepository;
 import com.ogoma.marketing.core.implementations.CommandDispatcherImpl;
 import com.ogoma.marketing.core.implementations.MessageRouterImpl;
 import com.ogoma.marketing.core.implementations.QueryDispatcherImpl;
+import com.ogoma.marketing.infrastructure.templaterendering.PeppleTemplateRenderer;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -179,7 +180,7 @@ public class CompositionRoot {
     }
 
     @Bean
-    CreateSegmentCommandHandler createSegmentCommandHandler(AudienceRepository audienceRepository){
+    CreateSegmentCommandHandler createSegmentCommandHandler(AudienceRepository audienceRepository) {
         return new CreateSegmentCommandHandler(audienceRepository);
     }
 
@@ -211,7 +212,7 @@ public class CompositionRoot {
 
     @Bean
     TemplateRenderer templateRenderer() {
-        return new TemplateRenderer();
+        return new PeppleTemplateRenderer();
     }
 
 }

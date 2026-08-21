@@ -4,7 +4,6 @@ import com.ogoma.marketing.core.domain.audience.AudienceId;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
-import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
@@ -15,11 +14,11 @@ import java.time.Instant;
 public class AudienceMembershipEntity {
     @Id
     private AudienceMembershipID id;
-    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL, prefix = "contact_")
+//    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL, prefix = "contact_")
     private ContactID contactID;
     @Version
     private Long version;
-    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL, prefix = "audience_")
+//    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL, prefix = "audience_")
     private AudienceId audienceId;
     private Instant joinedAt;
 
