@@ -4,7 +4,6 @@ import com.ogoma.marketing.core.domain.email.valueobjects.EmailTemplate;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
-import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.util.Assert;
 
@@ -14,7 +13,6 @@ import java.time.Instant;
 @Getter
 public class EmailTemplateEntity {
     @Id
-    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private EmailTemplateID id;
     @Version
     private Long version;
