@@ -32,22 +32,22 @@ public class AudienceEntity {
     private RuleSet ruleSet;
 
     private AudienceEntity() {
-        var now = Instant.now();
-        this.id = new AudienceId();
-        this.version = null;
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
-    private AudienceEntity(String name,  String createdBy, AudienceType audienceType) {
+    private AudienceEntity(String name, String createdBy, AudienceType audienceType) {
         CustomAssert.hasText(name, () -> new IllegalArgumentException("Name is required"));
         CustomAssert.hasText(createdBy, () -> new IllegalArgumentException("Created by is required"));
         CustomAssert.notNull(audienceType, () -> new IllegalArgumentException("Audience type must not be null"));
         this();
+        this.id = new AudienceId();
         this.name = name;
+        this.type = audienceType;
         this.createdBy = createdBy;
         this.updatedBy = createdBy;
-        this.type = audienceType;
+        var now = Instant.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+
     }
 
     private AudienceEntity(String name, String createdBy, AudienceType audienceType, RuleSet ruleSet) {

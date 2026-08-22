@@ -6,6 +6,7 @@ import com.ogoma.marketing.core.abstractions.MessageSenderService;
 import com.ogoma.marketing.core.abstractions.TemplateRenderer;
 import com.ogoma.marketing.core.implementations.MessageRouterImpl;
 import com.ogoma.marketing.infrastructure.composition.TemporalProperties;
+import com.ogoma.marketing.infrastructure.templaterendering.PeppleTemplateRenderer;
 import com.ogoma.marketing.infrastructure.workflows.abstractions.WorkflowActivity;
 import com.ogoma.marketing.infrastructure.workflows.implementations.MessageSenderWorkflowImpl;
 import io.temporal.client.WorkflowClient;
@@ -60,7 +61,7 @@ public class WorkerFactoryConfig {
     }
     @Bean
     TemplateRenderer templateRenderer() {
-        return new TemplateRenderer();
+        return new PeppleTemplateRenderer();
     }
 
     @Bean

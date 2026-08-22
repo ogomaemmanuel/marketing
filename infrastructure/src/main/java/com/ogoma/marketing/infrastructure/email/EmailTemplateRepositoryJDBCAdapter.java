@@ -5,31 +5,36 @@ import com.ogoma.marketing.core.domain.email.EmailTemplateID;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 
 @Component
-public class EmailTemplateRepositoryJDBCAdapter implements EmailTemplateRepository {
-    private final EmailTemplateJDBCRepository jdbcRepository;
-    public EmailTemplateRepositoryJDBCAdapter(EmailTemplateJDBCRepository jdbcRepository) {
-        this.jdbcRepository = jdbcRepository;
-    }
-
-
+public record EmailTemplateRepositoryJDBCAdapter(
+        JdbcAggregateTemplate jdbcAggregateTemplate, EmailTemplateJDBCRepository emailTemplateJDBCRepository) implements EmailTemplateRepository {
     @Override
     public Page<EmailTemplateEntity> getEmailTemplates(Pageable pageable) {
-        return this.jdbcRepository.findAll(pageable);
+       return emailTemplateJDBCRepository.findAll(pageable);
+//        Criteria criteria = Criteria.empty();
+//        Query countQuery = Query.query(criteria);
+//        Query dataQuery = Query.query(criteria).with(pageable);
+//        var count = jdbcAggregateTemplate.count(countQuery, EmailTemplateEntity.class);
+//        if (count == 0L) {
+//            return Page.empty();
+//        }
+//        var data = jdbcAggregateTemplate.findAll(dataQuery, EmailTemplateEntity.class);
+//        return new PageImpl<>(data, pageable, count);
     }
 
     @Override
     public EmailTemplateEntity saveTemplate(EmailTemplateEntity emailTemplateEntity) {
-        return this.jdbcRepository.save(emailTemplateEntity);
+        return this.jdbcAggregateTemplate.save(emailTemplateEntity);
     }
 
     @Override
     public Optional<EmailTemplateEntity> getTemplateByID(EmailTemplateID id) {
-        return this.jdbcRepository.findById(id);
+        return Optional.ofNullable(this.jdbcAggregateTemplate.findById(id, EmailTemplateEntity.class));
     }
 }

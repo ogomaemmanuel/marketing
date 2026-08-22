@@ -49,6 +49,7 @@ public record CreateCampaignRequest(
 
     public CreateCampaignCommand toCommand(String userId) {
         var audienceIds = targetAudienceIds.stream().map(AudienceId::new).collect(Collectors.toUnmodifiableSet());
+
         return new CreateCampaignCommand(
                 name,
                 description,

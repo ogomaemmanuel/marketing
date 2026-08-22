@@ -13,10 +13,13 @@ import com.ogoma.marketing.core.application.contacts.commands.AudienceMembership
 import com.ogoma.marketing.core.application.contacts.commands.UpdateContactCommandHandler;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDQueryHandler;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactsQueryHandler;
+import com.ogoma.marketing.core.application.dashboard.queries.DashboardService;
+import com.ogoma.marketing.core.application.dashboard.queries.GetStatsQueryHandler;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.CreateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.commands.UpdateEmailTemplateCommandHandler;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQueryHandler;
+import com.ogoma.marketing.core.application.email.queries.GetEmailTemplatesQueryHandler;
 import com.ogoma.marketing.core.application.segments.CreateSegmentCommandHandler;
 import com.ogoma.marketing.core.application.sms.commands.CreateSmsTemplateCommandHandler;
 import com.ogoma.marketing.core.application.sms.commands.DuplicateSmsTemplateCommandHandler;
@@ -36,6 +39,7 @@ import com.ogoma.marketing.core.domain.users.UsersRepository;
 import com.ogoma.marketing.core.implementations.CommandDispatcherImpl;
 import com.ogoma.marketing.core.implementations.MessageRouterImpl;
 import com.ogoma.marketing.core.implementations.QueryDispatcherImpl;
+import com.ogoma.marketing.infrastructure.templaterendering.PeppleTemplateRenderer;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -49,7 +53,6 @@ import java.util.List;
 @EntityScan(basePackages = "com.ogoma.marketing")
 @ComponentScan(basePackages = "com.ogoma.marketing")
 public class CompositionRoot {
-
     @Bean
     CommandDispatcher commandDispatcher(List<CommandHandler<?, ?>> handlers) {
         return new CommandDispatcherImpl(handlers);
@@ -78,6 +81,11 @@ public class CompositionRoot {
     @Bean
     CloneEmailTemplateCommandHandler cloneEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
         return new CloneEmailTemplateCommandHandler(emailTemplateRepository);
+    }
+
+    @Bean
+    GetEmailTemplatesQueryHandler getTemplatesQueryHandler(EmailTemplateRepository emailTemplateRepository) {
+        return new GetEmailTemplatesQueryHandler(emailTemplateRepository);
     }
 
     @Bean
@@ -145,6 +153,11 @@ public class CompositionRoot {
     }
 
     @Bean
+    GetStatsQueryHandler getStatsQueryHandler(DashboardService dashboardService) {
+        return new GetStatsQueryHandler(dashboardService);
+    }
+
+    @Bean
     AddContactCommandHandler addContactCommandHandler(
             ContactRepository contactRepository,
             AudienceRepository audienceRepository,
@@ -179,7 +192,7 @@ public class CompositionRoot {
     }
 
     @Bean
-    CreateSegmentCommandHandler createSegmentCommandHandler(AudienceRepository audienceRepository){
+    CreateSegmentCommandHandler createSegmentCommandHandler(AudienceRepository audienceRepository) {
         return new CreateSegmentCommandHandler(audienceRepository);
     }
 
@@ -211,7 +224,7 @@ public class CompositionRoot {
 
     @Bean
     TemplateRenderer templateRenderer() {
-        return new TemplateRenderer();
+        return new PeppleTemplateRenderer();
     }
 
 }

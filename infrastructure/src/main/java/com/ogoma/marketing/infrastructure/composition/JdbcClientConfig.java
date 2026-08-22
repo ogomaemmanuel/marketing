@@ -15,4 +15,11 @@ public class JdbcClientConfig {
         // Create JdbcClient with the configured ConversionService
         return JdbcClient.create(namedParameterJdbcTemplate, conversionService);
     }
+
+//    @Bean
+//    public NamedParameterJdbcOperations namedParameterJdbcOperations(DataSource dataSource) {
+//        return new NamedParameterJdbcTemplate(dataSource);
+//    }
+
+
 }
