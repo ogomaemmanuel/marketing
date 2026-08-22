@@ -7,8 +7,12 @@ import com.ogoma.marketing.core.abstractions.QueryDispatcher;
 import com.ogoma.marketing.core.application.email.commands.CloneEmailTemplateCommand;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDQuery;
 import com.ogoma.marketing.core.application.email.queries.GetEmailTemplateByIDView;
+import com.ogoma.marketing.core.application.email.queries.GetEmailTemplatesListItemView;
+import com.ogoma.marketing.core.application.email.queries.GetEmailTemplatesQuery;
 import com.ogoma.marketing.core.domain.email.EmailTemplateID;
 import com.ogoma.marketing.core.domain.email.valueobjects.EmailTemplate;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +33,15 @@ public record EmailTemplatesController(
         return this.commandDispatcher.dispatch(createEmailTemplateRequest.toCommandWith(username));
     }
 
+
+    @GetMapping
+    public PagedModel<GetEmailTemplatesListItemView> getEmailTemplates(Pageable pageable, @RequestParam(required = false) String searchTerm) {
+        return new PagedModel<>(this.queryDispatcher.dispatch(new GetEmailTemplatesQuery(pageable, searchTerm)));
+    }
+
     @PutMapping("/{id}")
     public Void updateEmailTemplate(@PathVariable UUID id, @RequestBody UpdateEmailTemplateRequest updateEmailTemplateRequest, @CurrentUser String username) {
-        return this.commandDispatcher.dispatch(updateEmailTemplateRequest.toCommandWith(new EmailTemplateID(id),username));
+        return this.commandDispatcher.dispatch(updateEmailTemplateRequest.toCommandWith(new EmailTemplateID(id), username));
     }
 
     @GetMapping("/{id}")
