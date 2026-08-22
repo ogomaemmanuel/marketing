@@ -54,7 +54,8 @@ public record CreateCampaignRequest(
                 description,
                 channels,
                 audienceIds,
-                new EmailTemplateID(emailTemplateID),
-                new SmsTemplateID(smsTemplateID), userId);
+                emailTemplateID == null ? null : new EmailTemplateID(emailTemplateID),
+                smsTemplateID == null ? null : new SmsTemplateID(smsTemplateID),
+                userId);
     }
 }

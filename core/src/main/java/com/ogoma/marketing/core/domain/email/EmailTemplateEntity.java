@@ -14,7 +14,7 @@ import java.time.Instant;
 @Getter
 public class EmailTemplateEntity {
     @Id
-    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
+//    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private EmailTemplateID id;
     @Version
     private Long version;
