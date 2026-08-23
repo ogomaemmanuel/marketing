@@ -1,8 +1,9 @@
 ARG NODE_BASE_IMAGE=559104660845.dkr.ecr.eu-west-1.amazonaws.com/node:24-alpine-patched
 FROM ${NODE_BASE_IMAGE} AS builder
 
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 WORKDIR /app
-
+RUN npm config set strict-ssl=false
 # Copy package.json and package-lock.json first for better caching
 COPY package.json package-lock.json ./
 # Install dependencies
@@ -12,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build the Next.js application in standalone mode
-RUN npm run build:standalone && npm prune --production
+RUN npm run build:standalone
 
 # ----------- Production Image ------------
 FROM ${NODE_BASE_IMAGE} AS runner
