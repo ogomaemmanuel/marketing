@@ -17,8 +17,8 @@ import java.time.ZonedDateTime;
 
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = SmsTransactionalMessageRequest.class, name = "sms"),
-        @JsonSubTypes.Type(value = EmailTransactionalMessageRequest.class, name = "email")
+        @JsonSubTypes.Type(value = SmsTransactionalMessageRequest.class, name = "sms",names = {"SMS"}),
+        @JsonSubTypes.Type(value = EmailTransactionalMessageRequest.class, name = "email",names = {"EMAIL"})
 }
 )
 @Getter
