@@ -5,6 +5,7 @@ import com.ogoma.marketing.core.abstractions.MessageRouter;
 import com.ogoma.marketing.core.abstractions.MessageSenderService;
 import com.ogoma.marketing.core.abstractions.TemplateRenderer;
 import com.ogoma.marketing.core.implementations.MessageRouterImpl;
+import com.ogoma.marketing.infrastructure.composition.JDBCConverterRegistry;
 import com.ogoma.marketing.infrastructure.composition.TemporalProperties;
 import com.ogoma.marketing.infrastructure.templaterendering.PeppleTemplateRenderer;
 import com.ogoma.marketing.infrastructure.workflows.abstractions.WorkflowActivity;
@@ -17,6 +18,7 @@ import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.List;
 @EnableJdbcRepositories(basePackages = "com.ogoma.marketing")
 @EntityScan(basePackages = "com.ogoma.marketing")
 @ComponentScan(basePackages = "com.ogoma.marketing")
+@Import(JDBCConverterRegistry.class)
 public class WorkerFactoryConfig {
     @Bean
     public WorkerFactory workerFactory(WorkflowClient workflowClient) {

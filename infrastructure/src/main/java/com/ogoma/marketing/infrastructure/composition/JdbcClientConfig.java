@@ -3,6 +3,7 @@ package com.ogoma.marketing.infrastructure.composition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
@@ -21,5 +22,8 @@ public class JdbcClientConfig {
 //        return new NamedParameterJdbcTemplate(dataSource);
 //    }
 
-
+    @Bean
+    public ConversionService conversionService() {
+        return new DefaultConversionService();
+    }
 }
