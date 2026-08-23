@@ -13,7 +13,7 @@ services:
       postgres-db:
         condition: service_healthy
     environment:
-      DB_URL: ${DB_URL:-postgres-db:5432/marketing-main?currentSchema=public}
+      DB_URL: ${DB_URL:-jdbc:postgresql://postgres-db:5432/marketing-main?currentSchema=public}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_USERNAME: ${DB_USERNAME}
       EMAIL_HOST: ${EMAIL_HOST:-mailpit}
@@ -23,6 +23,32 @@ services:
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-test@noreply.com}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
       SERVER_PORT: 7056
+      SERVER_ADDRESS: 0.0.0.0
+  frontend:
+    container_name: "marketing-frontend-ui"
+    networks:
+      - marketing
+    platform: linux/arm64
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NODE_BASE_IMAGE: node:22-alpine
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_started
+    environment:
+      AUTH_MICROSOFT_ENTRA_ID_ID: ${AUTH_MICROSOFT_ENTRA_ID_ID}
+      AUTH_MICROSOFT_ENTRA_ID_SECRET: ${AUTH_MICROSOFT_ENTRA_ID_SECRET}
+      AUTH_MICROSOFT_ENTRA_ID_TENANT_ID: ${AUTH_MICROSOFT_ENTRA_ID_TENANT_ID}
+      AUTH_MICROSOFT_ENTRA_ID_ISSUER: ${AUTH_MICROSOFT_ENTRA_ID_ISSUER}
+      AUTH_MICROSOFT_ENTRA_ID_API_SCOPE: ${AUTH_MICROSOFT_ENTRA_ID_API_SCOPE}
+      API_URL: http://api:7056
+      AUTH_URL: http://localhost:3000
+      AUTH_SECRET: ${AUTH_SECRET}
   notification-sender:
     container_name: "notification-sender"
     networks:
