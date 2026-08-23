@@ -56,7 +56,7 @@ public record EmailTemplatesController(
     }
 
     @PostMapping(value = "/{id}/clone")
-    public Void clone(@PathVariable UUID id, CloneEmailTemplateRequest request, String userID) {
+    public Void clone(@PathVariable UUID id, CloneEmailTemplateRequest request,@CurrentUser final String userID) {
         return this.commandDispatcher.dispatch(new CloneEmailTemplateCommand(new EmailTemplateID(id), request.suggestedName(), userID));
     }
 }
