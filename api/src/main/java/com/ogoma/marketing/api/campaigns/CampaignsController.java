@@ -3,6 +3,7 @@ package com.ogoma.marketing.api.campaigns;
 import com.ogoma.marketing.api.annotations.CurrentUser;
 import com.ogoma.marketing.core.abstractions.CommandDispatcher;
 import com.ogoma.marketing.core.abstractions.QueryDispatcher;
+import com.ogoma.marketing.core.application.campaign.commands.SendCampaignCommand;
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignByIDQuery;
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignByIDView;
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignsQuery;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -50,5 +52,11 @@ public record CampaignsController(
     @GetMapping
     public PagedModel<GetCampaignsView> getCampaigns(@RequestParam(required = false) String searchTerm, Pageable pageable) {
         return new PagedModel<>(this.queryDispatcher.dispatch(new GetCampaignsQuery(searchTerm, pageable)));
+    }
+
+    @PostMapping("/{id}/actions/send")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Void sendCampaign(@PathVariable @Parameter(schema = @Schema(type = "string", format = "uuid")) CampaignID id, @CurrentUser String userId) {
+        return this.commandDispatcher.dispatch(new SendCampaignCommand(id, userId));
     }
 }

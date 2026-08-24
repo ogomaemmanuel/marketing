@@ -7,7 +7,11 @@ import com.ogoma.marketing.core.domain.campaigns.CampaignEntity;
 import com.ogoma.marketing.core.domain.campaigns.CampaignID;
 import com.ogoma.marketing.core.domain.campaigns.CampaignRepository;
 
+import java.time.Clock;
+
 public record CreateCampaignCommandHandler(CampaignRepository campaignRepository,
+
+                                           Clock clock,
                                            UnitOfWork unitOfWork) implements CommandHandler<CreateCampaignCommand, CampaignID> {
     @Override
     public Class<CreateCampaignCommand> supports() {
@@ -23,7 +27,7 @@ public record CreateCampaignCommandHandler(CampaignRepository campaignRepository
                     command.smsTemplateID()
             );
             CampaignEntity campaignEntity = CampaignEntity.createNew(command.name(),
-                    command.description(), command.targetAudienceIds(), configuration, command.userId());
+                    command.description(), command.targetAudienceIds(), configuration, command.userId(), clock);
             campaignRepository.save(campaignEntity);
             return campaignEntity.getId();
         });
