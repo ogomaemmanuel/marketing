@@ -10,7 +10,6 @@ public record CreateSegmentRequest(
         @NotBlank
         String name,
         String description,
-
         @NotNull
         @Valid
         RuleSet ruleSet

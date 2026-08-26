@@ -1,4 +1,4 @@
 package com.ogoma.marketing.core.abstractions;
 
-public interface Command<R> extends Request<R>{
+public interface Request<R> {
 }

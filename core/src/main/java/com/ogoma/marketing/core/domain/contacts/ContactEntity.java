@@ -3,12 +3,15 @@ package com.ogoma.marketing.core.domain.contacts;
 import com.ogoma.marketing.core.sharedkernel.CustomAssert;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Table(name = "contacts")
 @Getter
@@ -22,8 +25,8 @@ public class ContactEntity {
     private String email;
     private Instant createdAt;
     private Instant lastUpdatedAt;
-    @Transient
-    Map<String, String> attributes;
+    @MappedCollection(idColumn = "contact_id")
+    Set<ContactAttributeValue> attributes=new HashSet<>();
     private String lastUpdatedBy;
     private String createdBy;
 
@@ -33,8 +36,6 @@ public class ContactEntity {
         this.version = null;
         this.createdAt = now;
         this.lastUpdatedAt = now;
-
-
     }
 
     private ContactEntity(
@@ -52,7 +53,7 @@ public class ContactEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.attributes = attributes;
+        this.attributes =mapAttributeMapToContactAttributte(attributes);
         this.createdBy = createdBy;
         this.lastUpdatedBy = createdBy;
     }
@@ -76,9 +77,13 @@ public class ContactEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.attributes = attributes;
+        this.attributes = mapAttributeMapToContactAttributte(attributes);
         this.lastUpdatedBy = lastUpdatedBy;
         this.lastUpdatedAt = Instant.now();
+    }
+
+    private Set<ContactAttributeValue> mapAttributeMapToContactAttributte(Map<String, String> attributes) {
+        return attributes.entrySet().stream().map(entry -> new ContactAttributeValue(entry.getKey(), entry.getValue())).collect(Collectors.toSet());
     }
 
 

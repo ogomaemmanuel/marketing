@@ -11,25 +11,32 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Table(name = "campaigns")
-@Getter
+
 public class CampaignEntity extends AggregateRoot<CampaignID> {
+    @Getter
     private String name;
+    @Getter
     private String description;
+    @Getter
     private String createdBy;
+    @Getter
     private Instant createdAt;
+    @Getter
     private Instant lastUpdatedAt;
+    @Getter
     private String lastUpdatedBy;
+    @Getter
     private Status status;
     @Embedded.Nullable()
     private CampaignConfiguration campaignConfiguration;
     @MappedCollection(idColumn = "campaign_id")
-    private Set<CampaignAudienceRef> audienceRefs = new HashSet<>();
+    Set<CampaignChannel> channels = new HashSet<>();
+    @MappedCollection(idColumn = "campaign_id")
+    private Set<CampaignAudience> audiences = new HashSet<>();
 
 
     private CampaignEntity() {
@@ -49,13 +56,14 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         super(new CampaignID());
         this.name = name;
         this.description = description;
-        this.audienceRefs.addAll(toAudienceRefs(audienceIds));
+        this.audiences.addAll(toAudienceRefs(audienceIds));
         this.campaignConfiguration = configuration;
         this.createdAt = createdAt;
         this.lastUpdatedAt = createdAt;
         this.createdBy = createdBy;
         this.status = Status.DRAFT;
         this.lastUpdatedBy = createdBy;
+        this.channels = configuration.channels().stream().map(CampaignChannel::new).collect(Collectors.toSet());
     }
 
     public static CampaignEntity createNew(
@@ -66,6 +74,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             String createdBy,
             Clock clock
     ) {
+
         return new CampaignEntity(name, description, audienceIds, configuration, createdBy, clock.instant());
     }
 
@@ -83,8 +92,8 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this.name = name;
         this.description = description;
         this.campaignConfiguration = configuration;
-        this.audienceRefs.clear();
-        this.audienceRefs.addAll(toAudienceRefs(audienceIds));
+        this.audiences.clear();
+        this.audiences.addAll(toAudienceRefs(audienceIds));
         this.touch(updatedBy, clock.instant());
     }
 
@@ -103,16 +112,16 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this.lastUpdatedAt = updatedAt;
     }
 
-    public Set<CampaignAudienceRef> getAudienceRefs() {
-        return Collections.unmodifiableSet(this.audienceRefs);
+    public Set<CampaignAudience> getAudienceRefs() {
+        return Collections.unmodifiableSet(this.audiences);
     }
 
-    private static Set<CampaignAudienceRef> toAudienceRefs(Set<AudienceId> ids) {
+    private static Set<CampaignAudience> toAudienceRefs(Set<AudienceId> ids) {
         if (ids == null) {
             return Collections.emptySet();
         }
         return ids.stream()
-                .map(CampaignAudienceRef::new)
+                .map(CampaignAudience::new)
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
@@ -121,5 +130,9 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             throw new IllegalStateException(
                     "Only DRAFT campaigns can be updated");
         }
+    }
+
+    public Set<Channel> getChannels() {
+        return this.channels.stream().map(CampaignChannel::channel).collect(Collectors.toSet());
     }
 }
