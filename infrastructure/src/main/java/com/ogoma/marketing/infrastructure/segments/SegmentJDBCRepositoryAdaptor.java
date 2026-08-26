@@ -1,6 +1,7 @@
 package com.ogoma.marketing.infrastructure.segments;
 
 import com.ogoma.marketing.core.domain.segments.Segment;
+import com.ogoma.marketing.core.domain.segments.SegmentID;
 import com.ogoma.marketing.core.domain.segments.SegmentRepository;
 import com.ogoma.marketing.core.sharedkernel.Entity;
 import org.springframework.data.core.PropertyPath;
@@ -16,6 +17,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -51,6 +53,11 @@ public class SegmentJDBCRepositoryAdaptor implements SegmentRepository {
                 .toList();
         return new PageImpl<>(segments, pageable, count);
 
+    }
+
+    @Override
+    public Optional<Segment> findByID(SegmentID segmentID) {
+        return Optional.ofNullable(jdbcAggregateTemplate.findById(segmentID, Segment.class));
     }
 
     private Criteria buildCriteria(String searchTerm) {

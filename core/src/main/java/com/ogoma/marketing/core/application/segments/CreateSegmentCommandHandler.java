@@ -17,7 +17,7 @@ public record CreateSegmentCommandHandler(SegmentRepository segmentRepository, C
 
     @Override
     public SegmentID handle(CreateSegmentCommand command) {
-        Segment segment = Segment.createNew(command.name(), command.ruleSet(), command.userId(), clock);
+        Segment segment = Segment.createNew(command.name(),command.description(), command.ruleSet(), command.userId(), clock);
         log.info("Sql ruleset {}",segment.toSql("test"));
         segmentRepository.save(segment);
         return segment.getId();
