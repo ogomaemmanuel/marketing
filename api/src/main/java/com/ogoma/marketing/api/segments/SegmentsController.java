@@ -6,8 +6,12 @@ import com.ogoma.marketing.core.abstractions.CommandDispatcher;
 import com.ogoma.marketing.core.abstractions.QueryDispatcher;
 import com.ogoma.marketing.core.application.segments.queries.GetSegmentByIDQuery;
 import com.ogoma.marketing.core.application.segments.queries.GetSegmentByIDView;
+import com.ogoma.marketing.core.application.segments.queries.GetSegmentsListItemView;
+import com.ogoma.marketing.core.application.segments.queries.GetSegmentsQuery;
 import com.ogoma.marketing.core.domain.segments.SegmentID;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,5 +37,10 @@ public record SegmentsController(
     @GetMapping("/{id}")
     public GetSegmentByIDView getSegmentByID(@PathVariable UUID id) {
         return this.queryDispatcher.dispatch(new GetSegmentByIDQuery(new SegmentID(id)));
+    }
+
+    @GetMapping
+    public PagedModel<GetSegmentsListItemView> getSegment(Pageable pageable, @RequestParam(required = false) String searchTerm) {
+        return new PagedModel<>(this.queryDispatcher.dispatch(new GetSegmentsQuery(pageable, searchTerm)));
     }
 }

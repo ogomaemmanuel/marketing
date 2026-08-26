@@ -14,11 +14,12 @@ public record GetSegmentByIDQueryHandler(
 
     @Override
     public GetSegmentByIDView handle(GetSegmentByIDQuery query) {
-        return this.segmentRepository.findByID(query.segmentID()).map(segment->new GetSegmentByIDView(
-               segment.getName(),
-               segment.getCreatedBy(),
-               segment.getCreatedAt(),
-               segment.getRuleSet()
-        )).orElseThrow(()->new RecordNotFoundException("Segment not found with id %s".formatted(query.segmentID())));
+        return this.segmentRepository.findByID(query.segmentID()).map(segment -> new GetSegmentByIDView(
+                segment.getId().id(),
+                segment.getName(),
+                segment.getDescription(),
+                segment.getCreatedAt(),
+                segment.getRuleSet()
+        )).orElseThrow(() -> new RecordNotFoundException("Segment not found with id %s".formatted(query.segmentID())));
     }
 }

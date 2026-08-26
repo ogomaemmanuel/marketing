@@ -61,10 +61,11 @@ public class SegmentJDBCRepositoryAdaptor implements SegmentRepository {
     }
 
     private Criteria buildCriteria(String searchTerm) {
-        if (StringUtils.hasText(searchTerm)) {
+        if (!StringUtils.hasText(searchTerm)) {
             return Criteria.empty();
         }
-        return Criteria.where(Segment::getName).like("%" + searchTerm + "%").ignoreCase(true);
+        return Criteria.where(Segment::getName).like("%" + searchTerm + "%").ignoreCase(true)
+                .or(Criteria.where(Segment::getDescription).like("%" + searchTerm + "%").ignoreCase(true));
 
     }
 }
