@@ -14,11 +14,9 @@ import java.time.Instant;
 public class AudienceMembershipEntity {
     @Id
     private AudienceMembershipID id;
-//    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL, prefix = "contact_")
     private ContactID contactID;
     @Version
     private Long version;
-//    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL, prefix = "audience_")
     private AudienceId audienceId;
     private Instant joinedAt;
 

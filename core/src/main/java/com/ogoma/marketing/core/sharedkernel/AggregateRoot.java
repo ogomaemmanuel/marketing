@@ -1,6 +1,7 @@
 package com.ogoma.marketing.core.sharedkernel;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.annotation.Version;
 
 import java.util.ArrayDeque;
 import java.util.List;
@@ -13,6 +14,8 @@ public abstract class AggregateRoot<ID> extends Entity<ID> {
         super(id);
     }
 
+    @Version
+    private Long version;
     protected final void raiseEvent(DomainEvent event) {
         CustomAssert.notNull(event, () -> new IllegalArgumentException("event required"));
         domainEvents.add(event);

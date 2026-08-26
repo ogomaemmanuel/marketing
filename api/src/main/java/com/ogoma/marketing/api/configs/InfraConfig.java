@@ -8,6 +8,7 @@ import com.ogoma.marketing.infrastructure.templaterendering.PeppleTemplateRender
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Clock;
 import java.util.List;
 
 
@@ -31,5 +32,10 @@ public class InfraConfig {
     @Bean
     TemplateRenderer templateRenderer() {
         return new PeppleTemplateRenderer();
+    }
+
+    @Bean
+    Clock clock() {
+        return Clock.systemDefaultZone();
     }
 }

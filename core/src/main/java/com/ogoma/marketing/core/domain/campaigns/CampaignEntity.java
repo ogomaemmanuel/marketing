@@ -5,42 +5,42 @@ import com.ogoma.marketing.core.domain.audience.AudienceId;
 import com.ogoma.marketing.core.sharedkernel.AggregateRoot;
 import com.ogoma.marketing.core.sharedkernel.CustomAssert;
 import lombok.Getter;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.Clock;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Table(name = "campaigns")
-@Getter
+
 public class CampaignEntity extends AggregateRoot<CampaignID> {
+    @Getter
     private String name;
+    @Getter
     private String description;
-    @Version
-    private Long version;
+    @Getter
     private String createdBy;
+    @Getter
     private Instant createdAt;
+    @Getter
     private Instant lastUpdatedAt;
+    @Getter
     private String lastUpdatedBy;
+    @Getter
     private Status status;
     @Embedded.Nullable()
     private CampaignConfiguration campaignConfiguration;
     @MappedCollection(idColumn = "campaign_id")
-    private Set<CampaignAudienceRef> audienceRefs = new HashSet<>();
+    Set<CampaignChannel> channels = new HashSet<>();
+    @MappedCollection(idColumn = "campaign_id")
+    private Set<CampaignAudience> audiences = new HashSet<>();
 
 
     private CampaignEntity() {
-        super(new CampaignID());
-        var now = Instant.now();
-        this.createdAt = now;
-        this.lastUpdatedAt = now;
-        status = Status.DRAFT;
-        this.version = null;
+        super(null);
     }
 
     private CampaignEntity(
@@ -48,19 +48,22 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             String description,
             Set<AudienceId> audienceIds,
             CampaignConfiguration configuration,
-            String createdBy) {
+            String createdBy, Instant createdAt) {
         CustomAssert.hasLength(name, () -> new IllegalArgumentException("Name is required"));
         CustomAssert.notNull(configuration, () -> new IllegalArgumentException("Configuration must not be null"));
         CustomAssert.hasLength(createdBy, () -> new IllegalArgumentException("Created by is required"));
-        this();
+        CustomAssert.notNull(createdAt, () -> new IllegalArgumentException("Created at is required"));
+        super(new CampaignID());
         this.name = name;
         this.description = description;
-        this.audienceRefs.addAll(toAudienceRefs(audienceIds));
+        this.audiences.addAll(toAudienceRefs(audienceIds));
         this.campaignConfiguration = configuration;
+        this.createdAt = createdAt;
+        this.lastUpdatedAt = createdAt;
         this.createdBy = createdBy;
-
+        this.status = Status.DRAFT;
         this.lastUpdatedBy = createdBy;
-        this.lastUpdatedAt = Instant.now();
+        this.channels = configuration.channels().stream().map(CampaignChannel::new).collect(Collectors.toSet());
     }
 
     public static CampaignEntity createNew(
@@ -68,9 +71,11 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             String description,
             Set<AudienceId> audienceIds,
             CampaignConfiguration configuration,
-            String createdBy
+            String createdBy,
+            Clock clock
     ) {
-        return new CampaignEntity(name, description, audienceIds, configuration, createdBy);
+
+        return new CampaignEntity(name, description, audienceIds, configuration, createdBy, clock.instant());
     }
 
     public void update(
@@ -78,33 +83,56 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             String description,
             Set<AudienceId> audienceIds,
             CampaignConfiguration configuration,
-            String updatedBy) {
+            String updatedBy, Clock clock) {
         CustomAssert.hasLength(name, () -> new IllegalArgumentException("Name is required"));
         CustomAssert.notNull(configuration, () -> new IllegalArgumentException("Configuration must not be null"));
         CustomAssert.hasLength(updatedBy, () -> new IllegalArgumentException("Updated by is required"));
+        CustomAssert.notNull(clock, () -> new IllegalArgumentException("Clock cannot be null"));
+        requireDraft();
         this.name = name;
         this.description = description;
         this.campaignConfiguration = configuration;
-        this.audienceRefs.clear();
-        this.audienceRefs.addAll(toAudienceRefs(audienceIds));
-        this.touch(updatedBy);
+        this.audiences.clear();
+        this.audiences.addAll(toAudienceRefs(audienceIds));
+        this.touch(updatedBy, clock.instant());
     }
 
-    private void touch(String lastUpdatedBy) {
+
+    public void startSending(String sentBy, Clock clock) {
+        if (status != Status.DRAFT) {
+            throw new IllegalStateException(
+                    "Campaign can only start sending from DRAFT");
+        }
+        this.status = Status.SENDING;
+        this.touch(sentBy, clock.instant());
+    }
+
+    private void touch(String lastUpdatedBy, Instant updatedAt) {
         this.lastUpdatedBy = lastUpdatedBy;
-        this.lastUpdatedAt = Instant.now();
+        this.lastUpdatedAt = updatedAt;
     }
 
-    public Set<CampaignAudienceRef> getAudienceRefs() {
-        return Collections.unmodifiableSet(this.audienceRefs);
+    public Set<CampaignAudience> getAudienceRefs() {
+        return Collections.unmodifiableSet(this.audiences);
     }
-    private static Set<CampaignAudienceRef> toAudienceRefs(Set<AudienceId> ids) {
+
+    private static Set<CampaignAudience> toAudienceRefs(Set<AudienceId> ids) {
         if (ids == null) {
-            return new HashSet<>();
+            return Collections.emptySet();
         }
         return ids.stream()
-                .map(CampaignAudienceRef::new)
+                .map(CampaignAudience::new)
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
+    private void requireDraft() {
+        if (status != Status.DRAFT) {
+            throw new IllegalStateException(
+                    "Only DRAFT campaigns can be updated");
+        }
+    }
+
+    public Set<Channel> getChannels() {
+        return this.channels.stream().map(CampaignChannel::channel).collect(Collectors.toSet());
+    }
 }

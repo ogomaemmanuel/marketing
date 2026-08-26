@@ -10,15 +10,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public record RuleSet(
         @NotNull
         @Valid
         RuleGroup ruleGroup
 ) {
-
-
 
 
     public record Rule(
@@ -51,6 +53,7 @@ public record RuleSet(
         public enum Condition {
             AND, OR
         }
+
         public RuleGroup {
             CustomAssert.notNull(condition, () -> new IllegalArgumentException("Condition must not be null"));
             rules = rules == null ? List.of() : List.copyOf(rules);
@@ -146,5 +149,124 @@ public record RuleSet(
                 case NONE -> value instanceof NoValue;
             };
         }
+    }
+    public record SqlSegment(String sql, Map<String, Object> params) {
+        public SqlSegment {
+            params = params == null ? Map.of() : Map.copyOf(params);
+        }
+    }
+
+    public SqlSegment toNamedSQL(String prefix) {
+        CustomAssert.hasText(prefix, () -> new IllegalArgumentException("Prefix is required"));
+        CustomAssert.isTrue(prefix.matches("[A-Za-z_][A-Za-z0-9_]*"),
+                () -> new IllegalArgumentException("Prefix must be a valid identifier fragment: " + prefix));
+        return toSql(ruleGroup(), prefix, new AtomicInteger(0));
+    }
+
+    private static SqlSegment toSql(Node node, String prefix, AtomicInteger counter) {
+        return switch (node) {
+            case Rule r -> ruleToSql(r, prefix, counter);
+            case RuleGroup g -> groupToSql(g, prefix, counter);
+        };
+    }
+
+    private static SqlSegment groupToSql(RuleGroup group, String prefix, AtomicInteger counter) {
+        String joiner = group.condition() == RuleGroup.Condition.AND ? " AND " : " OR ";
+
+        List<SqlSegment> segments = group.rules().stream()
+                .map(n -> toSql(n, prefix, counter))
+                .toList();
+
+        String sql = segments.stream()
+                .map(SqlSegment::sql)
+                .collect(Collectors.joining(joiner, "(", ")"));
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        segments.forEach(s -> params.putAll(s.params()));
+
+        return new SqlSegment(sql, params);
+    }
+
+    private static SqlSegment ruleToSql(Rule rule, String prefix, AtomicInteger counter) {
+        String column = escapeIdentifier(rule.column());
+        Value value = rule.value();
+
+        return switch (rule.operator()) {
+            case EQUAL -> singleParamSegment(column + " = :%s", singleValue(value), prefix, counter);
+            case LESS_THAN -> singleParamSegment(column + " < :%s", singleValue(value), prefix, counter);
+            case GREATER_THAN -> singleParamSegment(column + " > :%s", singleValue(value), prefix, counter);
+            case LESS_THAN_OR_EQUAL -> singleParamSegment(column + " <= :%s", singleValue(value), prefix, counter);
+            case GREATER_THAN_OR_EQUAL -> singleParamSegment(column + " >= :%s", singleValue(value), prefix, counter);
+            case CONTAINS -> singleParamSegment(column + " LIKE :%s", "%" + singleValue(value) + "%", prefix, counter);
+            case DOES_NOT_CONTAIN -> singleParamSegment(column + " NOT LIKE :%s", "%" + singleValue(value) + "%", prefix, counter);
+            case CONTAINS_IGNORE_CASE ->
+                    singleParamSegment("LOWER(" + column + ") LIKE LOWER(:%s)", "%" + singleValue(value) + "%", prefix, counter);
+            case STARTS_WITH -> singleParamSegment(column + " LIKE :%s", singleValue(value) + "%", prefix, counter);
+            case DOES_NOT_START_WITH -> singleParamSegment(column + " NOT LIKE :%s", singleValue(value) + "%", prefix, counter);
+            case ENDS_WITH -> singleParamSegment(column + " LIKE :%s", "%" + singleValue(value), prefix, counter);
+            case DOES_NOT_END_WITH -> singleParamSegment(column + " NOT LIKE :%s", "%" + singleValue(value), prefix, counter);
+            case IS_NULL -> new SqlSegment(column + " IS NULL", Map.of());
+            case IS_NOT_NULL -> new SqlSegment(column + " IS NOT NULL", Map.of());
+            case IS_EMPTY -> new SqlSegment("(" + column + " IS NULL OR " + column + " = '')", Map.of());
+            case IS_NOT_EMPTY -> new SqlSegment("(" + column + " IS NOT NULL AND " + column + " <> '')", Map.of());
+            case IN -> listParamSegment(column, "IN", value, prefix, counter);
+            case NOT_IN -> listParamSegment(column, "NOT IN", value, prefix, counter);
+            case BETWEEN -> rangeParamSegment(column, "BETWEEN", value, prefix, counter);
+            case NOT_BETWEEN -> rangeParamSegment(column, "NOT BETWEEN", value, prefix, counter);
+        };
+    }
+
+    private static SqlSegment singleParamSegment(String sqlTemplate, String paramValue, String prefix, AtomicInteger counter) {
+        String name = nextParamName(prefix, counter);
+        return new SqlSegment(sqlTemplate.formatted(name), Map.of(name, paramValue));
+    }
+
+    private static SqlSegment listParamSegment(String column, String keyword, Value value, String prefix, AtomicInteger counter) {
+        List<String> values = listValues(value);
+        Map<String, Object> params = new LinkedHashMap<>();
+        String placeholders = values.stream()
+                .map(v -> {
+                    String name = nextParamName(prefix, counter);
+                    params.put(name, v);
+                    return ":" + name;
+                })
+                .collect(Collectors.joining(", "));
+        return new SqlSegment(column + " " + keyword + " (" + placeholders + ")", params);
+    }
+
+    private static SqlSegment rangeParamSegment(String column, String keyword, Value value, String prefix, AtomicInteger counter) {
+        RangeValue range = rangeValue(value);
+        String minName = nextParamName(prefix, counter);
+        String maxName = nextParamName(prefix, counter);
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put(minName, range.min());
+        params.put(maxName, range.max());
+        return new SqlSegment(column + " " + keyword + " :" + minName + " AND :" + maxName, params);
+    }
+
+    private static String nextParamName(String prefix, AtomicInteger counter) {
+        return prefix + counter.incrementAndGet();
+    }
+
+    private static String singleValue(Value value) {
+        CustomAssert.isTrue(value instanceof SingleValue, () -> new IllegalStateException("Expected SingleValue"));
+        return ((SingleValue) value).value();
+    }
+
+    private static RangeValue rangeValue(Value value) {
+        CustomAssert.isTrue(value instanceof RangeValue, () -> new IllegalStateException("Expected RangeValue"));
+        return (RangeValue) value;
+    }
+
+    private static List<String> listValues(Value value) {
+        CustomAssert.isTrue(value instanceof ListValue, () -> new IllegalStateException("Expected ListValue"));
+        return ((ListValue) value).values();
+    }
+
+    private static String escapeIdentifier(String column) {
+        if (!column.matches("[A-Za-z0-9_.]+")) {
+            throw new IllegalArgumentException("Invalid column name: " + column);
+        }
+        return column;
     }
 }

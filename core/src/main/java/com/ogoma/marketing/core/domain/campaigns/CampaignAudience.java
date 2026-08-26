@@ -6,9 +6,9 @@ import org.springframework.data.relational.core.mapping.Table;
 
 
 @Table("campaign_audience")
-public record CampaignAudienceRef(
+public record CampaignAudience(
         AudienceId audienceId) {
-    public CampaignAudienceRef {
+    public CampaignAudience {
         CustomAssert.notNull(audienceId, () -> new IllegalArgumentException("Audience id is required"));
     }
 }
