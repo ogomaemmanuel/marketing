@@ -4,6 +4,7 @@ package com.ogoma.marketing.core.domain.campaigns;
 import com.ogoma.marketing.core.domain.audience.AudienceId;
 import com.ogoma.marketing.core.sharedkernel.AggregateRoot;
 import com.ogoma.marketing.core.sharedkernel.CustomAssert;
+import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.MappedCollection;
@@ -11,7 +12,9 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Table(name = "campaigns")
@@ -34,6 +37,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
     @Embedded.Nullable()
     private CampaignConfiguration campaignConfiguration;
     @MappedCollection(idColumn = "campaign_id")
+    @Getter(AccessLevel.PACKAGE)
     Set<CampaignChannel> channels = new HashSet<>();
     @MappedCollection(idColumn = "campaign_id")
     private Set<CampaignAudience> audiences = new HashSet<>();
@@ -64,6 +68,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this.status = Status.DRAFT;
         this.lastUpdatedBy = createdBy;
         this.channels = configuration.channels().stream().map(CampaignChannel::new).collect(Collectors.toSet());
+
     }
 
     public static CampaignEntity createNew(
@@ -75,7 +80,21 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             Clock clock
     ) {
 
-        return new CampaignEntity(name, description, audienceIds, configuration, createdBy, clock.instant());
+        var campaign = new CampaignEntity(
+                name,
+                description,
+                audienceIds,
+                configuration,
+                createdBy,
+                clock.instant());
+        campaign.raiseEvent(new CampaignCreatedEvent(
+                campaign.getId().id(),
+                campaign.getName(),
+                campaign.getDescription(),
+                campaign.getCreatedAt(),
+                campaign.getCreatedBy()
+        ));
+        return campaign;
     }
 
     public void update(
@@ -135,4 +154,5 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
     public Set<Channel> getChannels() {
         return this.channels.stream().map(CampaignChannel::channel).collect(Collectors.toSet());
     }
+
 }

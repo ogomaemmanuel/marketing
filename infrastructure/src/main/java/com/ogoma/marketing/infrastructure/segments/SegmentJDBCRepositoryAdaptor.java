@@ -44,9 +44,8 @@ public class SegmentJDBCRepositoryAdaptor implements SegmentRepository {
         }
         Query idsQuery = Query.query(buildCriteria(searchTerm)).with(pageable).columns(PropertyPath.of(Segment::getId).getSegment());
         var orderedIds = this.jdbcAggregateTemplate.findAll(idsQuery, Segment.class).stream().map(Entity::getId).toList();
-        Map<Object, Segment> byId = jdbcAggregateTemplate.findAllById(orderedIds, Segment.class).stream()
+        Map<SegmentID, Segment> byId = jdbcAggregateTemplate.findAllById(orderedIds, Segment.class).stream()
                 .collect(Collectors.toMap(Segment::getId, s -> s));
-
         List<Segment> segments = orderedIds.stream()
                 .map(byId::get)
                 .filter(Objects::nonNull)
@@ -64,8 +63,15 @@ public class SegmentJDBCRepositoryAdaptor implements SegmentRepository {
         if (!StringUtils.hasText(searchTerm)) {
             return Criteria.empty();
         }
-        return Criteria.where(Segment::getName).like("%" + searchTerm + "%").ignoreCase(true)
-                .or(Criteria.where(Segment::getDescription).like("%" + searchTerm + "%").ignoreCase(true));
+        var escaped = escapeLike(searchTerm.trim());
+        return Criteria.where(Segment::getName).like("%" + escaped + "%").ignoreCase(true)
+                .or(Criteria.where(Segment::getDescription).like("%" + escaped + "%").ignoreCase(true));
 
+    }
+
+    private String escapeLike(String term) {
+        return term.replace("\\", "\\\\")
+                .replace("%", "\\%")
+                .replace("_", "\\_");
     }
 }

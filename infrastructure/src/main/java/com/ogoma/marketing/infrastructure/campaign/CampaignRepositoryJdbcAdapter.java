@@ -3,6 +3,7 @@ package com.ogoma.marketing.infrastructure.campaign;
 import com.ogoma.marketing.core.domain.campaigns.CampaignEntity;
 import com.ogoma.marketing.core.domain.campaigns.CampaignID;
 import com.ogoma.marketing.core.domain.campaigns.CampaignRepository;
+import com.ogoma.marketing.core.domain.outbox.DomainEventToOutboxConverter;
 import org.springframework.data.core.PropertyPath;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,18 +14,25 @@ import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.Clock;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
 public record CampaignRepositoryJdbcAdapter(
-        JdbcAggregateTemplate jdbcAggregateTemplate
+        JdbcAggregateTemplate jdbcAggregateTemplate,
+        Clock clock
+
 ) implements CampaignRepository {
 
     @Override
     public CampaignEntity save(CampaignEntity campaignEntity) {
+        var outbox = campaignEntity.pullDomainEvents().stream().map(x -> DomainEventToOutboxConverter.convert(x, clock)).collect(Collectors.toSet());
+        jdbcAggregateTemplate.saveAll(outbox);
         return jdbcAggregateTemplate.save(campaignEntity);
+
     }
 
     @Override
