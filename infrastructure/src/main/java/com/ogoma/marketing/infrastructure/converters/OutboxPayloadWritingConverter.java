@@ -1,14 +1,14 @@
 package com.ogoma.marketing.infrastructure.converters;
 
-import com.ogoma.marketing.core.domain.email.valueobjects.EmailTemplate;
+import com.ogoma.marketing.core.domain.outbox.Payload;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.jdbc.core.mapping.JdbcValue;
 
 @WritingConverter
-public class EmailTemplateToJsonWritingConverter implements Converter<EmailTemplate, JdbcValue> {
+public class OutboxPayloadWritingConverter implements Converter<Payload, JdbcValue> {
     @Override
-    public JdbcValue convert(EmailTemplate source) {
+    public JdbcValue convert(Payload source) {
         return JdbcValueConverter.convert(source);
     }
 }

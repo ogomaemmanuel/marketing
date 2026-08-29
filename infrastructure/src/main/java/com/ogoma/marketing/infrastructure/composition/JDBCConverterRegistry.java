@@ -20,7 +20,9 @@ public class JDBCConverterRegistry extends AbstractJdbcConfiguration {
                 new RuleSetToJsonBWritingConverter(),
                 new JsonToRulesetReadingConverter(),
                 new StronglyTypedIdWritingConverter(),
-                new StronglyTypedIdReadingConverter()
+                new StronglyTypedIdReadingConverter(),
+                new OutboxPayloadReadingConverter(),
+                new OutboxPayloadWritingConverter()
         );
     }
 }
