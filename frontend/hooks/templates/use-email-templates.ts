@@ -3,16 +3,27 @@ import {
   cloneEmailTemplate,
   createEmailTemplate,
   getEmailTemplateById,
+  getEmailTemplates,
   previewEmailTemplate,
   updateEmailTemplate,
 } from "@/lib/api/email-templates";
 import { queryKeys } from "@/lib/query-keys";
 import type { NormalizedApiError } from "@/types/api/errors";
+import type { PagedModel, SearchParams } from "@/types/api/pagination";
 import type {
   CreateEmailTemplateInput,
   EmailTemplateDetail,
+  EmailTemplateListItem,
   UpdateEmailTemplateInput,
 } from "@/types/domain/email-template";
+
+export function useEmailTemplates(params: SearchParams) {
+  return useQuery<PagedModel<EmailTemplateListItem>, NormalizedApiError>({
+    queryKey: queryKeys.emailTemplates.list(params),
+    queryFn: () => getEmailTemplates(params),
+    placeholderData: (previous) => previous,
+  });
+}
 
 export function useEmailTemplate(id: string | undefined) {
   return useQuery<EmailTemplateDetail, NormalizedApiError>({
@@ -32,8 +43,12 @@ export function useEmailTemplatePreview(id: string | undefined) {
 }
 
 export function useCreateEmailTemplate() {
-  return useMutation<{ id?: string } | undefined, NormalizedApiError, CreateEmailTemplateInput>({
+  const queryClient = useQueryClient();
+  return useMutation<void, NormalizedApiError, CreateEmailTemplateInput>({
     mutationFn: createEmailTemplate,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.emailTemplates.all });
+    },
   });
 }
 
@@ -42,6 +57,7 @@ export function useUpdateEmailTemplate(id: string) {
   return useMutation<void, NormalizedApiError, UpdateEmailTemplateInput>({
     mutationFn: (input) => updateEmailTemplate(id, input),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.emailTemplates.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.emailTemplates.detail(id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.emailTemplates.preview(id) });
     },
@@ -49,12 +65,11 @@ export function useUpdateEmailTemplate(id: string) {
 }
 
 export function useCloneEmailTemplate() {
-  return useMutation<
-    { id?: string } | undefined,
-    NormalizedApiError,
-    { id: string; suggestedName?: string; userID: string }
-  >({
-    mutationFn: ({ id, suggestedName, userID }) =>
-      cloneEmailTemplate(id, suggestedName, userID),
+  const queryClient = useQueryClient();
+  return useMutation<void, NormalizedApiError, { id: string; suggestedName?: string }>({
+    mutationFn: ({ id, suggestedName }) => cloneEmailTemplate(id, suggestedName),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.emailTemplates.all });
+    },
   });
 }

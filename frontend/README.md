@@ -107,7 +107,7 @@ components/
   campaigns/ contacts/ templates/ charts/   Domain-specific components (forms, wizards, builders, charts)
 hooks/
   <domain>/         TanStack Query hooks per backend resource (campaigns, contacts, audiences, segments,
-                     templates, transactional messages, users, dashboard, analytics)
+                     templates, transactional messages, dashboard, analytics)
 lib/
   api/              Axios client, error normalization, pagination helpers, one file of API functions per resource
   auth/             Auth helper utilities (token endpoint derivation)
@@ -125,9 +125,10 @@ Each backend resource follows the same path end-to-end: OpenAPI schema → `type
 The OpenAPI spec does not currently expose every capability a marketing platform would normally have. Rather than invent them, the UI adapts:
 
 - **No delete endpoints** for any resource → no delete actions anywhere in the UI.
-- **No campaign status, scheduling, or performance metrics** → the campaign list/detail views show only what's returned (name, channels, audiences, templates, created date) and the dashboard/analytics pages show empty states instead of fabricated KPIs like open/click/delivery rate.
+- **No campaign status, scheduling, or performance metrics** → the campaign list/detail views show only what's returned (name, channels, audiences, templates, created date), and the analytics page shows empty states instead of fabricated KPIs like open/click/delivery rate. Volume counts come from `/api/v1/dashboard/stats` and `/api/v1/dashboard/campaigns-by-channel`.
 - **No segments list/get endpoint** → segments can be created but not browsed; the UI shows the created segment's id and explains this limitation.
-- **No email template list endpoint** → the email templates tab supports direct-by-id access and creation, not browsing.
+- **`GET /email-templates` ignores `searchTerm`** → the query handler passes only the `Pageable` to the repository, so the email templates tab paginates without a search box rather than offering one that does nothing.
+- **`POST /email-templates` and `/clone` return `Void`** → the new template's id is never returned, so both flows navigate back to the list instead of deep-linking into the new template.
 - **No automation/workflow endpoints** → `/automations` is a clearly-labeled placeholder page.
 
 If/when the backend adds these endpoints, the corresponding `lib/api/*.ts` + hook + UI can be filled in without restructuring anything else.

@@ -25,14 +25,9 @@ export default function NewEmailTemplatePage() {
       return;
     }
     createTemplate.mutate(value, {
-      onSuccess: (result) => {
+      onSuccess: () => {
         toast.success("Email template created");
-        if (result?.id) {
-          router.push(`/templates/email/${result.id}`);
-        } else {
-          toast.message("The backend didn't return a template id — save the id yourself if shown elsewhere.");
-          router.push("/templates?tab=email");
-        }
+        router.push("/templates?tab=email");
       },
       onError: (error) => toast.error(error.message),
     });

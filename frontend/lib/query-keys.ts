@@ -23,8 +23,15 @@ export const queryKeys = {
     detail: (id: string) => ["sms-templates", "detail", id] as const,
   },
   emailTemplates: {
+    all: ["email-templates"] as const,
+    list: (params: SearchParams) => ["email-templates", "list", params] as const,
     detail: (id: string) => ["email-templates", "detail", id] as const,
     preview: (id: string) => ["email-templates", "preview", id] as const,
+  },
+  dashboard: {
+    all: ["dashboard"] as const,
+    stats: ["dashboard", "stats"] as const,
+    campaignsByChannel: ["dashboard", "campaigns-by-channel"] as const,
   },
   user: {
     synced: ["user", "synced"] as const,
