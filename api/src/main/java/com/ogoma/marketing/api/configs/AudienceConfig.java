@@ -9,7 +9,7 @@ import com.ogoma.marketing.core.domain.audience.AudienceRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class AudienceConfig {
     @Bean
     AddAudienceCommandHandler addAudienceCommandHandler(

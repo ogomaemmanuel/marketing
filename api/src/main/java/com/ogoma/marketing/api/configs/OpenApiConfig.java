@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI(OAuth2ResourceServerProperties resourceServerProperties) {
