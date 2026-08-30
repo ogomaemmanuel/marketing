@@ -132,6 +132,14 @@ export interface EmailTemplate {
   settings?: EmailSetting;
 }
 
+/** Item of GET /email-templates (GetEmailTemplatesListItemView). */
+export interface EmailTemplateListItem {
+  id: string;
+  name?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 /** Response of GET /email-templates/{id}. */
 export interface EmailTemplateDetail {
   id: string;

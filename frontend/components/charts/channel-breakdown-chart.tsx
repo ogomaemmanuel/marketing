@@ -1,26 +1,35 @@
 "use client";
 
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import type { CampaignChannel } from "@/types/domain/campaign";
 
 interface ChannelBreakdownChartProps {
-  sms: number;
-  email: number;
+  data: { channel: CampaignChannel; campaigns: number }[];
 }
 
-const COLORS = { SMS: "var(--color-success)", Email: "var(--color-info)" };
+const CHANNEL_LABELS: Record<CampaignChannel, string> = {
+  SMS: "SMS",
+  EMAIL: "Email",
+};
 
-function ChannelBreakdownChart({ sms, email }: ChannelBreakdownChartProps) {
-  const data = [
-    { channel: "SMS", campaigns: sms },
-    { channel: "Email", campaigns: email },
-  ];
+const CHANNEL_COLORS: Record<CampaignChannel, string> = {
+  SMS: "var(--color-success)",
+  EMAIL: "var(--color-info)",
+};
+
+function ChannelBreakdownChart({ data }: ChannelBreakdownChartProps) {
+  const chartData = data.map((entry) => ({
+    channel: entry.channel,
+    label: CHANNEL_LABELS[entry.channel] ?? entry.channel,
+    campaigns: entry.campaigns,
+  }));
 
   return (
     <ResponsiveContainer width="100%" height={220}>
-      <BarChart data={data} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+      <BarChart data={chartData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
         <XAxis
-          dataKey="channel"
+          dataKey="label"
           tickLine={false}
           axisLine={false}
           fontSize={12}
@@ -43,8 +52,8 @@ function ChannelBreakdownChart({ sms, email }: ChannelBreakdownChartProps) {
           }}
         />
         <Bar dataKey="campaigns" radius={[6, 6, 0, 0]} maxBarSize={64}>
-          {data.map((entry) => (
-            <Cell key={entry.channel} fill={COLORS[entry.channel as keyof typeof COLORS]} />
+          {chartData.map((entry) => (
+            <Cell key={entry.channel} fill={CHANNEL_COLORS[entry.channel] ?? "var(--color-info)"} />
           ))}
         </Bar>
       </BarChart>

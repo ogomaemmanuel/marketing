@@ -22,7 +22,7 @@ export const campaignFormSchema = z
     if (values.channels.includes("EMAIL") && !values.emailTemplateID) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Provide an email template id for the Email channel",
+        message: "Select an email template for the Email channel",
         path: ["emailTemplateID"],
       });
     }

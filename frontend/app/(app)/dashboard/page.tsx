@@ -24,7 +24,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/lib/utils/format";
 import {
   useCampaignChannelBreakdown,
-  useDashboardCounts,
+  useDashboardStats,
   useRecentAudiences,
   useRecentCampaigns,
 } from "@/hooks/dashboard/use-dashboard-summary";
@@ -38,7 +38,7 @@ function greeting() {
 
 export default function DashboardPage() {
   const { data: session } = useAppSession();
-  const counts = useDashboardCounts();
+  const stats = useDashboardStats();
   const breakdown = useCampaignChannelBreakdown();
   const recentAudiences = useRecentAudiences();
   const recentCampaigns = useRecentCampaigns();
@@ -66,34 +66,36 @@ export default function DashboardPage() {
         }
       />
 
+      {stats.error && <ErrorState error={stats.error} onRetry={() => stats.refetch()} />}
+
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total contacts"
-          value={counts.data?.contacts ?? "—"}
+          value={stats.data?.totalContacts ?? "—"}
           description="Everyone in your address book"
           icon={ContactIcon}
-          isLoading={counts.isLoading}
+          isLoading={stats.isLoading}
         />
         <StatCard
           label="Audiences"
-          value={counts.data?.audiences ?? "—"}
+          value={stats.data?.totalAudiences ?? "—"}
           description="Contact groups you can target"
           icon={UsersIcon}
-          isLoading={counts.isLoading}
+          isLoading={stats.isLoading}
         />
         <StatCard
           label="Campaigns"
-          value={counts.data?.campaigns ?? "—"}
+          value={stats.data?.totalCampaigns ?? "—"}
           description="Created across all channels"
           icon={MegaphoneIcon}
-          isLoading={counts.isLoading}
+          isLoading={stats.isLoading}
         />
         <StatCard
           label="SMS templates"
-          value={counts.data?.smsTemplates ?? "—"}
+          value={stats.data?.totalSmsTemplates ?? "—"}
           description="Reusable SMS content"
           icon={MessageSquareTextIcon}
-          isLoading={counts.isLoading}
+          isLoading={stats.isLoading}
         />
       </section>
 
@@ -121,14 +123,7 @@ export default function DashboardPage() {
               }
             />
           ) : (
-            <>
-              <ChannelBreakdownChart sms={breakdown.data.sms} email={breakdown.data.email} />
-              {breakdown.data.total > breakdown.data.sampleSize && (
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Based on the most recent {breakdown.data.sampleSize} of {breakdown.data.total} campaigns.
-                </p>
-              )}
-            </>
+            <ChannelBreakdownChart data={breakdown.data.byChannel} />
           )}
         </ChartCard>
 
