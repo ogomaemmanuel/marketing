@@ -18,6 +18,7 @@ import { ChannelBadgeGroup } from "@/components/campaigns/channel-badge";
 import { campaignFormSchema, type CampaignFormValues } from "@/lib/validation/campaign";
 import { useAudiences } from "@/hooks/audiences/use-audiences";
 import { useSmsTemplates } from "@/hooks/templates/use-sms-templates";
+import { useEmailTemplates } from "@/hooks/templates/use-email-templates";
 import { useCreateCampaign } from "@/hooks/campaigns/use-campaigns";
 import { cn } from "@/lib/utils/cn";
 import type { CampaignChannel } from "@/types/domain/campaign";
@@ -33,6 +34,7 @@ function CampaignWizard() {
   const [step, setStep] = useState(0);
   const audiences = useAudiences({ page: 0, size: 100 });
   const smsTemplates = useSmsTemplates({ page: 0, size: 100 });
+  const emailTemplates = useEmailTemplates({ page: 0, size: 100 });
   const createCampaign = useCreateCampaign();
 
   const form = useForm<CampaignFormValues>({
@@ -216,22 +218,36 @@ function CampaignWizard() {
             )}
             {channels.includes("EMAIL") && (
               <Field
-                label="Email template id"
+                label="Email template"
                 required
                 error={form.formState.errors.emailTemplateID?.message}
-                description="The backend can't list email templates yet, so paste the id of one you've created."
+                description="Select an existing email template."
               >
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Email template id (UUID)"
-                    {...form.register("emailTemplateID")}
-                  />
-                  <Button asChild variant="outline" type="button">
-                    <Link href="/templates/email/new" target="_blank">
-                      <ExternalLinkIcon /> New template
+                <Select
+                  value={values.emailTemplateID}
+                  onValueChange={(value) => form.setValue("emailTemplateID", value, { shouldValidate: true })}
+                >
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={emailTemplates.isLoading ? "Loading templates..." : "Select an email template"}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {emailTemplates.data?.content.map((template) => (
+                      <SelectItem key={template.id} value={template.id}>
+                        {template.name || "Untitled template"}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {emailTemplates.data?.content.length === 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    No email templates yet.{" "}
+                    <Link href="/templates/email/new" target="_blank" className="text-primary underline-offset-4 hover:underline">
+                      Create one <ExternalLinkIcon className="inline size-3" />
                     </Link>
-                  </Button>
-                </div>
+                  </p>
+                )}
               </Field>
             )}
             {channels.length === 0 && (
@@ -270,8 +286,10 @@ function CampaignWizard() {
             )}
             {channels.includes("EMAIL") && (
               <div>
-                <p className="text-xs text-muted-foreground">Email template id</p>
-                <p className="text-sm text-foreground">{values.emailTemplateID || "—"}</p>
+                <p className="text-xs text-muted-foreground">Email template</p>
+                <p className="text-sm text-foreground">
+                  {emailTemplates.data?.content.find((t) => t.id === values.emailTemplateID)?.name ?? "—"}
+                </p>
               </div>
             )}
           </div>

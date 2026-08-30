@@ -26,11 +26,10 @@ public record DashboardServiceImpl(JdbcClient jdbcClient) implements DashboardSe
     @Override
     public Set<GetCampaignsByChannelCountView> getCampaignsByChannelCount() {
         return jdbcClient.sql("""
-                SELECT\s
+                SELECT
                     channel,
-                    COUNT(id) AS total_campaigns
-                FROM marketing_main.campaigns,
-                UNNEST(channels) AS channel
+                    COUNT(campaign_id) AS total_campaigns
+                FROM campaign_channels
                 GROUP BY channel
                 ORDER BY total_campaigns DESC
                 """).query(GetCampaignsByChannelCountView.class).set();

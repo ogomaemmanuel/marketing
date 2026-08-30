@@ -1,15 +1,25 @@
 import { apiRequest } from "@/lib/api/client";
+import { toPageableSearchParams } from "@/lib/api/pageable";
+import type { PagedModel, SearchParams } from "@/types/api/pagination";
 import type {
   CreateEmailTemplateInput,
   EmailTemplateDetail,
+  EmailTemplateListItem,
   UpdateEmailTemplateInput,
 } from "@/types/domain/email-template";
 
 /**
- * NOTE: the backend has no `GET /email-templates` list endpoint — only
- * get-by-id, create, update, clone and preview. Email templates cannot be
- * browsed; the UI must ask for/remember an id instead of listing them.
+ * NOTE: the controller accepts a `searchTerm` param but the query handler
+ * currently ignores it, so results are never filtered server-side.
  */
+export function getEmailTemplates(params: SearchParams = {}) {
+  return apiRequest<PagedModel<EmailTemplateListItem>>({
+    method: "GET",
+    url: "/email-templates",
+    params: toPageableSearchParams(params),
+  });
+}
+
 export function getEmailTemplateById(id: string) {
   return apiRequest<EmailTemplateDetail>({
     method: "GET",
@@ -17,13 +27,9 @@ export function getEmailTemplateById(id: string) {
   });
 }
 
-/**
- * The backend's create/update responses don't document a response body
- * (springdoc shows a bare 200 OK), so we defensively read whatever comes
- * back without assuming an id is present.
- */
+/** The backend returns `Void`, so the new template must be found via the list. */
 export function createEmailTemplate(input: CreateEmailTemplateInput) {
-  return apiRequest<{ id?: string } | undefined>({
+  return apiRequest<void>({
     method: "POST",
     url: "/email-templates",
     data: input,
@@ -38,15 +44,16 @@ export function updateEmailTemplate(id: string, input: UpdateEmailTemplateInput)
   });
 }
 
-export function cloneEmailTemplate(
-  id: string,
-  suggestedName: string | undefined,
-  userID: string,
-) {
-  return apiRequest<{ id?: string } | undefined>({
+/**
+ * `suggestedName` binds from the query string (the request record is not a
+ * `@RequestBody`), and the owner is taken from the JWT server-side. Like
+ * create, this returns `Void`.
+ */
+export function cloneEmailTemplate(id: string, suggestedName?: string) {
+  return apiRequest<void>({
     method: "POST",
     url: `/email-templates/${id}/clone`,
-    params: { suggestedName, userID },
+    params: suggestedName ? { suggestedName } : undefined,
   });
 }
 

@@ -31,14 +31,7 @@ export default function AnalyticsPage() {
           ) : !breakdown.data || breakdown.data.total === 0 ? (
             <EmptyState icon={MegaphoneIcon} title="No campaign data yet" />
           ) : (
-            <>
-              <ChannelBreakdownChart sms={breakdown.data.sms} email={breakdown.data.email} />
-              {breakdown.data.total > breakdown.data.sampleSize && (
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Based on the most recent {breakdown.data.sampleSize} of {breakdown.data.total} campaigns.
-                </p>
-              )}
-            </>
+            <ChannelBreakdownChart data={breakdown.data.byChannel} />
           )}
         </ChartCard>
 

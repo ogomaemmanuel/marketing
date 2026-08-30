@@ -15,7 +15,6 @@ import {
 import { EmailPreviewDialog } from "@/components/templates/email-builder/email-preview-dialog";
 import { SendTestMessageDialog } from "@/components/templates/send-test-message-dialog";
 import { useCloneEmailTemplate, useEmailTemplate, useUpdateEmailTemplate } from "@/hooks/templates/use-email-templates";
-import { useSyncedUser } from "@/hooks/users/use-synced-user";
 import type { EmailTemplateDetail as EmailTemplateDetailData } from "@/types/domain/email-template";
 
 function EmailTemplateDetail({ id }: { id: string }) {
@@ -43,7 +42,6 @@ function EmailTemplateEditor({ id, initialData }: { id: string; initialData: Ema
   const router = useRouter();
   const updateTemplate = useUpdateEmailTemplate(id);
   const cloneTemplate = useCloneEmailTemplate();
-  const syncedUser = useSyncedUser();
 
   const [value, setValue] = useState<EmailTemplateBuilderValue>({
     name: initialData.name ?? "",
@@ -58,16 +56,12 @@ function EmailTemplateEditor({ id, initialData }: { id: string; initialData: Ema
   }
 
   function handleClone() {
-    if (!syncedUser.data?.id) {
-      toast.error("Couldn't identify your user account yet. Try again in a moment.");
-      return;
-    }
     cloneTemplate.mutate(
-      { id, suggestedName: `${value.name || "Template"} (copy)`, userID: syncedUser.data.id },
+      { id, suggestedName: `${value.name || "Template"} (copy)` },
       {
-        onSuccess: (result) => {
+        onSuccess: () => {
           toast.success("Template cloned");
-          if (result?.id) router.push(`/templates/email/${result.id}`);
+          router.push("/templates?tab=email");
         },
         onError: (error) => toast.error(error.message),
       },
