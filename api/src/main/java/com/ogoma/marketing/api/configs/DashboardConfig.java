@@ -6,7 +6,7 @@ import com.ogoma.marketing.core.application.dashboard.queries.GetStatsQueryHandl
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class DashboardConfig {
     @Bean
     GetStatsQueryHandler getStatsQueryHandler(DashboardService dashboardService) {

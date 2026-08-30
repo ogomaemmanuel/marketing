@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class CampaignsConfig {
     @Bean
     CreateCampaignCommandHandler createCampaignCommandHandler(CampaignRepository campaignRepository, UnitOfWork unitOfWork, Clock clock) {

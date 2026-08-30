@@ -27,6 +27,7 @@
     <properties>
         <java.version>26</java.version>
         <temporal.version>1.35.0</temporal.version>
+        <shedlock.version>5.13.0</shedlock.version>
         <jdbc-querydsl.version>10.0.7</jdbc-querydsl.version>
     </properties>
 
@@ -44,6 +45,27 @@
             <groupId>com.ogoma.marketing</groupId>
             <artifactId>core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-kafka-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+            <version>${shedlock.version}</version> <!-- Check net.javacrumbs.shedlock on Maven Central for latest -->
+        </dependency>
+
+        <!-- JDBC Provider (if using a relational database) -->
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-provider-jdbc-template</artifactId>
+            <version>${shedlock.version}</version>
         </dependency>
 
         <dependency>

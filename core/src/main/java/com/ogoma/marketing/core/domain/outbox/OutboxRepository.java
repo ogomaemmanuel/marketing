@@ -1,8 +1,7 @@
 package com.ogoma.marketing.core.domain.outbox;
 
-import org.springframework.data.domain.Limit;
-
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface OutboxRepository {
 
@@ -10,5 +9,5 @@ public interface OutboxRepository {
 
     Outbox save(Outbox outbox);
 
-    List<Outbox> findUnProcessed(Limit limit);
+    Stream<Outbox> findUnProcessed(Integer limit);
 }
