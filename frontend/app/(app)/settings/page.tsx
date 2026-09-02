@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { initials } from "@/lib/utils/format";
+import { PalettePicker } from "@/components/layout/palette-picker";
 import { env } from "@/lib/env";
 import { isAuthDisabled } from "@/lib/auth/config";
 import { useAppSession } from "@/providers/auth-provider";
@@ -42,19 +43,22 @@ export default function SettingsPage() {
       <Card className="max-w-2xl">
         <CardHeader>
           <CardTitle>Appearance</CardTitle>
-          <CardDescription>Choose how the app looks on this device.</CardDescription>
+          <CardDescription>Light or dark, plus the Storefront colorway for this device.</CardDescription>
         </CardHeader>
-        <CardContent className="flex items-center gap-2">
-          <Button
-            variant={theme === "light" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setTheme("light")}
-          >
-            <SunIcon /> Light
-          </Button>
-          <Button variant={theme === "dark" ? "default" : "outline"} size="sm" onClick={() => setTheme("dark")}>
-            <MoonIcon /> Dark
-          </Button>
+        <CardContent className="flex flex-col gap-5">
+          <div className="flex items-center gap-2">
+            <Button
+              variant={theme === "light" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setTheme("light")}
+            >
+              <SunIcon /> Light
+            </Button>
+            <Button variant={theme === "dark" ? "default" : "outline"} size="sm" onClick={() => setTheme("dark")}>
+              <MoonIcon /> Dark
+            </Button>
+          </div>
+          <PalettePicker />
         </CardContent>
       </Card>
 

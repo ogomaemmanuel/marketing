@@ -79,7 +79,7 @@ function DataTable<T>({
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card">
+      <div className="rounded-xl border border-border/80 bg-card shadow-storefront">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">

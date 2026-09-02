@@ -13,8 +13,8 @@ const CHANNEL_LABELS: Record<CampaignChannel, string> = {
 };
 
 const CHANNEL_COLORS: Record<CampaignChannel, string> = {
-  SMS: "var(--color-success)",
-  EMAIL: "var(--color-info)",
+  SMS: "var(--color-chart-2)",
+  EMAIL: "var(--color-chart-1)",
 };
 
 function ChannelBreakdownChart({ data }: ChannelBreakdownChartProps) {
@@ -47,7 +47,7 @@ function ChannelBreakdownChart({ data }: ChannelBreakdownChartProps) {
           contentStyle={{
             backgroundColor: "var(--color-popover)",
             border: "1px solid var(--color-border)",
-            borderRadius: 8,
+            borderRadius: 10,
             fontSize: 12,
           }}
         />

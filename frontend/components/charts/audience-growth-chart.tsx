@@ -9,8 +9,8 @@ function AudienceGrowthChart({ points }: { points: AudienceGrowthPoint[] }) {
       <AreaChart data={points} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
         <defs>
           <linearGradient id="audienceGrowthFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity={0.35} />
-            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity={0} />
+            <stop offset="0%" stopColor="var(--color-chart-2)" stopOpacity={0.4} />
+            <stop offset="100%" stopColor="var(--color-chart-2)" stopOpacity={0} />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
@@ -27,7 +27,7 @@ function AudienceGrowthChart({ points }: { points: AudienceGrowthPoint[] }) {
         <Area
           type="monotone"
           dataKey="audiences"
-          stroke="var(--color-primary)"
+          stroke="var(--color-chart-1)"
           strokeWidth={2}
           fill="url(#audienceGrowthFill)"
         />

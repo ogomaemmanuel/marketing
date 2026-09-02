@@ -24,7 +24,7 @@ function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-9 gap-2 px-2">
+        <Button variant="outline" className="h-9 gap-2 rounded-full px-2 pr-3">
           <Avatar className="size-7">
             <AvatarImage src={user?.image ?? undefined} alt={user?.name ?? "User"} />
             <AvatarFallback>{initials(user?.name)}</AvatarFallback>

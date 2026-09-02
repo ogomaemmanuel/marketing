@@ -10,10 +10,10 @@ function AppShell({
   authDisabled?: boolean;
 }) {
   return (
-    <div className="flex h-dvh overflow-hidden bg-background">
+    <div className="flex h-dvh overflow-hidden bg-sidebar">
       {!authDisabled && <SessionWatcher />}
       <Sidebar />
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col storefront-canvas lg:my-2 lg:mr-2 lg:rounded-xl lg:border lg:border-border lg:shadow-storefront-lg">
         <Topbar />
         <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="mx-auto w-full max-w-7xl">{children}</div>

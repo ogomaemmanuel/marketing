@@ -27,11 +27,11 @@ function StatCard({
     <Card className={cn("gap-3", className)}>
       <CardContent className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1.5">
-          <span className="text-sm text-muted-foreground">{label}</span>
+          <span className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">{label}</span>
           {isLoading ? (
             <Skeleton className="h-7 w-20" />
           ) : (
-            <span className="text-2xl font-semibold tracking-tight text-foreground">
+            <span className="font-display text-[1.75rem] leading-none tracking-tight text-foreground">
               {value}
             </span>
           )}
@@ -55,7 +55,7 @@ function StatCard({
           )}
         </div>
         {Icon && (
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-secondary-foreground">
             <Icon className="size-4.5" />
           </div>
         )}
