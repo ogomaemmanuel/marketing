@@ -143,7 +143,7 @@ export default function DashboardPage() {
                 <Link
                   key={audience.id}
                   href={`/audiences/${audience.id}`}
-                  className="flex items-center justify-between rounded-md px-2 py-2 text-sm transition-colors hover:bg-muted"
+                  className="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition-colors hover:bg-accent"
                 >
                   <span className="font-medium text-foreground">{audience.name}</span>
                   <span className="text-xs text-muted-foreground">
@@ -171,7 +171,7 @@ export default function DashboardPage() {
 
       <section className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold text-foreground">Campaigns</h2>
+          <h2 className="font-display text-xl tracking-tight text-foreground">Campaigns</h2>
           <Button asChild variant="ghost" size="sm">
             <Link href="/campaigns">
               View all <ArrowRightIcon />
@@ -192,7 +192,7 @@ export default function DashboardPage() {
               <Link
                 key={campaign.id}
                 href={`/campaigns/${campaign.id}`}
-                className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/40 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-2 rounded-xl border border-border/80 bg-card p-4 shadow-storefront transition-all hover:-translate-y-0.5 hover:border-primary/25 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex flex-col gap-1">
                   <span className="font-medium text-foreground">{campaign.name}</span>

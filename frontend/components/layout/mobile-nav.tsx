@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MenuIcon, MegaphoneIcon } from "lucide-react";
+import { MenuIcon } from "lucide-react";
+import { BrandMark } from "@/components/layout/brand-mark";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
@@ -17,14 +18,11 @@ function MobileNav() {
           <MenuIcon />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-72 p-0">
-        <SheetHeader className="border-b border-border pb-4">
+      <SheetContent side="left" className="w-72 bg-sidebar p-0 text-sidebar-foreground">
+        <SheetHeader className="border-b border-sidebar-border pb-4">
           <SheetTitle asChild>
-            <Link href="/dashboard" onClick={() => setOpen(false)} className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                <MegaphoneIcon className="size-4" />
-              </span>
-              Marketing
+            <Link href="/dashboard" onClick={() => setOpen(false)}>
+              <BrandMark inverted />
             </Link>
           </SheetTitle>
         </SheetHeader>

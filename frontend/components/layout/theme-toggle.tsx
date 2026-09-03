@@ -10,14 +10,14 @@ function ThemeToggle() {
   const isHydrated = useIsHydrated();
 
   if (!isHydrated) {
-    return <Button variant="ghost" size="icon" aria-hidden className="opacity-0" />;
+    return <Button variant="outline" size="icon" aria-hidden className="opacity-0" />;
   }
 
   const isDark = theme === "dark";
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       size="icon"
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       onClick={() => setTheme(isDark ? "light" : "dark")}

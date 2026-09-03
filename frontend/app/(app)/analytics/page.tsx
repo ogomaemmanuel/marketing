@@ -19,7 +19,7 @@ export default function AnalyticsPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Analytics"
-        description="Insights derived from the data the backend currently exposes."
+        description="Insights from the data the backend currently exposes — presented as clearly as the rest of the studio."
       />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
