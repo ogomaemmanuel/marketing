@@ -12,7 +12,7 @@ import com.ogoma.marketing.core.domain.contacts.ContactRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class ContactsConfig {
     @Bean
     AddContactCommandHandler addContactCommandHandler(

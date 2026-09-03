@@ -12,7 +12,7 @@ import java.time.Clock;
 import java.util.List;
 
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class InfraConfig {
     @Bean
     CommandDispatcher commandDispatcher(List<CommandHandler<?, ?>> handlers) {

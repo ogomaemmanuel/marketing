@@ -9,7 +9,7 @@ import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class EmailTemplateConfig {
     @Bean
     CreateEmailTemplateCommandHandler createEmailTemplateCommandHandler(EmailTemplateRepository emailTemplateRepository) {
