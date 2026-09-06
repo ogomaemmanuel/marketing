@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 
 
 @Component
-
 public class OutboxServiceImpl implements OutboxService {
     private final OutboxRepository outboxRepository;
     private final OutboxProperties outboxProperties;

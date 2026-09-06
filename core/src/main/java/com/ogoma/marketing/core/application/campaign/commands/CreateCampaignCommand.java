@@ -5,6 +5,7 @@ import com.ogoma.marketing.core.domain.audience.AudienceId;
 import com.ogoma.marketing.core.domain.campaigns.CampaignID;
 import com.ogoma.marketing.core.domain.campaigns.Channel;
 import com.ogoma.marketing.core.domain.email.EmailTemplateID;
+import com.ogoma.marketing.core.domain.segments.SegmentID;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateID;
 
 import java.util.Set;
@@ -14,6 +15,7 @@ public record CreateCampaignCommand(
         String description,
         Set<Channel> channels,
         Set<AudienceId> targetAudienceIds,
+        Set<SegmentID> targetSegmentIds,
 
         EmailTemplateID emailTemplateID,
 
@@ -26,6 +28,7 @@ public record CreateCampaignCommand(
     public CreateCampaignCommand {
         channels = channels == null ? Set.of() : Set.copyOf(channels);
         targetAudienceIds = targetAudienceIds == null ? Set.of() : Set.copyOf(targetAudienceIds);
+        targetSegmentIds = targetSegmentIds == null ? Set.of() : Set.copyOf(targetSegmentIds);
     }
 
 }

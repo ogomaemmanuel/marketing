@@ -1,4 +1,4 @@
-package com.ogoma.marketing.core.sharedkernel;
+package com.ogoma.marketing.core.sharedkernel.ddd;
 
 import java.io.Serializable;
 

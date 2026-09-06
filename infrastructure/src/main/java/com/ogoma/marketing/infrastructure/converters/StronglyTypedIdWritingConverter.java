@@ -1,6 +1,6 @@
 package com.ogoma.marketing.infrastructure.converters;
 
-import com.ogoma.marketing.core.sharedkernel.TypedID;
+import com.ogoma.marketing.core.sharedkernel.ddd.TypedID;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;

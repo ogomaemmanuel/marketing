@@ -1,4 +1,4 @@
-package com.ogoma.marketing.core.sharedkernel;
+package com.ogoma.marketing.core.sharedkernel.ddd;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;

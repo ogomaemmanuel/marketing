@@ -1,6 +1,6 @@
 package com.ogoma.marketing.core.domain.outbox;
 
-import com.ogoma.marketing.core.sharedkernel.Entity;
+import com.ogoma.marketing.core.sharedkernel.ddd.Entity;
 import lombok.Getter;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;

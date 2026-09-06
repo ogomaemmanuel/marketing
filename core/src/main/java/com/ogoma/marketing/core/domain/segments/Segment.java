@@ -1,7 +1,7 @@
 package com.ogoma.marketing.core.domain.segments;
 
 import com.ogoma.marketing.core.domain.audience.RuleSet;
-import com.ogoma.marketing.core.sharedkernel.AggregateRoot;
+import com.ogoma.marketing.core.sharedkernel.ddd.AggregateRoot;
 import lombok.Getter;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
