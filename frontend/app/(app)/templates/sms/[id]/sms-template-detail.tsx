@@ -1,17 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { CopyIcon } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
-import { ErrorState } from "@/components/common/error-state";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { SmsTemplateForm } from "@/components/templates/sms-template-form";
-import { SendTestMessageDialog } from "@/components/templates/send-test-message-dialog";
-import { useDuplicateSmsTemplate, useSmsTemplate, useUpdateSmsTemplate } from "@/hooks/templates/use-sms-templates";
-import type { SmsTemplateFormValues } from "@/lib/validation/sms-template";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
+import {CopyIcon} from "lucide-react";
+import {PageHeader} from "@/components/common/page-header";
+import {ErrorState} from "@/components/common/error-state";
+import {Card, CardContent} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Skeleton} from "@/components/ui/skeleton";
+import {SmsTemplateForm} from "@/components/templates/sms-template-form";
+import {SendTestMessageDialog} from "@/components/templates/send-test-message-dialog";
+import {useDuplicateSmsTemplate, useSmsTemplate, useUpdateSmsTemplate} from "@/hooks/templates/use-sms-templates";
+import type {SmsTemplateFormValues} from "@/lib/validation/sms-template";
 
 const FORM_ID = "edit-sms-template-form";
 

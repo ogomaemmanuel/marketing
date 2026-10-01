@@ -1,7 +1,7 @@
-import { MobileNav } from "@/components/layout/mobile-nav";
-import { UserMenu } from "@/components/layout/user-menu";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
-import { PalettePickerMenu } from "@/components/layout/palette-picker";
+import {MobileNav} from "@/components/layout/mobile-nav";
+import {UserMenu} from "@/components/layout/user-menu";
+import {ThemeToggle} from "@/components/layout/theme-toggle";
+import {PalettePickerMenu} from "@/components/layout/palette-picker";
 
 function Topbar() {
   return (

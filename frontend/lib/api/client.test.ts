@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { normalizeApiError } from "./client";
+import {describe, expect, it} from "vitest";
+import {normalizeApiError} from "./client";
 
 function axiosErrorLike(status: number, data?: unknown) {
   return {

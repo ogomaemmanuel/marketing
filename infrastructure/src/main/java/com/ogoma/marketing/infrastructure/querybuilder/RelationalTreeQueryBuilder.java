@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.ogoma.marketing.core.sharedkernel.FilterParams.Operator.*;
+import static com.ogoma.marketing.core.sharedkernel.FilterParams.Operator.IS_NOT_NULL;
+import static com.ogoma.marketing.core.sharedkernel.FilterParams.Operator.IS_NULL;
 
 public class RelationalTreeQueryBuilder {
 

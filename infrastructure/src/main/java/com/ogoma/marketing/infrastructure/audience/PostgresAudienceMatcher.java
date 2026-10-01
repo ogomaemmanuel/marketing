@@ -25,14 +25,14 @@ public record PostgresAudienceMatcher(
         List<String> queryParts = new ArrayList<>();
         Map<String, Object> aggregatedParams = new HashMap<>();
         if (audienceIds != null && !audienceIds.isEmpty()) {
-            queryParts.add("select am.contact_id as contact_id from  audience_membership am where audience_id in (:audienceIds)");
+            queryParts.add("select am.contact_id as id from  audience_membership am where audience_id in (:audienceIds)");
             aggregatedParams.put("audienceIds", extractAudienceRawIds(audienceIds));
         }
         if (segmentIDS != null && !segmentIDS.isEmpty()) {
             List<Segment> segments = jdbcAggregateTemplate.findAllById(segmentIDS, Segment.class);
             for (int i = 0; i < segments.size(); i++) {
                 var sqlFragmentWithParams = segments.get(i).getRuleSet().toNamedSQL(String.valueOf("seg_" + i + "_"));
-                queryParts.add("select id as contact_id from contacts where " + sqlFragmentWithParams.sql()); //dynamic audience
+                queryParts.add("select id as id from contacts where " + sqlFragmentWithParams.sql()); //dynamic audience
                 aggregatedParams.putAll(sqlFragmentWithParams.params());
             }
         }

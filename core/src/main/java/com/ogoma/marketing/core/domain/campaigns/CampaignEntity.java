@@ -3,7 +3,10 @@ package com.ogoma.marketing.core.domain.campaigns;
 
 import com.ogoma.marketing.core.domain.audience.AudienceId;
 import com.ogoma.marketing.core.domain.campaigns.events.CampaignCreatedEvent;
+import com.ogoma.marketing.core.domain.campaigns.events.CampaignSentEvent;
+import com.ogoma.marketing.core.domain.email.EmailTemplateID;
 import com.ogoma.marketing.core.domain.segments.SegmentID;
+import com.ogoma.marketing.core.domain.sms.SmsTemplateID;
 import com.ogoma.marketing.core.sharedkernel.CustomAssert;
 import com.ogoma.marketing.core.sharedkernel.ddd.AggregateRoot;
 import lombok.AccessLevel;
@@ -140,6 +143,14 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         }
         this.status = Status.SENDING;
         this.touch(sentBy, clock.instant());
+        this.raiseEvent(new CampaignSentEvent(
+                this.getId().id(),
+                this.getName(),
+                this.getDescription(),
+                this.lastUpdatedAt,
+                this.lastUpdatedBy
+        ));
+
     }
 
     private void touch(String lastUpdatedBy, Instant updatedAt) {
@@ -176,6 +187,18 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             return Set.of();
         }
         return segmentIDS.stream().map(CampaignSegment::new).collect(Collectors.toSet());
+    }
+
+    public Set<SegmentID> getSegmentRefs() {
+        return this.getSegments().stream().map(CampaignSegment::segmentId).collect(Collectors.toSet());
+    }
+
+    public SmsTemplateID getSmsTemplateId() {
+        return campaignConfiguration.smsTemplateID();
+    }
+
+    public EmailTemplateID getEmailTemplateId() {
+        return campaignConfiguration.emailTemplateID();
     }
 
 }

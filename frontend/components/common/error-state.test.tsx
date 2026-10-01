@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-import { ErrorState } from "./error-state";
+import {render, screen} from "@testing-library/react";
+import {describe, expect, it, vi} from "vitest";
+import {ErrorState} from "./error-state";
 
 describe("ErrorState", () => {
   it("shows a generic message when no error is provided", () => {

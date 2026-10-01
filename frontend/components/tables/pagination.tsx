@@ -1,8 +1,8 @@
 "use client";
 
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import type { PageMetadata } from "@/types/api/pagination";
+import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import type {PageMetadata} from "@/types/api/pagination";
 
 interface TablePaginationProps {
   page: PageMetadata | undefined;

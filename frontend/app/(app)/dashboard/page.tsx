@@ -1,32 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useAppSession } from "@/providers/auth-provider";
+import {useAppSession} from "@/providers/auth-provider";
 import {
-  MegaphoneIcon,
-  UsersIcon,
-  ContactIcon,
-  MessageSquareTextIcon,
-  PlusIcon,
-  UserPlusIcon,
-  ArrowRightIcon,
+    ArrowRightIcon,
+    ContactIcon,
+    MegaphoneIcon,
+    MessageSquareTextIcon,
+    PlusIcon,
+    UserPlusIcon,
+    UsersIcon,
 } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
-import { StatCard } from "@/components/common/stat-card";
-import { EmptyState } from "@/components/common/empty-state";
-import { ErrorState } from "@/components/common/error-state";
-import { ChartCard } from "@/components/charts/chart-card";
-import { ChannelBreakdownChart } from "@/components/charts/channel-breakdown-chart";
-import { ChannelBadgeGroup } from "@/components/campaigns/channel-badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { formatDate } from "@/lib/utils/format";
+import {PageHeader} from "@/components/common/page-header";
+import {StatCard} from "@/components/common/stat-card";
+import {EmptyState} from "@/components/common/empty-state";
+import {ErrorState} from "@/components/common/error-state";
+import {ChartCard} from "@/components/charts/chart-card";
+import {ChannelBreakdownChart} from "@/components/charts/channel-breakdown-chart";
+import {ChannelBadgeGroup} from "@/components/campaigns/channel-badge";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Skeleton} from "@/components/ui/skeleton";
+import {formatDate} from "@/lib/utils/format";
 import {
-  useCampaignChannelBreakdown,
-  useDashboardStats,
-  useRecentAudiences,
-  useRecentCampaigns,
+    useCampaignChannelBreakdown,
+    useDashboardStats,
+    useRecentAudiences,
+    useRecentCampaigns,
 } from "@/hooks/dashboard/use-dashboard-summary";
 
 function greeting() {

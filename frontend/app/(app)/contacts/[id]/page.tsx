@@ -1,4 +1,4 @@
-import { ContactDetail } from "@/app/(app)/contacts/[id]/contact-detail";
+import {ContactDetail} from "@/app/(app)/contacts/[id]/contact-detail";
 
 export default async function ContactDetailPage({
   params,

@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { contactFormSchema } from "./contact";
+import {describe, expect, it} from "vitest";
+import {contactFormSchema} from "./contact";
 
 describe("contactFormSchema", () => {
   const valid = { firstName: "Jane", lastName: "Doe", email: "jane@example.com" };

@@ -1,5 +1,5 @@
-import { MegaphoneIcon } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
+import {MegaphoneIcon} from "lucide-react";
+import {cn} from "@/lib/utils/cn";
 
 function BrandMark({
   inverted = false,

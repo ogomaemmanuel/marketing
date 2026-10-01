@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { toast } from "sonner";
-import { PencilIcon } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
-import { ErrorState } from "@/components/common/error-state";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Field } from "@/components/forms/field";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAudience, useUpdateAudience } from "@/hooks/audiences/use-audiences";
-import type { Audience } from "@/types/domain/audience";
+import {useState} from "react";
+import {toast} from "sonner";
+import {PencilIcon} from "lucide-react";
+import {PageHeader} from "@/components/common/page-header";
+import {ErrorState} from "@/components/common/error-state";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Field} from "@/components/forms/field";
+import {Skeleton} from "@/components/ui/skeleton";
+import {useAudience, useUpdateAudience} from "@/hooks/audiences/use-audiences";
+import type {Audience} from "@/types/domain/audience";
 
 function AudienceDetail({ id }: { id: string }) {
   const audience = useAudience(id);

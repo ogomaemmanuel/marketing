@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-import { InboxIcon } from "lucide-react";
-import { EmptyState } from "./empty-state";
+import {render, screen} from "@testing-library/react";
+import {describe, expect, it, vi} from "vitest";
+import {InboxIcon} from "lucide-react";
+import {EmptyState} from "./empty-state";
 
 describe("EmptyState", () => {
   it("renders the title and description", () => {

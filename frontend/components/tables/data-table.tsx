@@ -1,20 +1,13 @@
 import * as React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/common/empty-state";
-import { ErrorState } from "@/components/common/error-state";
-import { TablePagination } from "@/components/tables/pagination";
-import type { PageMetadata } from "@/types/api/pagination";
-import type { NormalizedApiError } from "@/types/api/errors";
-import type { LucideIcon } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table";
+import {Skeleton} from "@/components/ui/skeleton";
+import {EmptyState} from "@/components/common/empty-state";
+import {ErrorState} from "@/components/common/error-state";
+import {TablePagination} from "@/components/tables/pagination";
+import type {PageMetadata} from "@/types/api/pagination";
+import type {NormalizedApiError} from "@/types/api/errors";
+import type {LucideIcon} from "lucide-react";
+import {cn} from "@/lib/utils/cn";
 
 export interface DataTableColumn<T> {
   id: string;

@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { toChannelBreakdown } from "./channel-breakdown";
+import {describe, expect, it} from "vitest";
+import {toChannelBreakdown} from "./channel-breakdown";
 
 describe("toChannelBreakdown", () => {
   it("keeps a stable channel order regardless of the order returned by the backend", () => {

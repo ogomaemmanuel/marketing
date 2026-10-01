@@ -11,6 +11,8 @@ public record AddContactCommand(
         String firstName,
         String lastName,
         String email,
+
+        String phoneNumber,
         Map<String, String> attributes,
         Set<AudienceId> audienceIds,
         String userId

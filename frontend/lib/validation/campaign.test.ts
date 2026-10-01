@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { campaignFormSchema } from "./campaign";
+import {describe, expect, it} from "vitest";
+import {campaignFormSchema} from "./campaign";
 
 describe("campaignFormSchema", () => {
   const base = {

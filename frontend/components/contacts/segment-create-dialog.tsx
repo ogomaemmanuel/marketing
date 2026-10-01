@@ -1,28 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { FilterIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import {useState} from "react";
+import {useFieldArray, useForm, useWatch} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {toast} from "sonner";
+import {FilterIcon, PlusIcon, Trash2Icon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Field } from "@/components/forms/field";
-import { segmentFormSchema, type SegmentFormValues } from "@/lib/validation/segment";
-import { OPERATOR_LABELS, operatorNeedsValue, operatorValueHint, toRuleValue } from "@/lib/utils/segment-rules";
-import { useCreateSegment } from "@/hooks/segments/use-segments";
-import type { RuleOperator } from "@/types/domain/segment";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Field} from "@/components/forms/field";
+import {segmentFormSchema, type SegmentFormValues} from "@/lib/validation/segment";
+import {OPERATOR_LABELS, operatorNeedsValue, operatorValueHint, toRuleValue} from "@/lib/utils/segment-rules";
+import {useCreateSegment} from "@/hooks/segments/use-segments";
+import type {RuleOperator} from "@/types/domain/segment";
 
 const FORM_ID = "create-segment-form";
 

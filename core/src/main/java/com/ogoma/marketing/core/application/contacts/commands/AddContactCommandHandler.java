@@ -35,6 +35,7 @@ public record AddContactCommandHandler(
                             command.firstName(),
                             command.lastName(),
                             command.email(),
+                            command.phoneNumber(),
                             command.attributes(),
                             command.userId()
                     );

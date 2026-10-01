@@ -1,15 +1,10 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { BLOCK_TYPES, BLOCK_TYPE_ICONS, BLOCK_TYPE_LABELS } from "@/lib/utils/email-blocks";
-import type { EmailBlockType } from "@/types/domain/email-template";
+import {PlusIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
+import {BLOCK_TYPE_ICONS, BLOCK_TYPE_LABELS, BLOCK_TYPES} from "@/lib/utils/email-blocks";
+import type {EmailBlockType} from "@/types/domain/email-template";
 
 function AddBlockMenu({ onAdd }: { onAdd: (type: EmailBlockType) => void }) {
   return (

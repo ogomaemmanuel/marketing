@@ -1,4 +1,4 @@
-import { CampaignDetail } from "@/app/(app)/campaigns/[id]/campaign-detail";
+import {CampaignDetail} from "@/app/(app)/campaigns/[id]/campaign-detail";
 
 export default async function CampaignDetailPage({
   params,

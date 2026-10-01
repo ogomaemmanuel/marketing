@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { BrandMark } from "@/components/layout/brand-mark";
-import { SidebarNav } from "@/components/layout/sidebar-nav";
+import {BrandMark} from "@/components/layout/brand-mark";
+import {SidebarNav} from "@/components/layout/sidebar-nav";
 
 function Sidebar() {
   return (

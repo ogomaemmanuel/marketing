@@ -1,15 +1,15 @@
 "use client";
 
-import { BarChart3Icon, TrendingUpIcon, MegaphoneIcon, UsersIcon } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
-import { ChartCard } from "@/components/charts/chart-card";
-import { ChannelBreakdownChart } from "@/components/charts/channel-breakdown-chart";
-import { AudienceGrowthChart } from "@/components/charts/audience-growth-chart";
-import { EmptyState } from "@/components/common/empty-state";
-import { ErrorState } from "@/components/common/error-state";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useCampaignChannelBreakdown } from "@/hooks/dashboard/use-dashboard-summary";
-import { useAudienceGrowth } from "@/hooks/analytics/use-audience-growth";
+import {BarChart3Icon, MegaphoneIcon, TrendingUpIcon, UsersIcon} from "lucide-react";
+import {PageHeader} from "@/components/common/page-header";
+import {ChartCard} from "@/components/charts/chart-card";
+import {ChannelBreakdownChart} from "@/components/charts/channel-breakdown-chart";
+import {AudienceGrowthChart} from "@/components/charts/audience-growth-chart";
+import {EmptyState} from "@/components/common/empty-state";
+import {ErrorState} from "@/components/common/error-state";
+import {Skeleton} from "@/components/ui/skeleton";
+import {useCampaignChannelBreakdown} from "@/hooks/dashboard/use-dashboard-summary";
+import {useAudienceGrowth} from "@/hooks/analytics/use-audience-growth";
 
 export default function AnalyticsPage() {
   const breakdown = useCampaignChannelBreakdown();

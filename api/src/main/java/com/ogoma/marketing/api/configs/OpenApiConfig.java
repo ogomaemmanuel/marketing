@@ -3,11 +3,14 @@ package com.ogoma.marketing.api.configs;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.*;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.boot.security.oauth2.server.resource.autoconfigure.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
+
+import java.util.Optional;
 
 @Configuration(proxyBeanMethods = false)
 public class OpenApiConfig {
@@ -15,7 +18,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI(OAuth2ResourceServerProperties resourceServerProperties) {
         final String securitySchemeName = "OidcAuth";
         Assert.notNull(resourceServerProperties.getJwt().getIssuerUri(), "Resource Server Issuer URI is required");
-        String cleanIssuerUri = resourceServerProperties.getJwt().getIssuerUri().replaceAll("/$", "");
+        String cleanIssuerUri = Optional.ofNullable(resourceServerProperties.getJwt().getIssuerUri()).map(x->x.replaceAll("/$", "")).orElse(null);
         String oidcDiscoveryUrl = "%s/.well-known/openid-configuration".formatted(cleanIssuerUri);
         return new OpenAPI()
                 .info(new Info()

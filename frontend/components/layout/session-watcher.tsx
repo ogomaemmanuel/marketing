@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { signOut, useSession } from "next-auth/react";
-import { toast } from "sonner";
+import {useEffect, useRef} from "react";
+import {signOut, useSession} from "next-auth/react";
+import {toast} from "sonner";
 
 /** Forces a clean sign-out when the refresh token flow fails. */
 function SessionWatcher() {

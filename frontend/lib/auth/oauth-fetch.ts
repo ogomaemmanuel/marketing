@@ -1,4 +1,4 @@
-import { customFetch } from "@auth/core";
+import {customFetch} from "@auth/core";
 
 /**
  * Forces Microsoft token requests to use the same redirect_uri as the

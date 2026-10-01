@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Version;
 import java.util.ArrayDeque;
 import java.util.List;
 
-public abstract class AggregateRoot<ID> extends Entity<ID> {
+public abstract class AggregateRoot<ID extends TypedID<?>> extends Entity<ID> {
     @Transient
     private final ArrayDeque<DomainEvent> domainEvents = new ArrayDeque<>();
 

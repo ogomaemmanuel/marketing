@@ -12,6 +12,8 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
+      kafka:
+        condition: service_started
     environment:
       DB_URL: ${DB_URL:-jdbc:postgresql://postgres-db:5432/marketing-main?currentSchema=public}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -22,6 +24,7 @@ services:
       EMAIL_USERNAME: ${EMAIL_USERNAME:-testuser@gmail.com}
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-test@noreply.com}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}
       SERVER_PORT: 7056
       SERVER_ADDRESS: 0.0.0.0
   frontend:
@@ -61,7 +64,29 @@ services:
       postgres-db:
         condition: service_healthy
     environment:
-      DB_URL: ${DB_URL:-postgres-db:5432/marketing-main?currentSchema=public}
+      DB_URL: ${DB_URL:-jdbc:postgresql://postgres-db:5432/marketing-main?currentSchema=public}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      EMAIL_HOST: ${EMAIL_HOST:-mailpit}
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}
+      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal-server:7233}
+      EMAIL_PORT: ${EMAIL_PORT:-1025}
+      EMAIL_USERNAME: ${EMAIL_USERNAME:-testuser@gmail.com}
+      EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-test@noreply.com}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
+  campaign-sender:
+    container_name: campaign-sender
+    networks:
+      - marketing
+    build:
+      context: ./workers/campaigns-batch-processor
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      DB_URL: ${DB_URL:-jpostgres-db:5432/marketing-main?currentSchema=public}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_USERNAME: ${DB_USERNAME}
       EMAIL_HOST: ${EMAIL_HOST:-mailpit}
@@ -70,6 +95,7 @@ services:
       EMAIL_USERNAME: ${EMAIL_USERNAME:-testuser@gmail.com}
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-test@noreply.com}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}
   temporal-admin-tools:
     image: temporalio/admin-tools:1.30
     container_name: marketing-temporal-admin-tools
@@ -150,6 +176,30 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka-marketing
+    networks:
+      - marketing
+    ports:
+      - "9092:9092"
+    environment:
+      # Configure Kafka for KRaft mode (No Zookeeper)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
+
+      # Define listeners for inside and outside the Docker network
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://localhost:9092'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT'
+
+      # Development settings
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 networks:
   marketing:
     driver: bridge

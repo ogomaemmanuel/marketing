@@ -1,11 +1,7 @@
-import { apiRequest } from "@/lib/api/client";
-import { toPageableSearchParams } from "@/lib/api/pageable";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
-import type {
-  CampaignDetail,
-  CampaignListItem,
-  CreateCampaignInput,
-} from "@/types/domain/campaign";
+import {apiRequest} from "@/lib/api/client";
+import {toPageableSearchParams} from "@/lib/api/pageable";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
+import type {CampaignDetail, CampaignListItem, CreateCampaignInput,} from "@/types/domain/campaign";
 
 export function getCampaigns(params: SearchParams = {}) {
   return apiRequest<PagedModel<CampaignListItem>>({

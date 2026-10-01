@@ -145,7 +145,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmArguments>-Dspring.main.web-application-type=reactive -Dserver.port=${openapi.dynamic.port}</jvmArguments>
+                    <jvmArguments>-Dspring.main.web-application-type=reactive  -Dserver.port=${openapi.dynamic.port}</jvmArguments>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

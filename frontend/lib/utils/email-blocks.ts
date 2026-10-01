@@ -1,17 +1,17 @@
 import {
-  HeadingIcon,
-  PilcrowIcon,
-  ListIcon,
-  TableIcon,
-  MousePointerClickIcon,
-  ImageIcon,
-  VideoIcon,
-  MoveVerticalIcon,
-  MinusIcon,
-  CodeIcon,
-  type LucideIcon,
+    CodeIcon,
+    HeadingIcon,
+    ImageIcon,
+    ListIcon,
+    type LucideIcon,
+    MinusIcon,
+    MousePointerClickIcon,
+    MoveVerticalIcon,
+    PilcrowIcon,
+    TableIcon,
+    VideoIcon,
 } from "lucide-react";
-import type { EmailBlock, EmailBlockType } from "@/types/domain/email-template";
+import type {EmailBlock, EmailBlockType} from "@/types/domain/email-template";
 
 export const BLOCK_TYPE_LABELS: Record<EmailBlockType, string> = {
   heading: "Heading",

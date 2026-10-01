@@ -1,13 +1,13 @@
 "use client";
 
-import { Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { PageHeader } from "@/components/common/page-header";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ContactCreateDialog } from "@/components/contacts/contact-create-dialog";
-import { SegmentCreateDialog } from "@/components/contacts/segment-create-dialog";
-import { ContactsTab } from "@/app/(app)/contacts/contacts-tab";
-import { AudiencesTab } from "@/app/(app)/contacts/audiences-tab";
+import {Suspense} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import {PageHeader} from "@/components/common/page-header";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {ContactCreateDialog} from "@/components/contacts/contact-create-dialog";
+import {SegmentCreateDialog} from "@/components/contacts/segment-create-dialog";
+import {ContactsTab} from "@/app/(app)/contacts/contacts-tab";
+import {AudiencesTab} from "@/app/(app)/contacts/audiences-tab";
 
 function ContactsPageContent() {
   const router = useRouter();

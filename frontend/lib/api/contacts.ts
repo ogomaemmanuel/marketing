@@ -1,13 +1,7 @@
-import { apiRequest } from "@/lib/api/client";
-import { toPageableSearchParams } from "@/lib/api/pageable";
-import type { SearchParams } from "@/types/api/pagination";
-import type { PagedModel } from "@/types/api/pagination";
-import type {
-  Contact,
-  ContactListItem,
-  CreateContactInput,
-  UpdateContactInput,
-} from "@/types/domain/contact";
+import {apiRequest} from "@/lib/api/client";
+import {toPageableSearchParams} from "@/lib/api/pageable";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
+import type {Contact, ContactListItem, CreateContactInput, UpdateContactInput,} from "@/types/domain/contact";
 
 export function getContacts(params: SearchParams = {}) {
   return apiRequest<PagedModel<ContactListItem>>({

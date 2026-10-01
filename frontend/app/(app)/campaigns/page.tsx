@@ -1,17 +1,17 @@
 "use client";
 
-import { Suspense } from "react";
+import {Suspense} from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { MegaphoneIcon, PlusIcon } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
-import { Button } from "@/components/ui/button";
-import { SearchInput } from "@/components/common/search-input";
-import { DataTable, type DataTableColumn } from "@/components/tables/data-table";
-import { ChannelBadgeGroup } from "@/components/campaigns/channel-badge";
-import { useCampaigns } from "@/hooks/campaigns/use-campaigns";
-import { useListQueryState } from "@/hooks/use-list-query-state";
-import type { CampaignListItem } from "@/types/domain/campaign";
+import {useRouter} from "next/navigation";
+import {MegaphoneIcon, PlusIcon} from "lucide-react";
+import {PageHeader} from "@/components/common/page-header";
+import {Button} from "@/components/ui/button";
+import {SearchInput} from "@/components/common/search-input";
+import {DataTable, type DataTableColumn} from "@/components/tables/data-table";
+import {ChannelBadgeGroup} from "@/components/campaigns/channel-badge";
+import {useCampaigns} from "@/hooks/campaigns/use-campaigns";
+import {useListQueryState} from "@/hooks/use-list-query-state";
+import type {CampaignListItem} from "@/types/domain/campaign";
 
 function CampaignsPageContent() {
   const router = useRouter();

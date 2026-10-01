@@ -25,6 +25,7 @@ public record UsersRepositoryAdapter(JdbcAggregateTemplate jdbcAggregateTemplate
     }
     @Override
     public Optional<UserEntity> findByExternalId(String externalId) {
+
         var criteria = Criteria.where(PropertyPath.of(UserEntity::getExternalId)).is(externalId);
         var query = Query.query(criteria);
         return jdbcAggregateTemplate.findOne(query, UserEntity.class);

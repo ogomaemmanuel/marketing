@@ -1,20 +1,20 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {
-  createSmsTemplate,
-  duplicateSmsTemplate,
-  getSmsTemplateById,
-  getSmsTemplates,
-  updateSmsTemplate,
+    createSmsTemplate,
+    duplicateSmsTemplate,
+    getSmsTemplateById,
+    getSmsTemplates,
+    updateSmsTemplate,
 } from "@/lib/api/sms-templates";
-import { queryKeys } from "@/lib/query-keys";
-import type { NormalizedApiError } from "@/types/api/errors";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
+import {queryKeys} from "@/lib/query-keys";
+import type {NormalizedApiError} from "@/types/api/errors";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
 import type {
-  CreateSmsTemplateInput,
-  SmsTemplateDetail,
-  SmsTemplateEntity,
-  SmsTemplateListItem,
-  UpdateSmsTemplateInput,
+    CreateSmsTemplateInput,
+    SmsTemplateDetail,
+    SmsTemplateEntity,
+    SmsTemplateListItem,
+    UpdateSmsTemplateInput,
 } from "@/types/domain/sms-template";
 
 export function useSmsTemplates(params: SearchParams) {

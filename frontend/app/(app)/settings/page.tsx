@@ -1,18 +1,18 @@
 "use client";
 
-import { signOut } from "next-auth/react";
-import { LogOutIcon, MoonIcon, SunIcon } from "lucide-react";
-import { useTheme } from "next-themes";
-import { PageHeader } from "@/components/common/page-header";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { initials } from "@/lib/utils/format";
-import { PalettePicker } from "@/components/layout/palette-picker";
-import { env } from "@/lib/env";
-import { isAuthDisabled } from "@/lib/auth/config";
-import { useAppSession } from "@/providers/auth-provider";
+import {signOut} from "next-auth/react";
+import {LogOutIcon, MoonIcon, SunIcon} from "lucide-react";
+import {useTheme} from "next-themes";
+import {PageHeader} from "@/components/common/page-header";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Button} from "@/components/ui/button";
+import {Separator} from "@/components/ui/separator";
+import {initials} from "@/lib/utils/format";
+import {PalettePicker} from "@/components/layout/palette-picker";
+import {env} from "@/lib/env";
+import {isAuthDisabled} from "@/lib/auth/config";
+import {useAppSession} from "@/providers/auth-provider";
 
 export default function SettingsPage() {
   const { data: session } = useAppSession();

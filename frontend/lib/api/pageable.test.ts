@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { DEFAULT_PAGE_SIZE, toPageableSearchParams } from "./pageable";
+import {describe, expect, it} from "vitest";
+import {DEFAULT_PAGE_SIZE, toPageableSearchParams} from "./pageable";
 
 describe("toPageableSearchParams", () => {
   it("defaults page to 0 and size to DEFAULT_PAGE_SIZE", () => {

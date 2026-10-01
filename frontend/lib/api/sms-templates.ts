@@ -1,12 +1,12 @@
-import { apiRequest } from "@/lib/api/client";
-import { toPageableSearchParams } from "@/lib/api/pageable";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
+import {apiRequest} from "@/lib/api/client";
+import {toPageableSearchParams} from "@/lib/api/pageable";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
 import type {
-  CreateSmsTemplateInput,
-  SmsTemplateDetail,
-  SmsTemplateEntity,
-  SmsTemplateListItem,
-  UpdateSmsTemplateInput,
+    CreateSmsTemplateInput,
+    SmsTemplateDetail,
+    SmsTemplateEntity,
+    SmsTemplateListItem,
+    UpdateSmsTemplateInput,
 } from "@/types/domain/sms-template";
 
 export function getSmsTemplates(params: SearchParams = {}) {

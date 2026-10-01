@@ -1,7 +1,7 @@
-import { AlertTriangleIcon, RotateCwIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils/cn";
-import type { NormalizedApiError } from "@/types/api/errors";
+import {AlertTriangleIcon, RotateCwIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {cn} from "@/lib/utils/cn";
+import type {NormalizedApiError} from "@/types/api/errors";
 
 interface ErrorStateProps {
   error?: NormalizedApiError | null;

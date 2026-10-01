@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import Link from "next/link";
-import { MenuIcon } from "lucide-react";
-import { BrandMark } from "@/components/layout/brand-mark";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { SidebarNav } from "@/components/layout/sidebar-nav";
+import {MenuIcon} from "lucide-react";
+import {BrandMark} from "@/components/layout/brand-mark";
+import {Button} from "@/components/ui/button";
+import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
+import {SidebarNav} from "@/components/layout/sidebar-nav";
 
 function MobileNav() {
   const [open, setOpen] = useState(false);

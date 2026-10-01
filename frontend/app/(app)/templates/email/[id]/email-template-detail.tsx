@@ -1,21 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { CopyIcon } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
-import { ErrorState } from "@/components/common/error-state";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import {useState} from "react";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
+import {CopyIcon} from "lucide-react";
+import {PageHeader} from "@/components/common/page-header";
+import {ErrorState} from "@/components/common/error-state";
+import {Button} from "@/components/ui/button";
+import {Skeleton} from "@/components/ui/skeleton";
 import {
-  EmailTemplateBuilder,
-  type EmailTemplateBuilderValue,
+    EmailTemplateBuilder,
+    type EmailTemplateBuilderValue,
 } from "@/components/templates/email-builder/email-template-builder";
-import { EmailPreviewDialog } from "@/components/templates/email-builder/email-preview-dialog";
-import { SendTestMessageDialog } from "@/components/templates/send-test-message-dialog";
-import { useCloneEmailTemplate, useEmailTemplate, useUpdateEmailTemplate } from "@/hooks/templates/use-email-templates";
-import type { EmailTemplateDetail as EmailTemplateDetailData } from "@/types/domain/email-template";
+import {EmailPreviewDialog} from "@/components/templates/email-builder/email-preview-dialog";
+import {SendTestMessageDialog} from "@/components/templates/send-test-message-dialog";
+import {useCloneEmailTemplate, useEmailTemplate, useUpdateEmailTemplate} from "@/hooks/templates/use-email-templates";
+import type {EmailTemplateDetail as EmailTemplateDetailData} from "@/types/domain/email-template";
 
 function EmailTemplateDetail({ id }: { id: string }) {
   const template = useEmailTemplate(id);

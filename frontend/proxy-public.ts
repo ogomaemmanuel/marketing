@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import type {NextRequest} from "next/server";
+import {NextResponse} from "next/server";
 
 /** Open access — used when `NEXT_PUBLIC_AUTH_DISABLED=true`. */
 export function publicProxy(req: NextRequest) {

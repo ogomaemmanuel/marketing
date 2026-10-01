@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { toast } from "sonner";
-import { PencilIcon } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
-import { ErrorState } from "@/components/common/error-state";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ContactForm } from "@/components/contacts/contact-form";
-import { useContact, useUpdateContact } from "@/hooks/contacts/use-contacts";
-import type { ContactFormValues } from "@/lib/validation/contact";
+import {useState} from "react";
+import {toast} from "sonner";
+import {PencilIcon} from "lucide-react";
+import {PageHeader} from "@/components/common/page-header";
+import {ErrorState} from "@/components/common/error-state";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {Skeleton} from "@/components/ui/skeleton";
+import {ContactForm} from "@/components/contacts/contact-form";
+import {useContact, useUpdateContact} from "@/hooks/contacts/use-contacts";
+import type {ContactFormValues} from "@/lib/validation/contact";
 
 const FORM_ID = "edit-contact-form";
 

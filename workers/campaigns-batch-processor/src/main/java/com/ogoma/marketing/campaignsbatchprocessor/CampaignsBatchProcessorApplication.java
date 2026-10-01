@@ -9,7 +9,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 @EnableKafka
 public class CampaignsBatchProcessorApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         new SpringApplicationBuilder(CampaignsBatchProcessorApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);

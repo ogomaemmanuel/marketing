@@ -1,14 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { UsersIcon } from "lucide-react";
-import { DataTable, type DataTableColumn } from "@/components/tables/data-table";
-import { SearchInput } from "@/components/common/search-input";
-import { AudienceCreateDialog } from "@/components/contacts/audience-create-dialog";
-import { useAudiences } from "@/hooks/audiences/use-audiences";
-import { useListQueryState } from "@/hooks/use-list-query-state";
-import { formatDate } from "@/lib/utils/format";
-import type { AudienceListItem } from "@/types/domain/audience";
+import {useRouter} from "next/navigation";
+import {UsersIcon} from "lucide-react";
+import {DataTable, type DataTableColumn} from "@/components/tables/data-table";
+import {SearchInput} from "@/components/common/search-input";
+import {AudienceCreateDialog} from "@/components/contacts/audience-create-dialog";
+import {useAudiences} from "@/hooks/audiences/use-audiences";
+import {useListQueryState} from "@/hooks/use-list-query-state";
+import {formatDate} from "@/lib/utils/format";
+import type {AudienceListItem} from "@/types/domain/audience";
 
 function AudiencesTab() {
   const router = useRouter();

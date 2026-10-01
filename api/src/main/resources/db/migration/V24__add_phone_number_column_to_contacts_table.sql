@@ -1,0 +1,1 @@
+ALTER TABLE IF EXISTS contacts add column if not exists phone_number varchar(255)

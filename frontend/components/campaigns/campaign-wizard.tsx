@@ -1,27 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import Link from "next/link";
-import { useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { CheckIcon, ExternalLinkIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Field } from "@/components/forms/field";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MultiSelectPopover } from "@/components/common/multi-select-popover";
-import { ChannelBadgeGroup } from "@/components/campaigns/channel-badge";
-import { campaignFormSchema, type CampaignFormValues } from "@/lib/validation/campaign";
-import { useAudiences } from "@/hooks/audiences/use-audiences";
-import { useSmsTemplates } from "@/hooks/templates/use-sms-templates";
-import { useEmailTemplates } from "@/hooks/templates/use-email-templates";
-import { useCreateCampaign } from "@/hooks/campaigns/use-campaigns";
-import { cn } from "@/lib/utils/cn";
-import type { CampaignChannel } from "@/types/domain/campaign";
+import {useForm, useWatch} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {toast} from "sonner";
+import {useRouter} from "next/navigation";
+import {CheckIcon, ExternalLinkIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Field} from "@/components/forms/field";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {MultiSelectPopover} from "@/components/common/multi-select-popover";
+import {ChannelBadgeGroup} from "@/components/campaigns/channel-badge";
+import {campaignFormSchema, type CampaignFormValues} from "@/lib/validation/campaign";
+import {useAudiences} from "@/hooks/audiences/use-audiences";
+import {useSmsTemplates} from "@/hooks/templates/use-sms-templates";
+import {useEmailTemplates} from "@/hooks/templates/use-email-templates";
+import {useCreateCampaign} from "@/hooks/campaigns/use-campaigns";
+import {cn} from "@/lib/utils/cn";
+import type {CampaignChannel} from "@/types/domain/campaign";
 
 const STEPS = ["Details", "Audience", "Content", "Review"] as const;
 const CHANNEL_OPTIONS: { value: CampaignChannel; label: string; description: string }[] = [

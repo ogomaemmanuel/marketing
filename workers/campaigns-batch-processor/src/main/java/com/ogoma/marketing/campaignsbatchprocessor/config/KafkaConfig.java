@@ -1,4 +1,4 @@
-package com.ogoma.marketing.campaignsbatchprocessor;
+package com.ogoma.marketing.campaignsbatchprocessor.config;
 
 import com.ogoma.marketing.infrastructure.messaging.MessageEnvelope;
 import org.apache.kafka.common.serialization.StringDeserializer;

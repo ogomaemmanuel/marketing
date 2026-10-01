@@ -1,4 +1,4 @@
-import { EmailTemplateDetail } from "@/app/(app)/templates/email/[id]/email-template-detail";
+import {EmailTemplateDetail} from "@/app/(app)/templates/email/[id]/email-template-detail";
 
 export default async function EmailTemplateDetailPage({
   params,

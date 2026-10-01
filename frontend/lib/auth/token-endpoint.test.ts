@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { tokenEndpoint } from "./token-endpoint";
+import {describe, expect, it} from "vitest";
+import {tokenEndpoint} from "./token-endpoint";
 
 describe("tokenEndpoint", () => {
   it("falls back to the common tenant when no issuer is configured", () => {

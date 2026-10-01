@@ -1,7 +1,7 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import type { CampaignChannel } from "@/types/domain/campaign";
+import {Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import type {CampaignChannel} from "@/types/domain/campaign";
 
 interface ChannelBreakdownChartProps {
   data: { channel: CampaignChannel; campaigns: number }[];

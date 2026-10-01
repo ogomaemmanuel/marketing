@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import { LogInIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {useState} from "react";
+import {signIn} from "next-auth/react";
+import {useSearchParams} from "next/navigation";
+import {LogInIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
 
 function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);

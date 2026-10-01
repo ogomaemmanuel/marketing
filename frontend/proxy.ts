@@ -1,6 +1,6 @@
-import type { NextFetchEvent, NextMiddleware, NextRequest } from "next/server";
-import { isAuthDisabled } from "@/lib/auth/config";
-import { publicProxy } from "@/proxy-public";
+import type {NextFetchEvent, NextMiddleware, NextRequest} from "next/server";
+import {isAuthDisabled} from "@/lib/auth/config";
+import {publicProxy} from "@/proxy-public";
 
 /**
  * Route protection for the application shell. Renamed from `middleware.ts`

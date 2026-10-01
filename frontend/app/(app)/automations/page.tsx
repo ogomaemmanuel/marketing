@@ -1,6 +1,6 @@
-import { WorkflowIcon } from "lucide-react";
-import { PageHeader } from "@/components/common/page-header";
-import { EmptyState } from "@/components/common/empty-state";
+import {WorkflowIcon} from "lucide-react";
+import {PageHeader} from "@/components/common/page-header";
+import {EmptyState} from "@/components/common/empty-state";
 
 export default function AutomationsPage() {
   return (

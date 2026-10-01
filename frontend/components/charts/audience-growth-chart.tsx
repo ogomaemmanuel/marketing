@@ -1,7 +1,7 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import type { AudienceGrowthPoint } from "@/hooks/analytics/use-audience-growth";
+import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import type {AudienceGrowthPoint} from "@/hooks/analytics/use-audience-growth";
 
 function AudienceGrowthChart({ points }: { points: AudienceGrowthPoint[] }) {
   return (

@@ -1,12 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { ContactIcon } from "lucide-react";
-import { DataTable, type DataTableColumn } from "@/components/tables/data-table";
-import { SearchInput } from "@/components/common/search-input";
-import { useContacts } from "@/hooks/contacts/use-contacts";
-import { useListQueryState } from "@/hooks/use-list-query-state";
-import type { ContactListItem } from "@/types/domain/contact";
+import {useRouter} from "next/navigation";
+import {ContactIcon} from "lucide-react";
+import {DataTable, type DataTableColumn} from "@/components/tables/data-table";
+import {SearchInput} from "@/components/common/search-input";
+import {useContacts} from "@/hooks/contacts/use-contacts";
+import {useListQueryState} from "@/hooks/use-list-query-state";
+import type {ContactListItem} from "@/types/domain/contact";
 
 function ContactsTab() {
   const router = useRouter();

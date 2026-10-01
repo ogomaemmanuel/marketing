@@ -1,4 +1,4 @@
-import type { SearchParams } from "@/types/api/pagination";
+import type {SearchParams} from "@/types/api/pagination";
 
 export const DEFAULT_PAGE_SIZE = 20;
 

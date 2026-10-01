@@ -1,11 +1,11 @@
 "use client";
 
-import { CheckIcon, SwatchBookIcon } from "lucide-react";
-import { STOREFRONT_PALETTES } from "@/lib/theme/palettes";
-import { usePalette } from "@/providers/palette-provider";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils/cn";
+import {CheckIcon, SwatchBookIcon} from "lucide-react";
+import {STOREFRONT_PALETTES} from "@/lib/theme/palettes";
+import {usePalette} from "@/providers/palette-provider";
+import {Button} from "@/components/ui/button";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils/cn";
 
 function PaletteSwatches({
   sidebar,

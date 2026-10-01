@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Field } from "@/components/forms/field";
-import { EmptyState } from "@/components/common/empty-state";
-import { BlockEditorCard } from "@/components/templates/email-builder/block-editor-card";
-import { AddBlockMenu } from "@/components/templates/email-builder/add-block-menu";
-import { createDefaultBlock } from "@/lib/utils/email-blocks";
-import { LayersIcon } from "lucide-react";
-import type { EmailBlock, EmailSetting, EmailTemplate } from "@/types/domain/email-template";
+import {useState} from "react";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Field} from "@/components/forms/field";
+import {EmptyState} from "@/components/common/empty-state";
+import {BlockEditorCard} from "@/components/templates/email-builder/block-editor-card";
+import {AddBlockMenu} from "@/components/templates/email-builder/add-block-menu";
+import {createDefaultBlock} from "@/lib/utils/email-blocks";
+import {LayersIcon} from "lucide-react";
+import type {EmailBlock, EmailSetting, EmailTemplate} from "@/types/domain/email-template";
 
 export interface EmailTemplateBuilderValue {
   name: string;

@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils/cn";
-import { NAV_GROUPS } from "@/components/layout/nav-config";
+import {usePathname} from "next/navigation";
+import {Badge} from "@/components/ui/badge";
+import {cn} from "@/lib/utils/cn";
+import {NAV_GROUPS} from "@/components/layout/nav-config";
 
 function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();

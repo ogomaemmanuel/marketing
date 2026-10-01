@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAudiences } from "@/lib/api/audiences";
-import type { NormalizedApiError } from "@/types/api/errors";
+import {useQuery} from "@tanstack/react-query";
+import {getAudiences} from "@/lib/api/audiences";
+import type {NormalizedApiError} from "@/types/api/errors";
 
 const SAMPLE_SIZE = 200;
 

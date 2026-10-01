@@ -1,6 +1,6 @@
-import { Sidebar } from "@/components/layout/sidebar";
-import { Topbar } from "@/components/layout/topbar";
-import { SessionWatcher } from "@/components/layout/session-watcher";
+import {Sidebar} from "@/components/layout/sidebar";
+import {Topbar} from "@/components/layout/topbar";
+import {SessionWatcher} from "@/components/layout/session-watcher";
 
 function AppShell({
   children,

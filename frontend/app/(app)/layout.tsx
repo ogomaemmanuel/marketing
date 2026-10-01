@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
-import { AppShell } from "@/components/layout/app-shell";
-import { isAuthDisabled } from "@/lib/auth/config";
+import {redirect} from "next/navigation";
+import {AppShell} from "@/components/layout/app-shell";
+import {isAuthDisabled} from "@/lib/auth/config";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   if (!isAuthDisabled()) {

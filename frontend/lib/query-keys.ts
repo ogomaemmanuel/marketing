@@ -1,4 +1,4 @@
-import type { SearchParams } from "@/types/api/pagination";
+import type {SearchParams} from "@/types/api/pagination";
 
 /** Centralized query key factory so invalidation stays consistent. */
 export const queryKeys = {

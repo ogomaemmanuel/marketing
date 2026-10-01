@@ -1,11 +1,11 @@
-import { apiRequest } from "@/lib/api/client";
-import { toPageableSearchParams } from "@/lib/api/pageable";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
+import {apiRequest} from "@/lib/api/client";
+import {toPageableSearchParams} from "@/lib/api/pageable";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
 import type {
-  CreateEmailTemplateInput,
-  EmailTemplateDetail,
-  EmailTemplateListItem,
-  UpdateEmailTemplateInput,
+    CreateEmailTemplateInput,
+    EmailTemplateDetail,
+    EmailTemplateListItem,
+    UpdateEmailTemplateInput,
 } from "@/types/domain/email-template";
 
 /**

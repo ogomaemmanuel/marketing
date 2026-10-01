@@ -1,4 +1,4 @@
-import type { RuleOperator, RuleValue, SegmentRule, SegmentRuleGroup } from "@/types/domain/segment";
+import type {RuleOperator, RuleValue, SegmentRule, SegmentRuleGroup} from "@/types/domain/segment";
 
 export const OPERATOR_LABELS: Record<RuleOperator, string> = {
   EQUAL: "Equals",

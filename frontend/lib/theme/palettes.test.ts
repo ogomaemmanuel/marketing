@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { DEFAULT_PALETTE, isStorefrontPaletteId, STOREFRONT_PALETTES } from "./palettes";
+import {describe, expect, it} from "vitest";
+import {DEFAULT_PALETTE, isStorefrontPaletteId, STOREFRONT_PALETTES} from "./palettes";
 
 describe("storefront palettes", () => {
   it("includes lagoon as the default colorway", () => {

@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { DEFAULT_PAGE_SIZE } from "@/lib/api/pageable";
+import {useCallback, useMemo} from "react";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {useDebouncedValue} from "@/hooks/use-debounced-value";
+import {DEFAULT_PAGE_SIZE} from "@/lib/api/pageable";
 
 /**
  * Keeps `page` and `q` (search) in the URL so lists are bookmarkable and

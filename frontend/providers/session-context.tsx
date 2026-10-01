@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext } from "react";
-import { SessionProvider, useSession } from "next-auth/react";
-import { GUEST_SESSION, isAuthDisabled } from "@/lib/auth/config";
+import {createContext, useContext} from "react";
+import {SessionProvider, useSession} from "next-auth/react";
+import {GUEST_SESSION, isAuthDisabled} from "@/lib/auth/config";
 
 type AppSessionStatus = "authenticated" | "loading" | "unauthenticated";
 

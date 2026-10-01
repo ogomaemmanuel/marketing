@@ -5,7 +5,8 @@ import com.ogoma.marketing.core.domain.outbox.OutboxRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.Query;import org.springframework.stereotype.Repository;
+import org.springframework.data.relational.core.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Stream;
