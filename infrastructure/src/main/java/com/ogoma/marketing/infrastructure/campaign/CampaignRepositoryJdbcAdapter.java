@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.time.Clock;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-@Component
+@Repository
 public record CampaignRepositoryJdbcAdapter(
         JdbcAggregateTemplate jdbcAggregateTemplate,
         Clock clock

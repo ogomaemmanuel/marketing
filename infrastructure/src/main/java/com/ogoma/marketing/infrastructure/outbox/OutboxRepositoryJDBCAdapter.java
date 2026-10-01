@@ -6,13 +6,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 
-@Component
+@Repository
 public record OutboxRepositoryJDBCAdapter(JdbcAggregateTemplate jdbcAggregateTemplate) implements OutboxRepository {
     @Override
     public List<Outbox> saveAll(List<Outbox> outboxes) {

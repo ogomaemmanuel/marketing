@@ -2,8 +2,13 @@ package com.ogoma.marketing.core.domain.campaigns;
 
 
 import com.ogoma.marketing.core.domain.audience.AudienceId;
-import com.ogoma.marketing.core.sharedkernel.AggregateRoot;
+import com.ogoma.marketing.core.domain.campaigns.events.CampaignCreatedEvent;
+import com.ogoma.marketing.core.domain.campaigns.events.CampaignSentEvent;
+import com.ogoma.marketing.core.domain.email.EmailTemplateID;
+import com.ogoma.marketing.core.domain.segments.SegmentID;
+import com.ogoma.marketing.core.domain.sms.SmsTemplateID;
 import com.ogoma.marketing.core.sharedkernel.CustomAssert;
+import com.ogoma.marketing.core.sharedkernel.ddd.AggregateRoot;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.data.relational.core.mapping.Embedded;
@@ -12,6 +17,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,9 +45,14 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
     @MappedCollection(idColumn = "campaign_id")
     @Getter(AccessLevel.PACKAGE)
     Set<CampaignChannel> channels = new HashSet<>();
+
     @MappedCollection(idColumn = "campaign_id")
+    @Getter(AccessLevel.PACKAGE)
     private Set<CampaignAudience> audiences = new HashSet<>();
 
+    @MappedCollection(idColumn = "campaign_id")
+    @Getter(AccessLevel.PACKAGE)
+    private Set<CampaignSegment> segments = new HashSet<>();
 
     private CampaignEntity() {
         super(null);
@@ -51,6 +62,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             String name,
             String description,
             Set<AudienceId> audienceIds,
+            Set<SegmentID> segmentIDS,
             CampaignConfiguration configuration,
             String createdBy, Instant createdAt) {
         CustomAssert.hasLength(name, () -> new IllegalArgumentException("Name is required"));
@@ -61,6 +73,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this.name = name;
         this.description = description;
         this.audiences.addAll(toAudienceRefs(audienceIds));
+        this.segments.addAll(toSegmentRefs(segmentIDS));
         this.campaignConfiguration = configuration;
         this.createdAt = createdAt;
         this.lastUpdatedAt = createdAt;
@@ -71,10 +84,12 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
 
     }
 
+
     public static CampaignEntity createNew(
             String name,
             String description,
             Set<AudienceId> audienceIds,
+            Set<SegmentID> segmentIDS,
             CampaignConfiguration configuration,
             String createdBy,
             Clock clock
@@ -84,6 +99,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
                 name,
                 description,
                 audienceIds,
+                segmentIDS,
                 configuration,
                 createdBy,
                 clock.instant());
@@ -101,6 +117,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
             String name,
             String description,
             Set<AudienceId> audienceIds,
+            Set<SegmentID> segmentIDS,
             CampaignConfiguration configuration,
             String updatedBy, Clock clock) {
         CustomAssert.hasLength(name, () -> new IllegalArgumentException("Name is required"));
@@ -113,6 +130,8 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this.campaignConfiguration = configuration;
         this.audiences.clear();
         this.audiences.addAll(toAudienceRefs(audienceIds));
+        this.segments.clear();
+        this.segments.addAll(toSegmentRefs(segmentIDS));
         this.touch(updatedBy, clock.instant());
     }
 
@@ -124,6 +143,14 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         }
         this.status = Status.SENDING;
         this.touch(sentBy, clock.instant());
+        this.raiseEvent(new CampaignSentEvent(
+                this.getId().id(),
+                this.getName(),
+                this.getDescription(),
+                this.lastUpdatedAt,
+                this.lastUpdatedBy
+        ));
+
     }
 
     private void touch(String lastUpdatedBy, Instant updatedAt) {
@@ -131,8 +158,8 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this.lastUpdatedAt = updatedAt;
     }
 
-    public Set<CampaignAudience> getAudienceRefs() {
-        return Collections.unmodifiableSet(this.audiences);
+    public Set<AudienceId> getAudienceRefs() {
+        return getAudiences().stream().map(CampaignAudience::audienceId).collect(Collectors.toSet());
     }
 
     private static Set<CampaignAudience> toAudienceRefs(Set<AudienceId> ids) {
@@ -153,6 +180,25 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
 
     public Set<Channel> getChannels() {
         return this.channels.stream().map(CampaignChannel::channel).collect(Collectors.toSet());
+    }
+
+    private Collection<CampaignSegment> toSegmentRefs(Set<SegmentID> segmentIDS) {
+        if (segmentIDS == null) {
+            return Set.of();
+        }
+        return segmentIDS.stream().map(CampaignSegment::new).collect(Collectors.toSet());
+    }
+
+    public Set<SegmentID> getSegmentRefs() {
+        return this.getSegments().stream().map(CampaignSegment::segmentId).collect(Collectors.toSet());
+    }
+
+    public SmsTemplateID getSmsTemplateId() {
+        return campaignConfiguration.smsTemplateID();
+    }
+
+    public EmailTemplateID getEmailTemplateId() {
+        return campaignConfiguration.emailTemplateID();
     }
 
 }

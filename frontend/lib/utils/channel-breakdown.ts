@@ -1,5 +1,5 @@
-import type { CampaignChannel } from "@/types/domain/campaign";
-import type { CampaignsByChannelCount } from "@/types/domain/dashboard";
+import type {CampaignChannel} from "@/types/domain/campaign";
+import type {CampaignsByChannelCount} from "@/types/domain/dashboard";
 
 export interface ChannelBreakdown {
   byChannel: { channel: CampaignChannel; campaigns: number }[];

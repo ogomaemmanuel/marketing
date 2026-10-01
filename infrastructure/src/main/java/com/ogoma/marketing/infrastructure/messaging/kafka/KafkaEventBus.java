@@ -24,7 +24,7 @@ public class KafkaEventBus implements EventBus {
         var producerRecord = new ProducerRecord<>(
                 message.destination(),
                 message.aggregateId(),
-                JsonMapper.shared().writeValueAsString(message.payload())
+                JsonMapper.shared().writeValueAsString(message)
         );
         this.kafkaTemplate.send(producerRecord);
     }

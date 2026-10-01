@@ -1,6 +1,7 @@
-package com.ogoma.marketing.core.domain.campaigns;
+package com.ogoma.marketing.core.domain.campaigns.events;
 
-import com.ogoma.marketing.core.sharedkernel.DomainEvent;
+import com.ogoma.marketing.core.domain.campaigns.CampaignEntity;
+import com.ogoma.marketing.core.sharedkernel.ddd.DomainEvent;
 
 import java.time.Instant;
 import java.util.UUID;

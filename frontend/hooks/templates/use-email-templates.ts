@@ -1,20 +1,20 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {
-  cloneEmailTemplate,
-  createEmailTemplate,
-  getEmailTemplateById,
-  getEmailTemplates,
-  previewEmailTemplate,
-  updateEmailTemplate,
+    cloneEmailTemplate,
+    createEmailTemplate,
+    getEmailTemplateById,
+    getEmailTemplates,
+    previewEmailTemplate,
+    updateEmailTemplate,
 } from "@/lib/api/email-templates";
-import { queryKeys } from "@/lib/query-keys";
-import type { NormalizedApiError } from "@/types/api/errors";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
+import {queryKeys} from "@/lib/query-keys";
+import type {NormalizedApiError} from "@/types/api/errors";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
 import type {
-  CreateEmailTemplateInput,
-  EmailTemplateDetail,
-  EmailTemplateListItem,
-  UpdateEmailTemplateInput,
+    CreateEmailTemplateInput,
+    EmailTemplateDetail,
+    EmailTemplateListItem,
+    UpdateEmailTemplateInput,
 } from "@/types/domain/email-template";
 
 export function useEmailTemplates(params: SearchParams) {

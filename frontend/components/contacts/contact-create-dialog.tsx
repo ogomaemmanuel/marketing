@@ -1,21 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { toast } from "sonner";
-import { UserPlusIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {useState} from "react";
+import {toast} from "sonner";
+import {UserPlusIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
-import { ContactForm } from "@/components/contacts/contact-form";
-import { useCreateContact } from "@/hooks/contacts/use-contacts";
-import type { ContactFormValues } from "@/lib/validation/contact";
+import {ContactForm} from "@/components/contacts/contact-form";
+import {useCreateContact} from "@/hooks/contacts/use-contacts";
+import type {ContactFormValues} from "@/lib/validation/contact";
 
 const FORM_ID = "create-contact-form";
 

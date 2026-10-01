@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 
+import java.time.Clock;
 import java.util.List;
 
 @Configuration
@@ -29,6 +30,11 @@ import java.util.List;
 @ComponentScan(basePackages = "com.ogoma.marketing")
 @Import(JDBCConverterRegistry.class)
 public class WorkerFactoryConfig {
+    @Bean
+    Clock clock(){
+        return Clock.systemDefaultZone();
+    }
+
     @Bean
     public WorkerFactory workerFactory(WorkflowClient workflowClient) {
         return WorkerFactory.newInstance(workflowClient);

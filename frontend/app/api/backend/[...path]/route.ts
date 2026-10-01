@@ -1,5 +1,5 @@
-import { proxyToBackend } from "@/lib/api/backend-proxy";
-import type { NextRequest } from "next/server";
+import {proxyToBackend} from "@/lib/api/backend-proxy";
+import type {NextRequest} from "next/server";
 
 type RouteContext = { params: Promise<{ path: string[] }> };
 

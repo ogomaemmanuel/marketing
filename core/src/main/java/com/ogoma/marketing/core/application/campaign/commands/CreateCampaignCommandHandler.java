@@ -32,6 +32,7 @@ public record CreateCampaignCommandHandler(
                     command.name(),
                     command.description(),
                     command.targetAudienceIds(),
+                    command.targetSegmentIds(),
                     configuration,
                     command.userId(),
                     clock);

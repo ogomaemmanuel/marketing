@@ -8,7 +8,7 @@ import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration
 import java.util.List;
 
 @Configuration
-public class JDBCConverterRegistry extends AbstractJdbcConfiguration {
+public class  JDBCConverterRegistry extends AbstractJdbcConfiguration {
     @Override
     @NullMarked
     protected List<?> userConverters() {

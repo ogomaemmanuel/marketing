@@ -1,7 +1,7 @@
 package com.ogoma.marketing.core.domain.campaigns;
 
 import com.ogoma.marketing.core.sharedkernel.CustomAssert;
-import com.ogoma.marketing.core.sharedkernel.TypedID;
+import com.ogoma.marketing.core.sharedkernel.ddd.TypedID;
 
 import java.util.UUID;
 

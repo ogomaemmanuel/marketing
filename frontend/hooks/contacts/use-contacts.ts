@@ -1,14 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addContact, getContactById, getContacts, updateContact } from "@/lib/api/contacts";
-import { queryKeys } from "@/lib/query-keys";
-import type { NormalizedApiError } from "@/types/api/errors";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
-import type {
-  Contact,
-  ContactListItem,
-  CreateContactInput,
-  UpdateContactInput,
-} from "@/types/domain/contact";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {addContact, getContactById, getContacts, updateContact} from "@/lib/api/contacts";
+import {queryKeys} from "@/lib/query-keys";
+import type {NormalizedApiError} from "@/types/api/errors";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
+import type {Contact, ContactListItem, CreateContactInput, UpdateContactInput,} from "@/types/domain/contact";
 
 export function useContacts(params: SearchParams) {
   return useQuery<PagedModel<ContactListItem>, NormalizedApiError>({

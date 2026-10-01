@@ -1,12 +1,13 @@
-package com.ogoma.marketing.core.sharedkernel;
+package com.ogoma.marketing.core.sharedkernel.ddd;
 
+import com.ogoma.marketing.core.sharedkernel.CustomAssert;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
 
 import java.util.ArrayDeque;
 import java.util.List;
 
-public abstract class AggregateRoot<ID> extends Entity<ID> {
+public abstract class AggregateRoot<ID extends TypedID<?>> extends Entity<ID> {
     @Transient
     private final ArrayDeque<DomainEvent> domainEvents = new ArrayDeque<>();
 

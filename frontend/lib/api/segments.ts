@@ -1,6 +1,6 @@
-import { apiRequest } from "@/lib/api/client";
-import { serializeRuleGroup } from "@/lib/utils/segment-rules";
-import type { CreateSegmentInput } from "@/types/domain/segment";
+import {apiRequest} from "@/lib/api/client";
+import {serializeRuleGroup} from "@/lib/utils/segment-rules";
+import type {CreateSegmentInput} from "@/types/domain/segment";
 
 /** Returns the new segment's id. There is no list/get endpoint yet. */
 export function createSegment(input: CreateSegmentInput) {

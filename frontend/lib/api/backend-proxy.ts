@@ -1,8 +1,8 @@
-import { auth } from "@/auth";
-import { isAuthDisabled } from "@/lib/auth/config";
-import { serverEnv } from "@/lib/env";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import {auth} from "@/auth";
+import {isAuthDisabled} from "@/lib/auth/config";
+import {serverEnv} from "@/lib/env";
+import type {NextRequest} from "next/server";
+import {NextResponse} from "next/server";
 
 const HOP_BY_HOP_HEADERS = new Set([
   "connection",

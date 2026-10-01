@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { IBM_Plex_Mono, Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import type {Metadata} from "next";
+import {IBM_Plex_Mono, Instrument_Serif, Plus_Jakarta_Sans} from "next/font/google";
 import "./globals.css";
-import { QueryProvider } from "@/providers/query-provider";
-import { AuthProvider } from "@/providers/auth-provider";
-import { ThemeProvider } from "@/providers/theme-provider";
-import { PaletteProvider } from "@/providers/palette-provider";
-import { Toaster } from "@/components/ui/sonner";
-import { DEFAULT_PALETTE, PALETTE_STORAGE_KEY, STOREFRONT_PALETTES } from "@/lib/theme/palettes";
+import {QueryProvider} from "@/providers/query-provider";
+import {AuthProvider} from "@/providers/auth-provider";
+import {ThemeProvider} from "@/providers/theme-provider";
+import {PaletteProvider} from "@/providers/palette-provider";
+import {Toaster} from "@/components/ui/sonner";
+import {DEFAULT_PALETTE, PALETTE_STORAGE_KEY, STOREFRONT_PALETTES} from "@/lib/theme/palettes";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",

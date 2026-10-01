@@ -1,10 +1,10 @@
 "use client";
 
-import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
-import { cn } from "@/lib/utils/cn";
+import {CheckIcon, ChevronsUpDownIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Checkbox} from "@/components/ui/checkbox";
+import {cn} from "@/lib/utils/cn";
 
 export interface MultiSelectOption {
   value: string;

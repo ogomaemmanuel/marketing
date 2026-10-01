@@ -1,11 +1,11 @@
 "use client";
 
-import { PageHeader } from "@/components/common/page-header";
-import { ErrorState } from "@/components/common/error-state";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ChannelBadgeGroup } from "@/components/campaigns/channel-badge";
-import { useCampaign } from "@/hooks/campaigns/use-campaigns";
+import {PageHeader} from "@/components/common/page-header";
+import {ErrorState} from "@/components/common/error-state";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Skeleton} from "@/components/ui/skeleton";
+import {ChannelBadgeGroup} from "@/components/campaigns/channel-badge";
+import {useCampaign} from "@/hooks/campaigns/use-campaigns";
 
 function CampaignDetail({ id }: { id: string }) {
   const campaign = useCampaign(id);

@@ -7,12 +7,12 @@ import org.springframework.data.core.PropertyPath;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 
-@Component
+@Repository
 public record UsersRepositoryAdapter(JdbcAggregateTemplate jdbcAggregateTemplate) implements UsersRepository {
 
     @Override
@@ -25,6 +25,7 @@ public record UsersRepositoryAdapter(JdbcAggregateTemplate jdbcAggregateTemplate
     }
     @Override
     public Optional<UserEntity> findByExternalId(String externalId) {
+
         var criteria = Criteria.where(PropertyPath.of(UserEntity::getExternalId)).is(externalId);
         var query = Query.query(criteria);
         return jdbcAggregateTemplate.findOne(query, UserEntity.class);

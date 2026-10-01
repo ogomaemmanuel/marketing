@@ -1,12 +1,6 @@
-import { describe, expect, it } from "vitest";
-import {
-  operatorNeedsValue,
-  operatorValueHint,
-  serializeRule,
-  serializeRuleGroup,
-  toRuleValue,
-} from "./segment-rules";
-import type { SegmentRuleGroup } from "@/types/domain/segment";
+import {describe, expect, it} from "vitest";
+import {operatorNeedsValue, operatorValueHint, serializeRule, serializeRuleGroup, toRuleValue,} from "./segment-rules";
+import type {SegmentRuleGroup} from "@/types/domain/segment";
 
 describe("operatorNeedsValue", () => {
   it("returns false for empty/null-check operators", () => {

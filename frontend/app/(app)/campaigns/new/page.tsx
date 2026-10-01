@@ -1,5 +1,5 @@
-import { PageHeader } from "@/components/common/page-header";
-import { CampaignWizard } from "@/components/campaigns/campaign-wizard";
+import {PageHeader} from "@/components/common/page-header";
+import {CampaignWizard} from "@/components/campaigns/campaign-wizard";
 
 export default function NewCampaignPage() {
   return (

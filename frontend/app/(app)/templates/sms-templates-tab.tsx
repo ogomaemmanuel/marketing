@@ -1,23 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { MessageSquareTextIcon, MoreHorizontalIcon, PlusIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DataTable, type DataTableColumn } from "@/components/tables/data-table";
-import { SearchInput } from "@/components/common/search-input";
-import { useDuplicateSmsTemplate, useSmsTemplates } from "@/hooks/templates/use-sms-templates";
-import { useListQueryState } from "@/hooks/use-list-query-state";
-import { formatDate } from "@/lib/utils/format";
-import type { SmsTemplateListItem } from "@/types/domain/sms-template";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
+import {MessageSquareTextIcon, MoreHorizontalIcon, PlusIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Badge} from "@/components/ui/badge";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
+import {DataTable, type DataTableColumn} from "@/components/tables/data-table";
+import {SearchInput} from "@/components/common/search-input";
+import {useDuplicateSmsTemplate, useSmsTemplates} from "@/hooks/templates/use-sms-templates";
+import {useListQueryState} from "@/hooks/use-list-query-state";
+import {formatDate} from "@/lib/utils/format";
+import type {SmsTemplateListItem} from "@/types/domain/sms-template";
 
 function SmsTemplatesTab() {
   const router = useRouter();

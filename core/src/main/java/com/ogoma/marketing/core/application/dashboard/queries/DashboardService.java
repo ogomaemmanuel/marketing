@@ -1,11 +1,11 @@
 package com.ogoma.marketing.core.application.dashboard.queries;
 
-import java.util.Set;
+import java.util.List;
 
 public interface DashboardService {
 
      GetStatsQueryView getStats();
 
-     Set<GetCampaignsByChannelCountView> getCampaignsByChannelCount();
+     List<GetCampaignsByChannelCountView> getCampaignsByChannelCount();
 
 }

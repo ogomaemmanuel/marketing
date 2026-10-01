@@ -1,20 +1,20 @@
 "use client";
 
-import { signOut } from "next-auth/react";
-import { LogOutIcon, UserIcon } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {signOut} from "next-auth/react";
+import {LogOutIcon, UserIcon} from "lucide-react";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { initials } from "@/lib/utils/format";
-import { isAuthDisabled } from "@/lib/auth/config";
-import { useAppSession } from "@/providers/auth-provider";
+import {Button} from "@/components/ui/button";
+import {initials} from "@/lib/utils/format";
+import {isAuthDisabled} from "@/lib/auth/config";
+import {useAppSession} from "@/providers/auth-provider";
 
 function UserMenu() {
   const { data: session } = useAppSession();

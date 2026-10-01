@@ -1,4 +1,4 @@
-import { z } from "zod";
+import {z} from "zod";
 
 export const transactionalMessageFormSchema = z.object({
   channel: z.enum(["EMAIL", "SMS"]),

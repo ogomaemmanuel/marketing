@@ -1,7 +1,7 @@
-import { Suspense } from "react";
-import { BrandMark } from "@/components/layout/brand-mark";
-import { PalettePickerMenu } from "@/components/layout/palette-picker";
-import { LoginForm } from "@/app/login/login-form";
+import {Suspense} from "react";
+import {BrandMark} from "@/components/layout/brand-mark";
+import {PalettePickerMenu} from "@/components/layout/palette-picker";
+import {LoginForm} from "@/app/login/login-form";
 
 export default function LoginPage() {
   return (

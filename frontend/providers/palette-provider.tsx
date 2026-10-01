@@ -1,12 +1,7 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useSyncExternalStore, type ReactNode } from "react";
-import {
-  DEFAULT_PALETTE,
-  readStoredPalette,
-  writeStoredPalette,
-  type StorefrontPaletteId,
-} from "@/lib/theme/palettes";
+import {createContext, type ReactNode, useCallback, useContext, useMemo, useSyncExternalStore} from "react";
+import {DEFAULT_PALETTE, readStoredPalette, type StorefrontPaletteId, writeStoredPalette,} from "@/lib/theme/palettes";
 
 const listeners = new Set<() => void>();
 

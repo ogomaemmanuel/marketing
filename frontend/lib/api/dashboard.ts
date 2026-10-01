@@ -1,5 +1,5 @@
-import { apiRequest } from "@/lib/api/client";
-import type { CampaignsByChannelCount, DashboardStats } from "@/types/domain/dashboard";
+import {apiRequest} from "@/lib/api/client";
+import type {CampaignsByChannelCount, DashboardStats} from "@/types/domain/dashboard";
 
 export function getDashboardStats() {
   return apiRequest<DashboardStats>({

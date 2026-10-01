@@ -1,9 +1,6 @@
-import axios, { AxiosError, type AxiosRequestConfig } from "axios";
-import { clientEnv } from "@/lib/env";
-import type {
-  NormalizedApiError,
-  ValidationErrorBody,
-} from "@/types/api/errors";
+import axios, {AxiosError, type AxiosRequestConfig} from "axios";
+import {clientEnv} from "@/lib/env";
+import type {NormalizedApiError, ValidationErrorBody,} from "@/types/api/errors";
 
 export const apiClient = axios.create({
   baseURL: clientEnv.apiBasePath,

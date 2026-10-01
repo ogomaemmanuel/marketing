@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import { UsersIcon } from "lucide-react";
-import { StatCard } from "./stat-card";
+import {render, screen} from "@testing-library/react";
+import {describe, expect, it} from "vitest";
+import {UsersIcon} from "lucide-react";
+import {StatCard} from "./stat-card";
 
 describe("StatCard", () => {
   it("renders the label and value", () => {

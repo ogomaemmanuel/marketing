@@ -1,19 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  createAudience,
-  getAudienceById,
-  getAudiences,
-  updateAudience,
-} from "@/lib/api/audiences";
-import { queryKeys } from "@/lib/query-keys";
-import type { NormalizedApiError } from "@/types/api/errors";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
-import type {
-  Audience,
-  AudienceListItem,
-  CreateAudienceInput,
-  UpdateAudienceInput,
-} from "@/types/domain/audience";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {createAudience, getAudienceById, getAudiences, updateAudience,} from "@/lib/api/audiences";
+import {queryKeys} from "@/lib/query-keys";
+import type {NormalizedApiError} from "@/types/api/errors";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
+import type {Audience, AudienceListItem, CreateAudienceInput, UpdateAudienceInput,} from "@/types/domain/audience";
 
 export function useAudiences(params: SearchParams) {
   return useQuery<PagedModel<AudienceListItem>, NormalizedApiError>({

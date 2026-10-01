@@ -5,9 +5,11 @@ import com.ogoma.marketing.core.domain.contacts.ContactID;
 import com.ogoma.marketing.core.domain.segments.SegmentID;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public interface AudienceMatcher {
     Long count(List<AudienceId> audience);
 
-    List<ContactID> match(List<AudienceId> audience, List<SegmentID> segmentIDS);
+    Stream<ContactID> match(Set<AudienceId> audience, Set<SegmentID> segmentIDS);
 }

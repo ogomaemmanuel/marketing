@@ -1,6 +1,7 @@
 package com.ogoma.marketing.infrastructure.converters;
 
-import com.ogoma.marketing.core.sharedkernel.TypedID;
+import com.ogoma.marketing.core.sharedkernel.ddd.TypedID;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
@@ -19,7 +20,7 @@ public class StronglyTypedIdWritingConverter implements GenericConverter {
     }
 
     @Override
-    public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+    public Object convert(@Nullable Object source, @NonNull TypeDescriptor sourceType, @NonNull TypeDescriptor targetType) {
         return source == null ? null : ((TypedID<?>) source).id();
     }
 }

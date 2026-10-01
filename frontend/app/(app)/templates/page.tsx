@@ -1,11 +1,11 @@
 "use client";
 
-import { Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { PageHeader } from "@/components/common/page-header";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SmsTemplatesTab } from "@/app/(app)/templates/sms-templates-tab";
-import { EmailTemplatesTab } from "@/app/(app)/templates/email-templates-tab";
+import {Suspense} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import {PageHeader} from "@/components/common/page-header";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {SmsTemplatesTab} from "@/app/(app)/templates/sms-templates-tab";
+import {EmailTemplatesTab} from "@/app/(app)/templates/email-templates-tab";
 
 function TemplatesPageContent() {
   const router = useRouter();

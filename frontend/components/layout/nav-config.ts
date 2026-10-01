@@ -1,12 +1,12 @@
-import type { LucideIcon } from "lucide-react";
+import type {LucideIcon} from "lucide-react";
 import {
-  LayoutDashboardIcon,
-  MegaphoneIcon,
-  UsersIcon,
-  FileTextIcon,
-  WorkflowIcon,
-  BarChart3Icon,
-  SettingsIcon,
+    BarChart3Icon,
+    FileTextIcon,
+    LayoutDashboardIcon,
+    MegaphoneIcon,
+    SettingsIcon,
+    UsersIcon,
+    WorkflowIcon,
 } from "lucide-react";
 
 export interface NavItem {

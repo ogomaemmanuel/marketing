@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/dashboard")
@@ -20,7 +20,7 @@ public record DashboardController(QueryDispatcher queryDispatcher) {
         return this.queryDispatcher.dispatch(new GetStatsQuery());
     }
     @GetMapping("/campaigns-by-channel")
-    public Set<GetCampaignsByChannelCountView> campaignsByChannel() {
+    public List<GetCampaignsByChannelCountView> campaignsByChannel() {
         return this.queryDispatcher.dispatch(new GetCampaignsByChannelCountQuery());
     }
 }

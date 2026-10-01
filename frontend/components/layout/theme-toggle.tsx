@@ -1,9 +1,9 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useIsHydrated } from "@/hooks/use-is-hydrated";
+import {useTheme} from "next-themes";
+import {MoonIcon, SunIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {useIsHydrated} from "@/hooks/use-is-hydrated";
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();

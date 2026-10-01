@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
-import { ChevronRightIcon } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
+import {ChevronRightIcon} from "lucide-react";
+import {cn} from "@/lib/utils/cn";
 
 interface Breadcrumb {
   label: string;

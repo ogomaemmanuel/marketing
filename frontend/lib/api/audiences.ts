@@ -1,12 +1,7 @@
-import { apiRequest } from "@/lib/api/client";
-import { toPageableSearchParams } from "@/lib/api/pageable";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
-import type {
-  Audience,
-  AudienceListItem,
-  CreateAudienceInput,
-  UpdateAudienceInput,
-} from "@/types/domain/audience";
+import {apiRequest} from "@/lib/api/client";
+import {toPageableSearchParams} from "@/lib/api/pageable";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
+import type {Audience, AudienceListItem, CreateAudienceInput, UpdateAudienceInput,} from "@/types/domain/audience";
 
 export function getAudiences(params: SearchParams = {}) {
   return apiRequest<PagedModel<AudienceListItem>>({

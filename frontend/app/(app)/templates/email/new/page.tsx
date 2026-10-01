@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { PageHeader } from "@/components/common/page-header";
-import { Button } from "@/components/ui/button";
+import {useState} from "react";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
+import {PageHeader} from "@/components/common/page-header";
+import {Button} from "@/components/ui/button";
 import {
-  EmailTemplateBuilder,
-  type EmailTemplateBuilderValue,
+    EmailTemplateBuilder,
+    type EmailTemplateBuilderValue,
 } from "@/components/templates/email-builder/email-template-builder";
-import { useCreateEmailTemplate } from "@/hooks/templates/use-email-templates";
+import {useCreateEmailTemplate} from "@/hooks/templates/use-email-templates";
 
 export default function NewEmailTemplatePage() {
   const router = useRouter();

@@ -30,6 +30,7 @@
     </properties>
     <modules>
         <module>transactional-message-sender</module>
+        <module>campaigns-batch-processor</module>
     </modules>
     <dependencies>
 

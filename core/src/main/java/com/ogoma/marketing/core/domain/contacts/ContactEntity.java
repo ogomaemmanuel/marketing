@@ -22,6 +22,7 @@ public class ContactEntity {
     private Long version;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
     private String email;
     private Instant createdAt;
     private Instant lastUpdatedAt;
@@ -42,6 +43,7 @@ public class ContactEntity {
             String firstName,
             String lastName,
             String email,
+            String phoneNumber,
             Map<String, String> attributes,
             String createdBy
     ) {
@@ -53,6 +55,7 @@ public class ContactEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phoneNumber=phoneNumber;
         this.attributes =mapAttributeMapToContactAttributte(attributes);
         this.createdBy = createdBy;
         this.lastUpdatedBy = createdBy;
@@ -62,10 +65,11 @@ public class ContactEntity {
             String firstName,
             String lastName,
             String email,
+            String phoneNumber,
             Map<String, String> attributes,
             String createdBy
     ) {
-        return new ContactEntity(firstName, lastName, email, attributes, createdBy);
+        return new ContactEntity(firstName, lastName, email, phoneNumber,attributes, createdBy);
     }
 
     public void update(

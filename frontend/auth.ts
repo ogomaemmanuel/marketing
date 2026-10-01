@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
-import { authEnv, serverEnv } from "@/lib/env";
-import { tokenEndpoint } from "@/lib/auth/token-endpoint";
-import { createOAuthRedirectFetch, customFetch } from "@/lib/auth/oauth-fetch";
+import {authEnv, serverEnv} from "@/lib/env";
+import {tokenEndpoint} from "@/lib/auth/token-endpoint";
+import {createOAuthRedirectFetch, customFetch} from "@/lib/auth/oauth-fetch";
 
 const scope = [
   "openid",

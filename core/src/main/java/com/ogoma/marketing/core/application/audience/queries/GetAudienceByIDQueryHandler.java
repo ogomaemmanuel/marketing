@@ -1,7 +1,6 @@
 package com.ogoma.marketing.core.application.audience.queries;
 
 import com.ogoma.marketing.core.abstractions.QueryHandler;
-import com.ogoma.marketing.core.domain.audience.AudienceEntity;
 import com.ogoma.marketing.core.domain.audience.AudienceRepository;
 import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;
 

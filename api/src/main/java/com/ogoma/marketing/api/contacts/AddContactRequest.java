@@ -12,6 +12,8 @@ public record AddContactRequest(
         String firstName,
         String lastName,
         String email,
+
+        String phoneNumber,
         Map<String, String> attributes,
         Set<UUID> audienceIds
 
@@ -25,9 +27,10 @@ public record AddContactRequest(
                 ? Set.of()
                 : Set.copyOf(audienceIds);
     }
+
     public AddContactCommand toCommand(String userId) {
         Set<AudienceId> targetAudienceIDs = audienceIds.stream().map(AudienceId::new).collect(Collectors.toUnmodifiableSet());
 
-        return new AddContactCommand(firstName, lastName, email, attributes, targetAudienceIDs, userId);
+        return new AddContactCommand(firstName, lastName, email, phoneNumber, attributes, targetAudienceIDs, userId);
     }
 }

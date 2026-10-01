@@ -1,11 +1,11 @@
 "use client";
 
-import { EyeIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ErrorState } from "@/components/common/error-state";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useEmailTemplatePreview } from "@/hooks/templates/use-email-templates";
+import {EyeIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {ErrorState} from "@/components/common/error-state";
+import {Skeleton} from "@/components/ui/skeleton";
+import {useEmailTemplatePreview} from "@/hooks/templates/use-email-templates";
 
 function EmailPreviewDialog({ templateId }: { templateId: string }) {
   const preview = useEmailTemplatePreview(templateId);

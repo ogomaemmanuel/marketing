@@ -1,23 +1,23 @@
 "use client";
 
-import { ChevronDownIcon, ChevronUpIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Field } from "@/components/forms/field";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BLOCK_TYPE_ICONS, BLOCK_TYPE_LABELS } from "@/lib/utils/email-blocks";
+import {ChevronDownIcon, ChevronUpIcon, PlusIcon, Trash2Icon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
+import {Field} from "@/components/forms/field";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {BLOCK_TYPE_ICONS, BLOCK_TYPE_LABELS} from "@/lib/utils/email-blocks";
 import type {
-  ButtonBlock,
-  DividerBlock,
-  EmailBlock,
-  HeadingBlock,
-  ImageBlock,
-  ListBlock,
-  ParagraphBlock,
-  SpacerBlock,
-  TableBlock,
-  VideoBlock,
+    ButtonBlock,
+    DividerBlock,
+    EmailBlock,
+    HeadingBlock,
+    ImageBlock,
+    ListBlock,
+    ParagraphBlock,
+    SpacerBlock,
+    TableBlock,
+    VideoBlock,
 } from "@/types/domain/email-template";
 
 interface BlockEditorCardProps {

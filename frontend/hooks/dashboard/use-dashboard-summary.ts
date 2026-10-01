@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAudiences } from "@/lib/api/audiences";
-import { getCampaigns } from "@/lib/api/campaigns";
-import { getCampaignsByChannel, getDashboardStats } from "@/lib/api/dashboard";
-import { queryKeys } from "@/lib/query-keys";
-import { toChannelBreakdown, type ChannelBreakdown } from "@/lib/utils/channel-breakdown";
-import type { NormalizedApiError } from "@/types/api/errors";
-import type { DashboardStats } from "@/types/domain/dashboard";
+import {useQuery} from "@tanstack/react-query";
+import {getAudiences} from "@/lib/api/audiences";
+import {getCampaigns} from "@/lib/api/campaigns";
+import {getCampaignsByChannel, getDashboardStats} from "@/lib/api/dashboard";
+import {queryKeys} from "@/lib/query-keys";
+import {type ChannelBreakdown, toChannelBreakdown} from "@/lib/utils/channel-breakdown";
+import type {NormalizedApiError} from "@/types/api/errors";
+import type {DashboardStats} from "@/types/domain/dashboard";
 
 export function useDashboardStats() {
   return useQuery<DashboardStats, NormalizedApiError>({

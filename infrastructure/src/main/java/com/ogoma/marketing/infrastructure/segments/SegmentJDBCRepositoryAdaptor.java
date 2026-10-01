@@ -3,7 +3,7 @@ package com.ogoma.marketing.infrastructure.segments;
 import com.ogoma.marketing.core.domain.segments.Segment;
 import com.ogoma.marketing.core.domain.segments.SegmentID;
 import com.ogoma.marketing.core.domain.segments.SegmentRepository;
-import com.ogoma.marketing.core.sharedkernel.Entity;
+import com.ogoma.marketing.core.sharedkernel.ddd.Entity;
 import org.springframework.data.core.PropertyPath;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,12 +23,7 @@ import java.util.stream.Collectors;
 
 @Repository
 
-public class SegmentJDBCRepositoryAdaptor implements SegmentRepository {
-    private final JdbcAggregateTemplate jdbcAggregateTemplate;
-
-    public SegmentJDBCRepositoryAdaptor(JdbcAggregateTemplate jdbcAggregateTemplate) {
-        this.jdbcAggregateTemplate = jdbcAggregateTemplate;
-    }
+public record SegmentJDBCRepositoryAdaptor(JdbcAggregateTemplate jdbcAggregateTemplate) implements SegmentRepository {
 
     @Override
     public Segment save(Segment segment) {

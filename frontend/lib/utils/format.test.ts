@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { formatDate, formatDateTime, formatNumber, formatPercent, initials } from "./format";
+import {describe, expect, it} from "vitest";
+import {formatDate, formatDateTime, formatNumber, formatPercent, initials} from "./format";
 
 describe("formatDate", () => {
   it("formats an ISO string as day/month/year", () => {

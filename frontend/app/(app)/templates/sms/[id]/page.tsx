@@ -1,4 +1,4 @@
-import { SmsTemplateDetail } from "@/app/(app)/templates/sms/[id]/sms-template-detail";
+import {SmsTemplateDetail} from "@/app/(app)/templates/sms/[id]/sms-template-detail";
 
 export default async function SmsTemplateDetailPage({
   params,

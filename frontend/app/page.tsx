@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import {redirect} from "next/navigation";
 
 /**
  * Azure is registered with redirect URI `NEXTAUTH_URL` (e.g. http://localhost:3000).

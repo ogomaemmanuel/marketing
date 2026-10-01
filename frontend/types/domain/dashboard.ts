@@ -1,4 +1,4 @@
-import type { CampaignChannel } from "@/types/domain/campaign";
+import type {CampaignChannel} from "@/types/domain/campaign";
 
 /** Response of GET /api/v1/dashboard/stats (GetStatsQueryView). */
 export interface DashboardStats {

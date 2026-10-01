@@ -1,21 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { MailIcon, MoreHorizontalIcon, PlusIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DataTable, type DataTableColumn } from "@/components/tables/data-table";
-import { useCloneEmailTemplate, useEmailTemplates } from "@/hooks/templates/use-email-templates";
-import { useListQueryState } from "@/hooks/use-list-query-state";
-import { formatDate } from "@/lib/utils/format";
-import type { EmailTemplateListItem } from "@/types/domain/email-template";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
+import {MailIcon, MoreHorizontalIcon, PlusIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
+import {DataTable, type DataTableColumn} from "@/components/tables/data-table";
+import {useCloneEmailTemplate, useEmailTemplates} from "@/hooks/templates/use-email-templates";
+import {useListQueryState} from "@/hooks/use-list-query-state";
+import {formatDate} from "@/lib/utils/format";
+import type {EmailTemplateListItem} from "@/types/domain/email-template";
 
 function EmailTemplatesTab() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 package com.ogoma.marketing.core.domain.outbox;
 
-import com.ogoma.marketing.core.sharedkernel.DomainEvent;
+import com.ogoma.marketing.core.sharedkernel.ddd.DomainEvent;
 
 import java.time.Clock;
 

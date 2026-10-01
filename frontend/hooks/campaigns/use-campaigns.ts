@@ -1,13 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createCampaign, getCampaignById, getCampaigns } from "@/lib/api/campaigns";
-import { queryKeys } from "@/lib/query-keys";
-import type { NormalizedApiError } from "@/types/api/errors";
-import type { PagedModel, SearchParams } from "@/types/api/pagination";
-import type {
-  CampaignDetail,
-  CampaignListItem,
-  CreateCampaignInput,
-} from "@/types/domain/campaign";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {createCampaign, getCampaignById, getCampaigns} from "@/lib/api/campaigns";
+import {queryKeys} from "@/lib/query-keys";
+import type {NormalizedApiError} from "@/types/api/errors";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
+import type {CampaignDetail, CampaignListItem, CreateCampaignInput,} from "@/types/domain/campaign";
 
 export function useCampaigns(params: SearchParams) {
   return useQuery<PagedModel<CampaignListItem>, NormalizedApiError>({
