@@ -5,7 +5,8 @@ public record GetStatsQueryView(
         long totalContacts,
         long totalAudiences,
         long totalCampaigns,
-        long totalSmsTemplates
+        long totalSmsTemplates,
+        long totalEmailTemplates
 ) {
 
 }

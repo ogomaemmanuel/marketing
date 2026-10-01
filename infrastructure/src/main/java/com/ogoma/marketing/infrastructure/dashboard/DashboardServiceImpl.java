@@ -20,7 +20,8 @@ public record DashboardServiceImpl(JdbcClient jdbcClient, DSLContext dslContext)
                         dslContext.selectCount().from(CONTACTS).asField("total_contacts"),
                         dslContext.selectCount().from(AUDIENCES).asField("total_audiences"),
                         dslContext.selectCount().from(CAMPAIGNS).asField("total_campaigns"),
-                        dslContext.selectCount().from(SMS_TEMPLATES).asField("total_sms_templates")
+                        dslContext.selectCount().from(SMS_TEMPLATES).asField("total_sms_templates"),
+                        dslContext.selectCount().from(EMAIL_TEMPLATES).asField("total_email_templates")
                 )
                 .fetchSingleInto(GetStatsQueryView.class);
 
