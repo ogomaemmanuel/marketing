@@ -14,6 +14,6 @@ public record GetCampaignByIDQueryHandler(
 
     @Override
     public GetCampaignByIDView handle(GetCampaignByIDQuery query) {
-        return campaignRepository.findByID(query.campaignID()).map(GetCampaignByIDView::new).orElseThrow(()->new RecordNotFoundException("Campaign not found"));
+        return campaignRepository.findDetailsByID(query.campaignID()).orElseThrow(()->new RecordNotFoundException("Campaign not found"));
     }
 }
