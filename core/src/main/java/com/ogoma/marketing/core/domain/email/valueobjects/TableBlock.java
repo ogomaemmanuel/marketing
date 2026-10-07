@@ -65,7 +65,7 @@ class TableBlock extends BaseEmailBlock {
         return """
                 <mj-section background-color="%s" padding="%s">
                 <mj-column padding="0">
-                <mj-table font-family="%s" style="border-collapse: collapse; width: 100%%; border: 1px solid %s;">
+                <mj-table font-family="%s" padding="0" width="100%%" style="border-collapse: collapse; width: 100%%; border: 1px solid %s;">
                     %s
                     <tbody>
                         %s

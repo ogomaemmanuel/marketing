@@ -37,6 +37,8 @@ class DividerBlock extends BaseEmailBlock {
                             border-color="%s"
                             width="%s;"
                             align="%s"
+                            padding-left="0"
+                            padding-right="0"
                             padding-top="%dpx"
                             padding-bottom="%dpx" />
                             </mj-column>
