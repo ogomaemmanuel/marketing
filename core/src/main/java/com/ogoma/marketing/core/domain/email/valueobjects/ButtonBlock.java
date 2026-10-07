@@ -33,36 +33,36 @@ public class ButtonBlock extends BaseEmailBlock {
             default -> "8px 16px";
         };
 
-        // Variant mapping
+        // Variant mapping (Mailchimp-style: signature yellow primary, dark secondary)
         String bgColor;
         String color;
         String border = "none";
 
         switch (this.getVariant() != null ? this.getVariant() : "") {
             case "destructive" -> {
-                bgColor = "#ef4444";
-                color = "#ffffff";
+                bgColor = EmailTheme.DESTRUCTIVE_COLOR;
+                color = EmailTheme.DESTRUCTIVE_TEXT_COLOR;
             }
             case "outline" -> {
                 bgColor = "transparent";
-                color = "#374151";
-                border = "1px solid #d1d5db";
+                color = EmailTheme.TEXT_COLOR;
+                border = "1px solid %s".formatted(EmailTheme.TEXT_COLOR);
             }
             case "secondary" -> {
-                bgColor = "#6b7280";
-                color = "#ffffff";
+                bgColor = EmailTheme.DARK_COLOR;
+                color = EmailTheme.DARK_TEXT_COLOR;
             }
             case "ghost" -> {
                 bgColor = "transparent";
-                color = "#374151";
+                color = EmailTheme.TEXT_COLOR;
             }
             case "link" -> {
                 bgColor = "transparent";
-                color = "#3b82f6";
+                color = EmailTheme.LINK_COLOR;
             }
             default -> { // "default" or fallback
-                bgColor = "#3b82f6";
-                color = "#ffffff";
+                bgColor = EmailTheme.ACCENT_COLOR;
+                color = EmailTheme.ACCENT_TEXT_COLOR;
             }
         }
 
@@ -71,8 +71,8 @@ public class ButtonBlock extends BaseEmailBlock {
         TextAlignment alignment = (this.getAlign() != null) ? this.getAlign() : TextAlignment.CENTER;
 
         return """
-                <mj-section>
-                <mj-column>
+                <mj-section background-color="%s" padding="%s">
+                <mj-column padding="0">
                 <mj-button href="%s"
                            background-color="%s"
                            color="%s"
@@ -80,14 +80,16 @@ public class ButtonBlock extends BaseEmailBlock {
                            font-size="%s"
                            inner-padding="%s"
                            align="%s"
-                           border-radius="4px"
+                           border-radius="%s"
                            font-weight="500"
-                           style="%s">
+                           padding="0">
                     %s
                 </mj-button>
                 </mj-column>
                 </mj-section>
                 """.formatted(
+                cardBackground(),
+                paddingValue(),
                 targetUrl,
                 bgColor,
                 color,
@@ -95,7 +97,7 @@ public class ButtonBlock extends BaseEmailBlock {
                 fontSize,
                 innerPadding,
                 alignment,
-                this.baseStyle(),
+                EmailTheme.BORDER_RADIUS,
                 buttonText
         );
     }

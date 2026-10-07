@@ -53,16 +53,31 @@ public abstract class BaseEmailBlock implements Serializable {
 
     public abstract String renderHtml();
 
-    protected String baseStyle() {
+    /** Bare px value (e.g. "16px") driven by the user-configurable padding setting. */
+    protected String paddingValue() {
         return switch (this.getPadding()) {
-            case "small" -> "padding: 8px;";
-            case "large" -> "padding: 24px;";
-            case null, default -> "padding: 16px;";
+            case "small" -> "8px";
+            case "large" -> "24px";
+            case null, default -> "16px";
         };
+    }
+
+    protected String baseStyle() {
+        return "padding: %s;".formatted(paddingValue());
     }
 
     protected String getPaddingCss(){
         return baseStyle();
+    }
+
+    /** Background color for the white "card" every block renders on top of the grey canvas. */
+    protected String cardBackground() {
+        return EmailTheme.CONTENT_BACKGROUND;
+    }
+
+    /** Corner radius for the white "card" every block renders on top of the grey canvas. */
+    protected String cardBorderRadius() {
+        return EmailTheme.CARD_BORDER_RADIUS;
     }
 
 }

@@ -63,9 +63,7 @@ public class HorizontalLayoutBlock extends BaseEmailBlock {
 
         var sectionAttrs = new LinkedHashMap<String, String>();
         sectionAttrs.put("padding", "0");
-        if (hasText(backgroundColor)) {
-            sectionAttrs.put("background-color", backgroundColor);
-        }
+        sectionAttrs.put("background-color", hasText(backgroundColor) ? backgroundColor : EmailTheme.CONTENT_BACKGROUND);
         if (borderRadius != null && borderRadius > 0) {
             sectionAttrs.put("border-radius", borderRadius + "px");
         }

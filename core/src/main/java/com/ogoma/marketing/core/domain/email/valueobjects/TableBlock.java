@@ -32,8 +32,8 @@ class TableBlock extends BaseEmailBlock {
             StringBuilder headerCells = new StringBuilder();
             for (String cell : headerRow) {
                 headerCells.append("""
-                        <th style="border: 1px solid #d1d5db; background-color: #f3f4f6; padding: 12px; text-align: left;">%s</th>
-                        """.formatted(cell));
+                        <th style="border: 1px solid %s; background-color: %s; color: %s; padding: 12px; text-align: left;">%s</th>
+                        """.formatted(EmailTheme.BORDER_COLOR, EmailTheme.BODY_BACKGROUND, EmailTheme.HEADING_COLOR, cell));
             }
             headerHtml.append("""
                     <thead>
@@ -51,8 +51,8 @@ class TableBlock extends BaseEmailBlock {
             StringBuilder rowCells = new StringBuilder();
             for (String cell : row) {
                 rowCells.append("""
-                        <td style="border: 1px solid #d1d5db; padding: 12px;">%s</td>
-                        """.formatted(cell));
+                        <td style="border: 1px solid %s; color: %s; padding: 12px;">%s</td>
+                        """.formatted(EmailTheme.BORDER_COLOR, EmailTheme.TEXT_COLOR, cell));
             }
             bodyHtml.append("""
                     <tr>
@@ -63,9 +63,9 @@ class TableBlock extends BaseEmailBlock {
 
         // ----- Final MJML -----
         return """
-                <mj-section>
-                <mj-column>
-                <mj-table style="border-collapse: collapse; width: 100%%; border: 1px solid #d1d5db; %s">
+                <mj-section background-color="%s" padding="%s">
+                <mj-column padding="0">
+                <mj-table font-family="%s" style="border-collapse: collapse; width: 100%%; border: 1px solid %s;">
                     %s
                     <tbody>
                         %s
@@ -74,7 +74,10 @@ class TableBlock extends BaseEmailBlock {
                 </mj-column>
                 </mj-section>
                 """.formatted(
-                baseStyle(),
+                cardBackground(),
+                paddingValue(),
+                EmailTheme.FONT_FAMILY,
+                EmailTheme.BORDER_COLOR,
                 headerHtml.toString(),
                 bodyHtml.toString()
         );

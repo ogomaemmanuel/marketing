@@ -90,7 +90,7 @@ public class HeroBlock extends BaseEmailBlock {
                     background-position="center center"
                     background-repeat="no-repeat"
                     height="%s"
-                    border-radius="8px"
+                    border-radius="%s"
                     padding="0">
 
                     <mj-column
@@ -100,7 +100,7 @@ public class HeroBlock extends BaseEmailBlock {
 
                         <mj-text
                             align="center"
-                            color="#ffffff"
+                            color="%s"
                             font-size="48px"
                             font-weight="700"
                             line-height="1.1"
@@ -110,7 +110,7 @@ public class HeroBlock extends BaseEmailBlock {
 
                         <mj-text
                             align="center"
-                            color="#ffffff"
+                            color="%s"
                             font-size="24px"
                             line-height="1.4"
                             padding="0 0 24px 0">
@@ -123,10 +123,13 @@ public class HeroBlock extends BaseEmailBlock {
 
                 </mj-section>
                 """.formatted(
-                colorOrDefault(backgroundColor, "#111827"),
+                colorOrDefault(backgroundColor, EmailTheme.DARK_COLOR),
                 escapeAttribute(imageUrl),
                 valueOrDefault(minHeight, "400px"),
+                EmailTheme.CARD_BORDER_RADIUS,
+                EmailTheme.DARK_TEXT_COLOR,
                 escapeHtml(title),
+                EmailTheme.DARK_TEXT_COLOR,
                 escapeHtml(subtitle),
                 renderButton("center")
         );
@@ -150,7 +153,7 @@ public class HeroBlock extends BaseEmailBlock {
                     padding="32px">
 
                     <mj-text
-                        color="#ffffff"
+                        color="%s"
                         font-size="48px"
                         font-weight="700"
                         line-height="1.1"
@@ -159,7 +162,7 @@ public class HeroBlock extends BaseEmailBlock {
                     </mj-text>
 
                     <mj-text
-                        color="#ffffff"
+                        color="%s"
                         font-size="24px"
                         line-height="1.4"
                         padding="0 0 24px 0">
@@ -170,7 +173,9 @@ public class HeroBlock extends BaseEmailBlock {
 
                 </mj-column>
                 """.formatted(
+                EmailTheme.DARK_TEXT_COLOR,
                 escapeHtml(title),
+                EmailTheme.DARK_TEXT_COLOR,
                 escapeHtml(subtitle),
                 renderButton("left")
         );
@@ -185,20 +190,21 @@ public class HeroBlock extends BaseEmailBlock {
                         src="%s"
                         alt="Hero"
                         width="100%%"
-                        border-radius="8px"
+                        border-radius="%s"
                         padding="0"
                         fluid-on-mobile="true"/>
 
                 </mj-column>
                 """.formatted(
-                escapeAttribute(imageUrl)
+                escapeAttribute(imageUrl),
+                EmailTheme.BORDER_RADIUS
         );
 
         return """
                 <mj-section
                     background-color="%s"
                     padding="0"
-                    border-radius="8px">
+                    border-radius="%s">
 
                     <mj-group>
                         %s
@@ -207,7 +213,8 @@ public class HeroBlock extends BaseEmailBlock {
 
                 </mj-section>
                 """.formatted(
-                colorOrDefault(backgroundColor, "#111827"),
+                colorOrDefault(backgroundColor, EmailTheme.DARK_COLOR),
+                EmailTheme.CARD_BORDER_RADIUS,
                 imageFirst ? imageColumn : textColumn,
                 imageFirst ? textColumn : imageColumn
         );
@@ -242,7 +249,7 @@ public class HeroBlock extends BaseEmailBlock {
             <mj-section
                 background-color="%s"
                 padding="0"
-                border-radius="8px">
+                border-radius="%s">
                 <mj-column
                     width="100%%"
                     vertical-align="top">
@@ -253,12 +260,12 @@ public class HeroBlock extends BaseEmailBlock {
                         height="%s"
                         width="100%%"
                         padding="0"
-                        border-radius="8px 8px 0 0"
+                        border-radius="%s %s 0 0"
                         fluid-on-mobile="true"/>
 
                     <mj-text
                         align="center"
-                        color="#ffffff"
+                        color="%s"
                         font-size="48px"
                         font-weight="700"
                         line-height="1.1"
@@ -268,7 +275,7 @@ public class HeroBlock extends BaseEmailBlock {
 
                     <mj-text
                         align="center"
-                        color="#ffffff"
+                        color="%s"
                         font-size="24px"
                         line-height="1.4"
                         padding="0 32px 24px 32px">
@@ -279,10 +286,15 @@ public class HeroBlock extends BaseEmailBlock {
 
             </mj-section>
             """.formatted(
-                colorOrDefault(backgroundColor, "#111827"),
+                colorOrDefault(backgroundColor, EmailTheme.DARK_COLOR),
+                EmailTheme.CARD_BORDER_RADIUS,
                 escapeAttribute(imageUrl),
                 valueOrDefault( minHeight,"400px"),
+                EmailTheme.CARD_BORDER_RADIUS,
+                EmailTheme.CARD_BORDER_RADIUS,
+                EmailTheme.DARK_TEXT_COLOR,
                 escapeHtml(title),
+                EmailTheme.DARK_TEXT_COLOR,
                 escapeHtml(subtitle),
                 renderButton("center", "0 0 32px 0")
         );
@@ -331,11 +343,11 @@ public class HeroBlock extends BaseEmailBlock {
             case PRIMARY -> """
                 <mj-button
                     href="%s"
-                    background-color="#ffffff"
-                    color="#111827"
+                    background-color="%s"
+                    color="%s"
                     font-size="%s"
                     font-weight="500"
-                    border-radius="4px"
+                    border-radius="%s"
                     inner-padding="%s"
                     padding="%s"
                     align="%s">
@@ -343,7 +355,10 @@ public class HeroBlock extends BaseEmailBlock {
                 </mj-button>
                 """.formatted(
                     escapeAttribute(ctaLink),
+                    EmailTheme.ACCENT_COLOR,
+                    EmailTheme.ACCENT_TEXT_COLOR,
                     size.fontSize(),
+                    EmailTheme.BORDER_RADIUS,
                     size.padding(),
                     padding,
                     align,
@@ -353,11 +368,11 @@ public class HeroBlock extends BaseEmailBlock {
             case SECONDARY -> """
                 <mj-button
                     href="%s"
-                    background-color="#111827"
-                    color="#ffffff"
+                    background-color="%s"
+                    color="%s"
                     font-size="%s"
                     font-weight="500"
-                    border-radius="4px"
+                    border-radius="%s"
                     inner-padding="%s"
                     padding="%s"
                     align="%s">
@@ -365,7 +380,10 @@ public class HeroBlock extends BaseEmailBlock {
                 </mj-button>
                 """.formatted(
                     escapeAttribute(ctaLink),
+                    EmailTheme.CONTENT_BACKGROUND,
+                    EmailTheme.DARK_COLOR,
                     size.fontSize(),
+                    EmailTheme.BORDER_RADIUS,
                     size.padding(),
                     padding,
                     align,
@@ -376,11 +394,11 @@ public class HeroBlock extends BaseEmailBlock {
                 <mj-button
                     href="%s"
                     background-color="transparent"
-                    color="#ffffff"
+                    color="%s"
                     font-size="%s"
                     font-weight="500"
-                    border="2px solid #ffffff"
-                    border-radius="4px"
+                    border="2px solid %s"
+                    border-radius="%s"
                     inner-padding="%s"
                     padding="%s"
                     align="%s">
@@ -388,7 +406,10 @@ public class HeroBlock extends BaseEmailBlock {
                 </mj-button>
                 """.formatted(
                     escapeAttribute(ctaLink),
+                    EmailTheme.DARK_TEXT_COLOR,
                     size.fontSize(),
+                    EmailTheme.DARK_TEXT_COLOR,
+                    EmailTheme.BORDER_RADIUS,
                     size.padding(),
                     padding,
                     align,

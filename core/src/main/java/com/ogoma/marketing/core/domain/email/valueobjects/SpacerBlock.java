@@ -25,7 +25,11 @@ class SpacerBlock extends BaseEmailBlock {
                 : "transparent";
 
         return """
-                <mj-spacer height="%dpx;" container-background-color="%s" style="%s" />
-                """.formatted(heightVal, bgColor, this.baseStyle());
+                <mj-section background-color="transparent" padding="0">
+                <mj-column padding="0">
+                <mj-spacer height="%dpx" container-background-color="%s" />
+                </mj-column>
+                </mj-section>
+                """.formatted(heightVal, bgColor);
     }
 }

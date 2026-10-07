@@ -22,7 +22,8 @@ public class SocialShareBlock extends BaseEmailBlock {
 
     @Override
     public String renderHtml() {
-        return null;
+        // Not yet implemented; must not return null since blocks are joined into the template HTML.
+        return "";
     }
 
     // --- Inner Classes ---

@@ -40,12 +40,16 @@ class ListBlock extends BaseEmailBlock {
                         """.formatted(item));
             }
             return """
-                    <mj-text align="%s" style="%s">
+                    <mj-section background-color="%s" padding="%s">
+                    <mj-column padding="0">
+                    <mj-text align="%s" color="%s" font-family="%s" padding="0">
                         <ol style="margin: 0; padding-left: 20px;">
                             %s
                         </ol>
                     </mj-text>
-                    """.formatted(alignment.toCss(), baseStyle(), listItems.toString());
+                    </mj-column>
+                    </mj-section>
+                    """.formatted(cardBackground(), paddingValue(), alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
         }
 
         if ("checked".equals(this.getStyle()) || "unchecked".equals(this.getStyle())) {
@@ -58,8 +62,8 @@ class ListBlock extends BaseEmailBlock {
                         && Boolean.TRUE.equals(getCheckedItems().get(i));
 
                 String checkSymbol = isChecked ? "&#10003;" : "&#9633;";
-                String textStyle = isChecked ? "text-decoration: line-through; color: #6b7280;" : "";
-                String checkColor = isChecked ? "#10b981" : "#9ca3af";
+                String textStyle = isChecked ? "text-decoration: line-through; color: %s;".formatted(EmailTheme.MUTED_TEXT_COLOR) : "";
+                String checkColor = isChecked ? "#10b981" : EmailTheme.MUTED_TEXT_COLOR;
 
                 // Using standard HTML table layout inside mj-text for Outlook display compatibility instead of flexbox
                 listItems.append("""
@@ -71,14 +75,18 @@ class ListBlock extends BaseEmailBlock {
             }
 
             return """
-                    <mj-text align="%s" style="%s">
+                    <mj-section background-color="%s" padding="%s">
+                    <mj-column padding="0">
+                    <mj-text align="%s" color="%s" font-family="%s" padding="0">
                         <table border="0" cellpadding="0" cellspacing="0" style="width: 100%%; border-collapse: collapse;">
                             <tbody>
                                 %s
                             </tbody>
                         </table>
                     </mj-text>
-                    """.formatted(alignment.toCss(), baseStyle(), listItems.toString());
+                    </mj-column>
+                    </mj-section>
+                    """.formatted(cardBackground(), paddingValue(), alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
         }
 
         // ----- Unordered list (default) -----
@@ -90,15 +98,15 @@ class ListBlock extends BaseEmailBlock {
         }
 
         return """
-                <mj-section>
-                <mj-column>
-                <mj-text align="%s" style="%s">
+                <mj-section background-color="%s" padding="%s">
+                <mj-column padding="0">
+                <mj-text align="%s" color="%s" font-family="%s" padding="0">
                     <ul style="margin: 0; padding-left: 20px;">
                         %s
                     </ul>
                 </mj-text>
                 </mj-column>
                 </mj-section>
-                """.formatted(alignment.toCss(), baseStyle(), listItems.toString());
+                """.formatted(cardBackground(), paddingValue(), alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
     }
 }

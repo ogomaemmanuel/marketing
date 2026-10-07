@@ -48,14 +48,24 @@ public class EmailTemplate implements Serializable {
                     <mj-title>%s</mj-title>
                     %s
                     <mj-attributes>
-                      <mj-all font-family="Arial, Helvetica, sans-serif" font-size="16px" color="#333333" line-height="1.6" />
+                      <mj-all font-family="%s" font-size="16px" color="%s" line-height="1.6" />
+                      <mj-text font-family="%s" font-size="16px" color="%s" line-height="1.6" />
                     </mj-attributes>
                   </mj-head>
-                  <mj-body background-color="#f4f4f4">
+                  <mj-body background-color="%s" width="600px">
                     %s
                   </mj-body>
                 </mjml>
-                """.formatted(subject, previewText, blocksHtml);
+                """.formatted(
+                subject,
+                previewText,
+                EmailTheme.FONT_FAMILY,
+                EmailTheme.TEXT_COLOR,
+                EmailTheme.FONT_FAMILY,
+                EmailTheme.TEXT_COLOR,
+                EmailTheme.BODY_BACKGROUND,
+                blocksHtml
+        );
 // One-liner with defaults
         MjmlRenderResult result = MjmlRenderer.render(mjmlString);
         return result.html();

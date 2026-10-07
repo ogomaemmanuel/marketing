@@ -44,23 +44,27 @@ class ImageBlock extends BaseEmailBlock {
                 : "";
 
         return """
-                <mj-section>
-                <mj-column>
+                <mj-section background-color="%s" padding="%s">
+                <mj-column padding="0">
                 <mj-image
                     fluid-on-mobile="true"
                     src="%s"
                     alt="%s"
                     %s
                     %s
-                    padding="0px"
+                    border-radius="%s"
+                    padding="0"
                     />
                     </mj-column>
                 </mj-section>
                 """.formatted(
+                cardBackground(),
+                paddingValue(),
                 src,
                 alt,
                 widthAttribute,
-                heightAttribute
+                heightAttribute,
+                EmailTheme.BORDER_RADIUS
         );
     }
 

@@ -46,16 +46,17 @@ class CodeBlock extends BaseEmailBlock {
 
         String safeContent = this.getContent() != null ? StringEscapeUtils.escapeHtml4(this.getContent()) : "";
         return """
-                <mj-section background-color="%s" border-radius="4px" padding="%s">
+                <mj-section background-color="%s" border-radius="%s" padding="%s">
                   <mj-column padding="0">
-                    <mj-text padding="16px" color="%s" font-family="%s" font-size="%s">
+                    <mj-text padding="0" color="%s" font-family="%s" font-size="%s">
                       <pre style="margin: 0; white-space: pre-wrap; word-break: break-word; font-family: %s; font-size: %s; color: %s;">%s</pre>
                     </mj-text>
                   </mj-column>
                 </mj-section>
                 """.formatted(
                 bgColor,
-                getPaddingCss(),
+                EmailTheme.BORDER_RADIUS,
+                paddingValue(),
                 txtColor,
                 blockFontFamily,
                 blockFontSize,
