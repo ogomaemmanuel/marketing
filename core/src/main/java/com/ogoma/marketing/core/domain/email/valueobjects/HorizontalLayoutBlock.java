@@ -51,19 +51,19 @@ public class HorizontalLayoutBlock extends BaseEmailBlock {
                     var attrs = new LinkedHashMap<String, String>();
                     attrs.put("width", widths.get(i) + "%");
                     attrs.put("vertical-align", resolveVerticalAlign().mjmlValue());
-                    if (halfGap > 0) {
-                        var left = i == 0 ? 0 : halfGap;
-                        var right = i == lastIndex ? 0 : halfGap;
-                        attrs.put("padding", "0 %dpx 0 %dpx".formatted(right, left));
-                    }
+                    // Always explicit (never left to MJML's default column padding) to match every other block.
+                    var left = i == 0 ? 0 : halfGap;
+                    var right = i == lastIndex ? 0 : halfGap;
+                    attrs.put("padding", "0 %dpx 0 %dpx".formatted(right, left));
                     return "<mj-column%s>%s</mj-column>"
                             .formatted(attributes(attrs), blocks.get(i).renderHtml());
                 })
                 .collect(Collectors.joining("\n"));
 
         var sectionAttrs = new LinkedHashMap<String, String>();
-        sectionAttrs.put("padding", "0");
-        sectionAttrs.put("background-color", hasText(backgroundColor) ? backgroundColor : EmailTheme.CONTENT_BACKGROUND);
+        // Same outer inset as every other block, driven by the shared padding field.
+        sectionAttrs.put("padding", paddingValue());
+        sectionAttrs.put("background-color", hasText(backgroundColor) ? backgroundColor : cardBackground());
         if (borderRadius != null && borderRadius > 0) {
             sectionAttrs.put("border-radius", borderRadius + "px");
         }
