@@ -64,7 +64,7 @@ public class HorizontalLayoutBlock extends BaseEmailBlock {
         }
 
         return """
-                <mj-section%s>
+                <mj-section %s>
                 %s
                 </mj-section>""".formatted(attributes(sectionAttrs), columnsMjml);
     }
