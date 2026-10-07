@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Getter
 @Setter
@@ -29,38 +30,15 @@ public class VerticalLayoutBlock extends BaseEmailBlock {
     private List<BaseEmailBlock> children;
 
     @Override
-    public String renderHtml() {
-        var blocks = children == null
-                ? List.<BaseEmailBlock>of()
-                : children.stream().filter(Objects::nonNull).toList();
-
-        if (blocks.isEmpty()) {
+    protected String renderSection(String padding, String background) {
+        var childSections = renderChildSections();
+        if (childSections.isBlank()) {
             return "";
         }
 
-        var background = hasText(backgroundColor) ? backgroundColor : cardBackground();
-        // Children paint their own section background, so they must inherit the layout's color.
-        blocks.forEach(block -> block.setContainerBackground(background));
-
-        var gapPixels = (gap == null ? Gap.NONE : gap).pixels();
-        var separator = gapPixels > 0
-                ? "\n" + """
-                <mj-section padding="0">
-                <mj-column padding="0">
-                <mj-spacer height="%dpx" />
-                </mj-column>
-                </mj-section>
-                """.formatted(gapPixels)
-                : "\n";
-
-        var childrenMjml = blocks.stream()
-                .map(BaseEmailBlock::renderHtml)
-                .filter(html -> html != null && !html.isBlank())
-                .collect(Collectors.joining(separator));
-
         var attrs = new LinkedHashMap<String, String>();
-        attrs.put("padding", paddingValue());
-        attrs.put("background-color", background);
+        attrs.put("padding", padding);
+        attrs.put("background-color", hasText(backgroundColor) ? backgroundColor : background);
         if (borderRadius != null && borderRadius > 0) {
             attrs.put("border-radius", borderRadius + "px");
         }
@@ -73,7 +51,45 @@ public class VerticalLayoutBlock extends BaseEmailBlock {
         return """
                 <mj-wrapper%s>
                 %s
-                </mj-wrapper>""".formatted(attributes(attrs), childrenMjml);
+                </mj-wrapper>""".formatted(attributes(attrs), childSections);
+    }
+
+    /** Used inside a layout column, where only column-level elements are allowed. */
+    @Override
+    protected String renderContent() {
+        var gapPixels = gapPixels();
+        var separator = gapPixels > 0 ? "\n<mj-spacer height=\"%dpx\" />\n".formatted(gapPixels) : "\n";
+        return nonNullChildren().stream()
+                .map(BaseEmailBlock::renderContent)
+                .filter(html -> html != null && !html.isBlank())
+                .collect(Collectors.joining(separator));
+    }
+
+    /** Children as bare sections: the wrapper supplies the inset, so they add only the gap. */
+    private String renderChildSections() {
+        var blocks = nonNullChildren();
+        var gapPixels = gapPixels();
+        return IntStream.range(0, blocks.size())
+                .mapToObj(i -> {
+                    var block = blocks.get(i);
+                    var childPadding = i == 0 ? "0" : "%dpx 0 0 0".formatted(gapPixels);
+                    // mj-wrapper can't nest, so a nested vertical layout contributes its children directly.
+                    return block instanceof VerticalLayoutBlock nested
+                            ? nested.renderChildSections()
+                            : block.renderSection(childPadding, "transparent");
+                })
+                .filter(html -> html != null && !html.isBlank())
+                .collect(Collectors.joining("\n"));
+    }
+
+    private int gapPixels() {
+        return (gap == null ? Gap.NONE : gap).pixels();
+    }
+
+    private List<BaseEmailBlock> nonNullChildren() {
+        return children == null
+                ? List.of()
+                : children.stream().filter(Objects::nonNull).toList();
     }
 
     private static String attributes(Map<String, String> attrs) {

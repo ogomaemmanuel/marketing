@@ -18,7 +18,7 @@ class TableBlock extends BaseEmailBlock {
     private List<List<String>> data;
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
         if (this.getData() == null || this.getData().isEmpty()) {
             return "";
         }
@@ -63,19 +63,13 @@ class TableBlock extends BaseEmailBlock {
 
         // ----- Final MJML -----
         return """
-                <mj-section background-color="%s" padding="%s">
-                <mj-column padding="0">
                 <mj-table font-family="%s" padding="0" width="100%%" style="border-collapse: collapse; width: 100%%; border: 1px solid %s;">
                     %s
                     <tbody>
                         %s
                     </tbody>
                 </mj-table>
-                </mj-column>
-                </mj-section>
                 """.formatted(
-                cardBackground(),
-                paddingValue(),
                 EmailTheme.FONT_FAMILY,
                 EmailTheme.BORDER_COLOR,
                 headerHtml.toString(),

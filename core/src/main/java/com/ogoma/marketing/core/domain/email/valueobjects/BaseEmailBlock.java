@@ -1,6 +1,5 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -52,11 +51,28 @@ public abstract class BaseEmailBlock implements Serializable {
     @Pattern(regexp = "^(left|center|right)$", message = "Invalid align value")
     @JsonProperty("align")
     private TextAlignment align = TextAlignment.LEFT;
-    /** Render-time background set by a parent layout; never persisted. */
-    @JsonIgnore
-    private transient String containerBackground;
 
-    public abstract String renderHtml();
+    public String renderHtml() {
+        return renderSection(paddingValue(), cardBackground());
+    }
+
+    /** MJML elements valid directly inside an mj-column, with no outer padding of their own. */
+    protected abstract String renderContent();
+
+    /** One or more mj-sections; layouts call this to control the outer padding and background. */
+    protected String renderSection(String padding, String background) {
+        var content = renderContent();
+        if (content == null || content.isBlank()) {
+            return "";
+        }
+        return """
+                <mj-section background-color="%s" padding="%s">
+                  <mj-column padding="0">
+                    %s
+                  </mj-column>
+                </mj-section>
+                """.formatted(background, padding, content);
+    }
 
     /** Bare px value (e.g. "16px") driven by the user-configurable padding setting. */
     protected String paddingValue() {
@@ -77,7 +93,7 @@ public abstract class BaseEmailBlock implements Serializable {
 
     /** Background color for the white "card" every block renders on top of the grey canvas. */
     protected String cardBackground() {
-        return containerBackground != null ? containerBackground : EmailTheme.CONTENT_BACKGROUND;
+        return EmailTheme.CONTENT_BACKGROUND;
     }
 
     /** Corner radius for the white "card" every block renders on top of the grey canvas. */

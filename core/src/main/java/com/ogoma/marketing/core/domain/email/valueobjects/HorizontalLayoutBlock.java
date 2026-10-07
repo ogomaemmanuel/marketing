@@ -33,11 +33,8 @@ public class HorizontalLayoutBlock extends BaseEmailBlock {
     private VerticalAlign verticalAlign;
 
     @Override
-    public String renderHtml() {
-        var blocks = children == null
-                ? List.<BaseEmailBlock>of()
-                : children.stream().filter(Objects::nonNull).toList();
-
+    protected String renderSection(String padding, String background) {
+        var blocks = nonNullChildren();
         if (blocks.isEmpty()) {
             return "";
         }
@@ -51,19 +48,17 @@ public class HorizontalLayoutBlock extends BaseEmailBlock {
                     var attrs = new LinkedHashMap<String, String>();
                     attrs.put("width", widths.get(i) + "%");
                     attrs.put("vertical-align", resolveVerticalAlign().mjmlValue());
-                    // Always explicit (never left to MJML's default column padding) to match every other block.
                     var left = i == 0 ? 0 : halfGap;
                     var right = i == lastIndex ? 0 : halfGap;
                     attrs.put("padding", "0 %dpx 0 %dpx".formatted(right, left));
                     return "<mj-column%s>%s</mj-column>"
-                            .formatted(attributes(attrs), blocks.get(i).renderHtml());
+                            .formatted(attributes(attrs), blocks.get(i).renderContent());
                 })
                 .collect(Collectors.joining("\n"));
 
         var sectionAttrs = new LinkedHashMap<String, String>();
-        // Same outer inset as every other block, driven by the shared padding field.
-        sectionAttrs.put("padding", paddingValue());
-        sectionAttrs.put("background-color", hasText(backgroundColor) ? backgroundColor : cardBackground());
+        sectionAttrs.put("padding", padding);
+        sectionAttrs.put("background-color", hasText(backgroundColor) ? backgroundColor : background);
         if (borderRadius != null && borderRadius > 0) {
             sectionAttrs.put("border-radius", borderRadius + "px");
         }
@@ -72,6 +67,23 @@ public class HorizontalLayoutBlock extends BaseEmailBlock {
                 <mj-section%s>
                 %s
                 </mj-section>""".formatted(attributes(sectionAttrs), columnsMjml);
+    }
+
+    /** MJML can't nest columns, so inside another column the children are stacked instead. */
+    @Override
+    protected String renderContent() {
+        var gapPixels = resolveGap().pixels();
+        var separator = gapPixels > 0 ? "\n<mj-spacer height=\"%dpx\" />\n".formatted(gapPixels) : "\n";
+        return nonNullChildren().stream()
+                .map(BaseEmailBlock::renderContent)
+                .filter(html -> html != null && !html.isBlank())
+                .collect(Collectors.joining(separator));
+    }
+
+    private List<BaseEmailBlock> nonNullChildren() {
+        return children == null
+                ? List.of()
+                : children.stream().filter(Objects::nonNull).toList();
     }
 
     private List<Integer> resolveWidths(int count) {
@@ -139,7 +151,7 @@ public class HorizontalLayoutBlock extends BaseEmailBlock {
         }
 
         @JsonCreator
-        public VerticalAlign fromString(String value){
+        public static VerticalAlign fromString(String value){
             return VerticalAlign.valueOf(value.toUpperCase());
         }
     }
@@ -160,7 +172,7 @@ public class HorizontalLayoutBlock extends BaseEmailBlock {
         }
 
         @JsonCreator
-        public Gap fromString(String value){
+        public static Gap fromString(String value){
             return Gap.valueOf(value.toUpperCase());
         }
     }

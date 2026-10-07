@@ -20,16 +20,13 @@ class HeadingBlock extends BaseEmailBlock {
     private Short level;
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
         // Defaults to H1 if not set
         short headingLevel = this.getLevel() != null ? this.getLevel() : 1;
 
         TextAlignment alignment = (this.getAlign() != null) ? this.getAlign() : TextAlignment.LEFT;
 
-        // This wrapper ensures MJML boundary alignment, while allowing HTML block elements to be nested
         return """
-                <mj-section background-color="%s" padding="%s">
-                <mj-column padding="0">
                 <mj-text
                          align="%s"
                          color="%s"
@@ -37,11 +34,7 @@ class HeadingBlock extends BaseEmailBlock {
                          padding="0">
                     <h%d style="margin: 0; font-weight: 700; font-family: inherit; color: %s;">%s</h%d>
                 </mj-text>
-                </mj-column>
-                </mj-section>
                 """.formatted(
-                cardBackground(),
-                paddingValue(),
                 alignment.toCss(),
                 EmailTheme.HEADING_COLOR,
                 EmailTheme.FONT_FAMILY,

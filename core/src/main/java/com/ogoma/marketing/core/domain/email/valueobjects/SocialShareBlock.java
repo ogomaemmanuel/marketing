@@ -21,7 +21,7 @@ public class SocialShareBlock extends BaseEmailBlock {
     private boolean showLabels;
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
         // Not yet implemented; must not return null since blocks are joined into the template HTML.
         return "";
     }

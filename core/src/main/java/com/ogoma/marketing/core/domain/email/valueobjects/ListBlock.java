@@ -25,7 +25,7 @@ class ListBlock extends BaseEmailBlock {
     }
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
         if (this.getItems() == null || this.getItems().isEmpty()) {
             return "";
         }
@@ -40,16 +40,12 @@ class ListBlock extends BaseEmailBlock {
                         """.formatted(item));
             }
             return """
-                    <mj-section background-color="%s" padding="%s">
-                    <mj-column padding="0">
                     <mj-text align="%s" color="%s" font-family="%s" padding="0">
                         <ol style="margin: 0; padding-left: 20px;">
                             %s
                         </ol>
                     </mj-text>
-                    </mj-column>
-                    </mj-section>
-                    """.formatted(cardBackground(), paddingValue(), alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
+                    """.formatted(alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
         }
 
         if ("checked".equals(this.getStyle()) || "unchecked".equals(this.getStyle())) {
@@ -75,8 +71,6 @@ class ListBlock extends BaseEmailBlock {
             }
 
             return """
-                    <mj-section background-color="%s" padding="%s">
-                    <mj-column padding="0">
                     <mj-text align="%s" color="%s" font-family="%s" padding="0">
                         <table border="0" cellpadding="0" cellspacing="0" style="width: 100%%; border-collapse: collapse;">
                             <tbody>
@@ -84,9 +78,7 @@ class ListBlock extends BaseEmailBlock {
                             </tbody>
                         </table>
                     </mj-text>
-                    </mj-column>
-                    </mj-section>
-                    """.formatted(cardBackground(), paddingValue(), alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
+                    """.formatted(alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
         }
 
         // ----- Unordered list (default) -----
@@ -98,15 +90,11 @@ class ListBlock extends BaseEmailBlock {
         }
 
         return """
-                <mj-section background-color="%s" padding="%s">
-                <mj-column padding="0">
                 <mj-text align="%s" color="%s" font-family="%s" padding="0">
                     <ul style="margin: 0; padding-left: 20px;">
                         %s
                     </ul>
                 </mj-text>
-                </mj-column>
-                </mj-section>
-                """.formatted(cardBackground(), paddingValue(), alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
+                """.formatted(alignment.toCss(), EmailTheme.TEXT_COLOR, EmailTheme.FONT_FAMILY, listItems.toString());
     }
 }

@@ -56,7 +56,7 @@ public class HeroBlock extends BaseEmailBlock {
     }
 
     @Override
-    public String renderHtml() {
+    protected String renderSection(String padding, String background) {
         var position = imagePosition == null
                 ? ImagePosition.LEFT
                 : imagePosition;
@@ -67,6 +67,31 @@ public class HeroBlock extends BaseEmailBlock {
             case TOP -> renderTopHero();
             case BACKGROUND -> renderBackgroundHero();
         };
+    }
+
+    /** Stacked fallback used when the hero is placed inside a layout column. */
+    @Override
+    protected String renderContent() {
+        var bg = colorOrDefault(backgroundColor, EmailTheme.DARK_COLOR);
+        var image = StringUtils.isBlank(imageUrl) ? "" : """
+                <mj-image src="%s" alt="Hero" padding="0" border-radius="%s" fluid-on-mobile="true"/>
+                """.formatted(escapeAttribute(imageUrl), EmailTheme.BORDER_RADIUS);
+
+        return """
+                %s
+                <mj-text align="center" color="%s" container-background-color="%s" font-size="32px" font-weight="700" line-height="1.2" padding="24px 24px 8px 24px">
+                    %s
+                </mj-text>
+                <mj-text align="center" color="%s" container-background-color="%s" font-size="18px" line-height="1.4" padding="0 24px 16px 24px">
+                    %s
+                </mj-text>
+                %s
+                """.formatted(
+                image,
+                EmailTheme.DARK_TEXT_COLOR, bg, escapeHtml(title),
+                EmailTheme.DARK_TEXT_COLOR, bg, escapeHtml(subtitle),
+                renderButton("center", "0 0 24px 0").replace("<mj-button", "<mj-button container-background-color=\"%s\"".formatted(bg))
+        );
     }
 
     /**

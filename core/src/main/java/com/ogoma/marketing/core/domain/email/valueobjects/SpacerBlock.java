@@ -19,17 +19,19 @@ class SpacerBlock extends BaseEmailBlock {
 
     @Override
     public String renderHtml() {
+        // Spacers separate cards, so they sit on the canvas rather than inside a padded card.
+        return renderSection("0", "transparent");
+    }
+
+    @Override
+    protected String renderContent() {
         int heightVal = (this.getHeight() != null && this.getHeight() > 0) ? this.getHeight() : 20;
         String bgColor = (this.getBackgroundColor() != null && !"transparent".equals(this.getBackgroundColor()))
                 ? this.getBackgroundColor()
                 : "transparent";
 
         return """
-                <mj-section background-color="transparent" padding="0">
-                <mj-column padding="0">
                 <mj-spacer height="%dpx" container-background-color="%s" />
-                </mj-column>
-                </mj-section>
                 """.formatted(heightVal, bgColor);
     }
 }

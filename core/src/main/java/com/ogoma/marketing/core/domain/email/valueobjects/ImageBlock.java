@@ -20,7 +20,7 @@ class ImageBlock extends BaseEmailBlock {
     private String caption;
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
         var rawSrc = valueOrEmpty(getSrc());
         // Escape '&' so strict XML SAX parsers don't fail on URL parameters like &w=3096
         var src = rawSrc.replace("&", "&amp;");
@@ -44,26 +44,22 @@ class ImageBlock extends BaseEmailBlock {
                 : "";
 
         return """
-                <mj-section background-color="%s" padding="%s">
-                <mj-column padding="0">
                 <mj-image
                     fluid-on-mobile="true"
                     src="%s"
                     alt="%s"
                     %s
                     %s
+                    align="%s"
                     border-radius="%s"
                     padding="0"
                     />
-                    </mj-column>
-                </mj-section>
                 """.formatted(
-                cardBackground(),
-                paddingValue(),
                 src,
                 alt,
                 widthAttribute,
                 heightAttribute,
+                alignment.toCss(),
                 EmailTheme.BORDER_RADIUS
         );
     }

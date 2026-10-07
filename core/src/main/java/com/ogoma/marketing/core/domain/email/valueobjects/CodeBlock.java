@@ -23,7 +23,7 @@ class CodeBlock extends BaseEmailBlock {
     private String fontFamily;
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
         String blockFontFamily = switch (this.getFontFamily()) {
             case "courier" -> "'Courier New', Courier, monospace";
             case "consolas" -> "'Consolas', 'Liberation Mono', Menlo, monospace";
@@ -46,20 +46,15 @@ class CodeBlock extends BaseEmailBlock {
 
         String safeContent = this.getContent() != null ? StringEscapeUtils.escapeHtml4(this.getContent()) : "";
         return """
-                <mj-section background-color="%s" border-radius="%s" padding="%s">
-                  <mj-column padding="0">
-                    <mj-text padding="0" color="%s" font-family="%s" font-size="%s">
-                      <pre style="margin: 0; white-space: pre-wrap; word-break: break-word; font-family: %s; font-size: %s; color: %s;">%s</pre>
-                    </mj-text>
-                  </mj-column>
-                </mj-section>
+                <mj-text padding="0" color="%s" font-family="%s" font-size="%s">
+                  <pre style="margin: 0; padding: 16px; background-color: %s; border-radius: %s; white-space: pre-wrap; word-break: break-word; font-family: %s; font-size: %s; color: %s;">%s</pre>
+                </mj-text>
                 """.formatted(
-                bgColor,
-                EmailTheme.BORDER_RADIUS,
-                paddingValue(),
                 txtColor,
                 blockFontFamily,
                 blockFontSize,
+                bgColor,
+                EmailTheme.BORDER_RADIUS,
                 blockFontFamily,
                 blockFontSize,
                 txtColor,

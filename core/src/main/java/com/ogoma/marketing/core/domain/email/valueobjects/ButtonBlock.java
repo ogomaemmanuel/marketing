@@ -19,7 +19,7 @@ public class ButtonBlock extends BaseEmailBlock {
     private String size;
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
         // Size mapping
         String fontSize = switch (this.getSize() != null ? this.getSize() : "") {
             case "small" -> "14px";
@@ -71,8 +71,6 @@ public class ButtonBlock extends BaseEmailBlock {
         TextAlignment alignment = (this.getAlign() != null) ? this.getAlign() : TextAlignment.CENTER;
 
         return """
-                <mj-section background-color="%s" padding="%s">
-                <mj-column padding="0">
                 <mj-button href="%s"
                            background-color="%s"
                            color="%s"
@@ -85,11 +83,7 @@ public class ButtonBlock extends BaseEmailBlock {
                            padding="0">
                     %s
                 </mj-button>
-                </mj-column>
-                </mj-section>
                 """.formatted(
-                cardBackground(),
-                paddingValue(),
                 targetUrl,
                 bgColor,
                 color,

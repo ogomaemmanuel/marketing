@@ -22,7 +22,7 @@ class DividerBlock extends BaseEmailBlock {
     private short marginBottom;
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
         String borderStyle = (this.getStyle() != null && !this.getStyle().isBlank()) ? this.getStyle() : "solid";
         short borderThickness = this.getThickness() > 0 ? this.getThickness() : 1;
         String borderWidth = (this.getWidth() != null && !this.getWidth().isBlank()) ? this.getWidth() : "100%";
@@ -30,22 +30,16 @@ class DividerBlock extends BaseEmailBlock {
         TextAlignment align = (this.getAlign() != null) ? this.getAlign() : TextAlignment.CENTER;
 
         return """
-                <mj-section background-color="%s" padding="%s">
-                <mj-column padding="0">
                 <mj-divider border-style="%s"
                             border-width="%dpx"
                             border-color="%s"
-                            width="%s;"
+                            width="%s"
                             align="%s"
                             padding-left="0"
                             padding-right="0"
                             padding-top="%dpx"
                             padding-bottom="%dpx" />
-                            </mj-column>
-                            </mj-section>
                 """.formatted(
-                cardBackground(),
-                paddingValue(),
                 borderStyle,
                 borderThickness,
                 borderColor,
