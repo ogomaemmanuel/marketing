@@ -1,8 +1,9 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.annotation.JsonSerialize;
 
@@ -13,29 +14,61 @@ import tools.jackson.databind.annotation.JsonSerialize;
 class ImageBlock extends BaseEmailBlock {
 
     private String src;
-
     private String alt;
-
     private String width;
-
     private String height;
     private String caption;
 
     @Override
     public String renderHtml() {
+        var rawSrc = valueOrEmpty(getSrc());
+        // Escape '&' so strict XML SAX parsers don't fail on URL parameters like &w=3096
+        var src = rawSrc.replace("&", "&amp;");
 
-        var imageHeight = this.getHeight().equals("auto") ? "" : """
-                height: %s
-                """.formatted(this.getHeight());
-        var imageCaption = this.caption == null ? "" : """
-                <p style="font-size: 14px; color: #6b7280; margin-top: 8px; text-align: center;">%s</p>
-                """.formatted(this.getCaption());
+        var alt = StringEscapeUtils.escapeXml10(valueOrEmpty(getAlt()));
+
+        // 1. Fix width: MJML defaults to 100% column width when width attribute is omitted.
+        // If width is "100%" or empty, don't pass the width attribute.
+        var widthAttribute = hasText(getWidth()) && !StringUtils.defaultString(getWidth()).equalsIgnoreCase("100%")
+                ? "width=\"%s\"".formatted(getWidth())
+                : "";
+
+        var alignment = getAlign() != null
+                ? getAlign()
+                : TextAlignment.CENTER;
+
+        // 2. Fix height: Do not pass height="auto" as an attribute to mj-image.
+        var heightAttribute = hasText(getHeight())
+                && !"auto".equalsIgnoreCase(getHeight())
+                ? "height=\"%s\"".formatted(getHeight())
+                : "";
+
         return """
-                <div style="%s">
-                            <img src="%s" alt="%s" style="max-width: 100%%; height: auto; width: %s; %s" />
-                            %s
-                          </div>
-                """.formatted(this.baseStyle(), this.getSrc(), this.getAlt(), this.getWidth(), imageHeight, imageCaption);
+                <mj-section>
+                <mj-column>
+                <mj-image
+                    fluid-on-mobile="true"
+                    src="%s"
+                    alt="%s"
+                    %s
+                    %s
+                    padding="0px"
+                    />
+                    </mj-column>
+                </mj-section>
+                """.formatted(
+                src,
+                alt,
+                widthAttribute,
+                heightAttribute
+        );
+    }
 
+    private static boolean hasText(String value) {
+        return value != null && !value.isBlank();
+    }
+
+    private static String valueOrEmpty(String value) {
+        return value != null ? value : "";
     }
 }

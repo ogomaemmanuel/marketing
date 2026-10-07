@@ -1,6 +1,5 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,44 +18,85 @@ public class ButtonBlock extends BaseEmailBlock {
     @Pattern(regexp = "^(small|medium|large)")
     private String size;
 
-
     @Override
     public String renderHtml() {
-        // Base style
-        String baseButtonStyle = """
-                display: inline-block;
-                text-decoration: none;
-                border-radius: 4px;
-                font-weight: 500;
-                text-align: center;
-                """;
-
-        // Size styles
-        String sizeStyle = switch (this.getSize()) {
-            case "small" -> "padding: 4px 12px; font-size: 14px;";
-            case "large" -> "padding: 12px 24px; font-size: 18px;";
-            case null, default -> "padding: 8px 16px; font-size: 16px;";
+        // Size mapping
+        String fontSize = switch (this.getSize() != null ? this.getSize() : "") {
+            case "small" -> "14px";
+            case "large" -> "18px";
+            default -> "16px";
         };
 
-        // Variant styles
-        String variantStyle = switch (this.getVariant()) {
-            case "primary" -> "background-color: #3b82f6; color: white;";
-            case "secondary" -> "background-color: #6b7280; color: white;";
-            case null, default -> "border: 1px solid #d1d5db; background-color: white; color: #374151;";
+        String innerPadding = switch (this.getSize() != null ? this.getSize() : "") {
+            case "small" -> "4px 12px";
+            case "large" -> "12px 24px";
+            default -> "8px 16px";
         };
 
-        String finalButtonStyle = baseButtonStyle + " " + sizeStyle + " " + variantStyle;
+        // Variant mapping
+        String bgColor;
+        String color;
+        String border = "none";
+
+        switch (this.getVariant() != null ? this.getVariant() : "") {
+            case "destructive" -> {
+                bgColor = "#ef4444";
+                color = "#ffffff";
+            }
+            case "outline" -> {
+                bgColor = "transparent";
+                color = "#374151";
+                border = "1px solid #d1d5db";
+            }
+            case "secondary" -> {
+                bgColor = "#6b7280";
+                color = "#ffffff";
+            }
+            case "ghost" -> {
+                bgColor = "transparent";
+                color = "#374151";
+            }
+            case "link" -> {
+                bgColor = "transparent";
+                color = "#3b82f6";
+            }
+            default -> { // "default" or fallback
+                bgColor = "#3b82f6";
+                color = "#ffffff";
+            }
+        }
+
+        String targetUrl = this.getUrl() != null ? this.getUrl() : "#";
+        String buttonText = this.getText() != null ? this.getText() : "";
+        TextAlignment alignment = (this.getAlign() != null) ? this.getAlign() : TextAlignment.CENTER;
 
         return """
-                <div style="%s">
-                    <a href="%s" style="%s">%s</a>
-                </div>
+                <mj-section>
+                <mj-column>
+                <mj-button href="%s"
+                           background-color="%s"
+                           color="%s"
+                           border="%s"
+                           font-size="%s"
+                           inner-padding="%s"
+                           align="%s"
+                           border-radius="4px"
+                           font-weight="500"
+                           style="%s">
+                    %s
+                </mj-button>
+                </mj-column>
+                </mj-section>
                 """.formatted(
-                baseStyle(),
-                this.getUrl(),
-                finalButtonStyle,
-                this.getText()
+                targetUrl,
+                bgColor,
+                color,
+                border,
+                fontSize,
+                innerPadding,
+                alignment,
+                this.baseStyle(),
+                buttonText
         );
     }
-
 }

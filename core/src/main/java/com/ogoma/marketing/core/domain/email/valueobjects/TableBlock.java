@@ -1,13 +1,11 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -21,9 +19,15 @@ class TableBlock extends BaseEmailBlock {
 
     @Override
     public String renderHtml() {
+        if (this.getData() == null || this.getData().isEmpty()) {
+            return "";
+        }
+
         StringBuilder headerHtml = new StringBuilder();
         StringBuilder bodyHtml = new StringBuilder();
-        if (this.isHasHeader() && this.getData() != null && !this.getData().isEmpty()) {
+
+        // ----- Header -----
+        if (this.isHasHeader()) {
             List<String> headerRow = this.getData().getFirst();
             StringBuilder headerCells = new StringBuilder();
             for (String cell : headerRow) {
@@ -57,16 +61,18 @@ class TableBlock extends BaseEmailBlock {
                     """.formatted(rowCells.toString()));
         }
 
-        // ----- Final HTML -----
+        // ----- Final MJML -----
         return """
-                <div style="%s">
-                    <table style="border-collapse: collapse; width: 100%%; border: 1px solid #d1d5db;">
+                <mj-section>
+                <mj-column>
+                <mj-table style="border-collapse: collapse; width: 100%%; border: 1px solid #d1d5db; %s">
+                    %s
+                    <tbody>
                         %s
-                        <tbody>
-                            %s
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </mj-table>
+                </mj-column>
+                </mj-section>
                 """.formatted(
                 baseStyle(),
                 headerHtml.toString(),

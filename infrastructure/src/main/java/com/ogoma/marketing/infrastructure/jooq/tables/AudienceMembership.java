@@ -7,15 +7,28 @@ package com.ogoma.marketing.infrastructure.jooq.tables;
 import com.ogoma.marketing.infrastructure.jooq.DefaultSchema;
 import com.ogoma.marketing.infrastructure.jooq.Keys;
 import com.ogoma.marketing.infrastructure.jooq.tables.records.AudienceMembershipRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.Internal;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.UUID;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableLike;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**

@@ -11,5 +11,6 @@ import java.io.Serializable;
 public class EmailSetting implements Serializable {
     private String subject;
     private String senderName;
+    private String previewText;
     private String replyTo;
 }

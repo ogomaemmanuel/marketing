@@ -1,9 +1,9 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringEscapeUtils;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.annotation.JsonSerialize;
 
@@ -25,28 +25,44 @@ class CodeBlock extends BaseEmailBlock {
     @Override
     public String renderHtml() {
         String blockFontFamily = switch (this.getFontFamily()) {
-            case "courier" -> "'Courier New', monospace";
-            case "consolas" -> "'Consolas', monospace";
+            case "courier" -> "'Courier New', Courier, monospace";
+            case "consolas" -> "'Consolas', 'Liberation Mono', Menlo, monospace";
             case null, default -> "monospace";
         };
+
         String blockFontSize = switch (this.getFontSize()) {
             case "small" -> "12px";
             case "large" -> "16px";
             case null, default -> "14px";
         };
+
+        String bgColor = (this.getBackgroundColor() != null && !this.getBackgroundColor().isBlank())
+                ? this.getBackgroundColor()
+                : "#1e293b";
+
+        String txtColor = (this.getTextColor() != null && !this.getTextColor().isBlank())
+                ? this.getTextColor()
+                : "#f8fafc";
+
+        String safeContent = this.getContent() != null ? StringEscapeUtils.escapeHtml4(this.getContent()) : "";
         return """
-                <div style="%s">
-                    <div style="background-color: %s; color: %s; padding: 16px; border-radius: 4px; font-family: %s; font-size: %s; overflow-x: auto;">
-                        <pre style="margin: 0; white-space: pre-wrap;">%s</pre>
-                    </div>
-                </div>
+                <mj-section background-color="%s" border-radius="4px" padding="%s">
+                  <mj-column padding="0">
+                    <mj-text padding="16px" color="%s" font-family="%s" font-size="%s">
+                      <pre style="margin: 0; white-space: pre-wrap; word-break: break-word; font-family: %s; font-size: %s; color: %s;">%s</pre>
+                    </mj-text>
+                  </mj-column>
+                </mj-section>
                 """.formatted(
-                baseStyle(),
-                this.getBackgroundColor(),
-                this.getTextColor(),
+                bgColor,
+                getPaddingCss(),
+                txtColor,
                 blockFontFamily,
                 blockFontSize,
-                this.getContent()
+                blockFontFamily,
+                blockFontSize,
+                txtColor,
+                safeContent
         );
     }
 }
