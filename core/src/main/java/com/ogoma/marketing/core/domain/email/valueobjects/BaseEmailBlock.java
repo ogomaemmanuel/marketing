@@ -1,5 +1,6 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -20,7 +21,7 @@ import java.io.Serializable;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "type",
-        visible=true
+        visible = true
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ButtonBlock.class, name = "button"),
@@ -33,7 +34,11 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = SpacerBlock.class, name = "spacer"),
         @JsonSubTypes.Type(value = TableBlock.class, name = "table"),
         @JsonSubTypes.Type(value = VideoBlock.class, name = "video"),
+        @JsonSubTypes.Type(value = HeroBlock.class, name = "hero"),
+        @JsonSubTypes.Type(value = HorizontalLayoutBlock.class, name = "horizontal-layout"),
+        @JsonSubTypes.Type(value = VerticalLayoutBlock.class, name = "vertical-layout"),
 })
+@JsonIgnoreProperties(ignoreUnknown=true)
 public abstract class BaseEmailBlock implements Serializable {
 
     @JsonProperty("id")
@@ -44,21 +49,56 @@ public abstract class BaseEmailBlock implements Serializable {
     @Pattern(regexp = "^(small|normal|large)$", message = "Invalid block padding")
     private String padding;
     @Pattern(regexp = "^(left|center|right)$", message = "Invalid align value")
-    private String align;
+    @JsonProperty("align")
+    private TextAlignment align = TextAlignment.LEFT;
 
-    public abstract String renderHtml();
+    public String renderHtml() {
+        return renderSection(paddingValue(), cardBackground());
+    }
+
+    /** MJML elements valid directly inside an mj-column, with no outer padding of their own. */
+    protected abstract String renderContent();
+
+    /** One or more mj-sections; layouts call this to control the outer padding and background. */
+    protected String renderSection(String padding, String background) {
+        var content = renderContent();
+        if (content == null || content.isBlank()) {
+            return "";
+        }
+        return """
+                <mj-section background-color="%s" padding="%s">
+                  <mj-column padding="0">
+                    %s
+                  </mj-column>
+                </mj-section>
+                """.formatted(background, padding, content);
+    }
+
+    /** Bare px value (e.g. "16px") driven by the user-configurable padding setting. */
+    protected String paddingValue() {
+        return switch (this.getPadding()) {
+            case "small" -> "8px";
+            case "large" -> "24px";
+            case null, default -> "16px";
+        };
+    }
 
     protected String baseStyle() {
-        var a = switch (this.getAlign()) {
-            case "center" -> "text-align: center;";
-            case "right" -> "text-align: right;";
-            case null, default -> "text-align: left;";
-        };
-        var p = switch (this.getPadding()) {
-            case "small" -> "padding: 8px;";
-            case "large" -> "padding: 24px;";
-            case null, default -> "padding: 16px;";
-        };
-        return String.format("%s %s", p, a);
+        return "padding: %s;".formatted(paddingValue());
     }
+
+    protected String getPaddingCss(){
+        return baseStyle();
+    }
+
+    /** Background color for the white "card" every block renders on top of the grey canvas. */
+    protected String cardBackground() {
+        return EmailTheme.CONTENT_BACKGROUND;
+    }
+
+    /** Corner radius for the white "card" every block renders on top of the grey canvas. */
+    protected String cardBorderRadius() {
+        return EmailTheme.CARD_BORDER_RADIUS;
+    }
+
 }

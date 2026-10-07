@@ -50,6 +50,7 @@ public record EmailTemplatesController(
     }
 
     @GetMapping(value = "/{id}/preview", produces = MediaType.TEXT_HTML_VALUE)
+    @PreAuthorize("permitAll()")
     public String preview(@PathVariable UUID id) {
         return this.queryDispatcher.dispatch(new GetEmailTemplateByIDQuery(new EmailTemplateID(id)))
                 .map(GetEmailTemplateByIDView::emailTemplate).map(EmailTemplate::renderHtml).orElse("");

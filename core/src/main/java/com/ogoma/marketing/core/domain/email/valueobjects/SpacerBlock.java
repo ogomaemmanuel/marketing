@@ -1,6 +1,5 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import tools.jackson.databind.annotation.JsonDeserialize;
@@ -20,11 +19,19 @@ class SpacerBlock extends BaseEmailBlock {
 
     @Override
     public String renderHtml() {
-        String bgColor = "transparent".equals(this.getBackgroundColor())
-                ? "transparent"
-                : this.getBackgroundColor();
+        // Spacers separate cards, so they sit on the canvas rather than inside a padded card.
+        return renderSection("0", "transparent");
+    }
+
+    @Override
+    protected String renderContent() {
+        int heightVal = (this.getHeight() != null && this.getHeight() > 0) ? this.getHeight() : 20;
+        String bgColor = (this.getBackgroundColor() != null && !"transparent".equals(this.getBackgroundColor()))
+                ? this.getBackgroundColor()
+                : "transparent";
+
         return """
-                <div style="height: %dpx; background-color: %s; width: 100%%;"></div>
-                """.formatted(this.getHeight(), bgColor);
+                <mj-spacer height="%dpx" container-background-color="%s" />
+                """.formatted(heightVal, bgColor);
     }
 }

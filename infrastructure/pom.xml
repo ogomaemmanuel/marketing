@@ -29,9 +29,8 @@
         <temporal.version>1.35.0</temporal.version>
         <shedlock.version>5.13.0</shedlock.version>
         <jdbc-querydsl.version>10.0.7</jdbc-querydsl.version>
+        <mjml.version>1.0.2</mjml.version>
     </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -54,6 +53,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-kafka-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.jcputney</groupId>
+            <artifactId>mjml-java-core</artifactId>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>net.javacrumbs.shedlock</groupId>

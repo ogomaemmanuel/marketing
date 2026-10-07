@@ -1,6 +1,5 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -21,19 +20,33 @@ class DividerBlock extends BaseEmailBlock {
     private String width;
     private short marginTop;
     private short marginBottom;
+
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
+        String borderStyle = (this.getStyle() != null && !this.getStyle().isBlank()) ? this.getStyle() : "solid";
+        short borderThickness = this.getThickness() > 0 ? this.getThickness() : 1;
+        String borderWidth = (this.getWidth() != null && !this.getWidth().isBlank()) ? this.getWidth() : "100%";
+        String borderColor = (this.getColor() != null && !this.getColor().isBlank()) ? this.getColor() : EmailTheme.BORDER_COLOR;
+        TextAlignment align = (this.getAlign() != null) ? this.getAlign() : TextAlignment.CENTER;
+
         return """
-                <div style="margin-top: %spx; margin-bottom: %spx; text-align: %s;">
-                  <hr style="border: none; border-top: %spx %s %s; width: %s; margin: 0;" />
-                </div>
-                  """.formatted(
-                this.getMarginBottom(),
-                this.getMarginBottom(),
-                this.getAlign(),
-                this.getThickness(),
-                this.getStyle(),
-                this.getColor(),
-                this.getWidth());
+                <mj-divider border-style="%s"
+                            border-width="%dpx"
+                            border-color="%s"
+                            width="%s"
+                            align="%s"
+                            padding-left="0"
+                            padding-right="0"
+                            padding-top="%dpx"
+                            padding-bottom="%dpx" />
+                """.formatted(
+                borderStyle,
+                borderThickness,
+                borderColor,
+                borderWidth,
+                align.toCss(),
+                this.getMarginTop(),
+                this.getMarginBottom()
+        );
     }
 }
