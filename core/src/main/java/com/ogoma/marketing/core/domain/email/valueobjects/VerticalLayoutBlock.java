@@ -49,7 +49,7 @@ public class VerticalLayoutBlock extends BaseEmailBlock {
         }
 
         return """
-                <mj-wrapper%s>
+                <mj-wrapper %s>
                 %s
                 </mj-wrapper>""".formatted(attributes(attrs), childSections);
     }

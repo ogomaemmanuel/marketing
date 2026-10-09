@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.UUID;
@@ -40,6 +41,13 @@ public record ContactsController(
         ContactEntity contactEntity = this.commandDispatcher.dispatch(addContactRequest.toCommand(userId));
         URI uri = uriComponentsBuilder.path("/api/v1/contacts/{id}").buildAndExpand(contactEntity.getId().id()).toUri();
         return ResponseEntity.created(uri).body(contactEntity.getId().id());
+    }
+
+    @PostMapping("/import")
+    public Mono<ResponseEntity<String>> importContacts(ImportContactsFromCsvRequest importContactsFromCsvRequest, @CurrentUser String userId) {
+        return importContactsFromCsvRequest.toCommand(userId).flatMap(this.commandDispatcher::dispatch)
+                .then(Mono.fromCallable(() -> ResponseEntity.ok("Import completed")));
+
     }
 
     @GetMapping("/{id}")
