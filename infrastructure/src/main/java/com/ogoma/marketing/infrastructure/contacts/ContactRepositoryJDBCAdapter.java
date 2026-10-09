@@ -17,6 +17,7 @@ import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +35,11 @@ public record ContactRepositoryJDBCAdapter(
     @Override
     public ContactEntity save(ContactEntity contactEntity) {
         return jdbcAggregateTemplate.save(contactEntity);
+    }
+
+    @Override
+    public Iterable<ContactEntity> saveAll(Collection<ContactEntity> contactEntity) {
+        return jdbcAggregateTemplate.saveAll(contactEntity);
     }
 
     @Override
