@@ -10,18 +10,33 @@ import com.ogoma.marketing.core.application.contacts.queries.GetContactsQuery;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactsView;
 import com.ogoma.marketing.core.domain.contacts.ContactEntity;
 import com.ogoma.marketing.core.domain.contacts.ContactID;
+import com.opencsv.CSVWriter;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferFactory;
+import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/v1/contacts")
@@ -40,6 +55,57 @@ public record ContactsController(
         ContactEntity contactEntity = this.commandDispatcher.dispatch(addContactRequest.toCommand(userId));
         URI uri = uriComponentsBuilder.path("/api/v1/contacts/{id}").buildAndExpand(contactEntity.getId().id()).toUri();
         return ResponseEntity.created(uri).body(contactEntity.getId().id());
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Mono<ResponseEntity<String>> importContacts(ImportContactsFromCsvRequest importContactsFromCsvRequest, @CurrentUser String userId) {
+        return importContactsFromCsvRequest.toCommand(userId).flatMap(this.commandDispatcher::dispatch)
+                .then(Mono.fromCallable(() -> ResponseEntity.ok("Import completed")));
+
+    }
+
+    @PostMapping("/export")
+    public ResponseEntity<Flux<DataBuffer>> exportContacts(
+            ExportContactsRequest exportContactsRequest, @CurrentUser String userId) {
+        var body = Flux.using(() ->
+                        this.commandDispatcher.dispatch(exportContactsRequest.toCommand(userId)),
+                contactStream -> Flux.fromStream(contactStream)
+                        .map(contact ->
+                                encodeRow(new String[]{
+                                        Objects.toString(contact.id(), ""),
+                                        contact.firstName(),
+                                        contact.lastName(),
+                                        contact.email(),
+                                        contact.phoneNumber(),
+                                })
+                        ),
+                Stream::close
+        ).subscribeOn(Schedulers.boundedElastic());
+        return ResponseEntity.ok()
+                .contentType(new MediaType(
+                        "text", "csv", StandardCharsets.UTF_8))
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"report.csv\""
+                )
+                .body(body);
+
+    }
+
+    private DataBuffer encodeRow(String[] values) {
+        DataBufferFactory bufferFactory =
+                new DefaultDataBufferFactory();
+        StringWriter stringWriter = new StringWriter();
+        try (CSVWriter csvWriter = new CSVWriter(stringWriter)) {
+            csvWriter.writeNext(values);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        return bufferFactory.wrap(
+                stringWriter.toString()
+                        .getBytes(StandardCharsets.UTF_8)
+        );
     }
 
     @GetMapping("/{id}")

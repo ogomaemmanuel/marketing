@@ -5,6 +5,7 @@ package com.ogoma.marketing.infrastructure.jooq;
 
 
 import com.ogoma.marketing.infrastructure.jooq.tables.FlywaySchemaHistory;
+
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.DSL;

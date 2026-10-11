@@ -1,13 +1,11 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -20,16 +18,22 @@ class TableBlock extends BaseEmailBlock {
     private List<List<String>> data;
 
     @Override
-    public String renderHtml() {
+    protected String renderContent() {
+        if (this.getData() == null || this.getData().isEmpty()) {
+            return "";
+        }
+
         StringBuilder headerHtml = new StringBuilder();
         StringBuilder bodyHtml = new StringBuilder();
-        if (this.isHasHeader() && this.getData() != null && !this.getData().isEmpty()) {
+
+        // ----- Header -----
+        if (this.isHasHeader()) {
             List<String> headerRow = this.getData().getFirst();
             StringBuilder headerCells = new StringBuilder();
             for (String cell : headerRow) {
                 headerCells.append("""
-                        <th style="border: 1px solid #d1d5db; background-color: #f3f4f6; padding: 12px; text-align: left;">%s</th>
-                        """.formatted(cell));
+                        <th style="border: 1px solid %s; background-color: %s; color: %s; padding: 12px; text-align: left;">%s</th>
+                        """.formatted(EmailTheme.BORDER_COLOR, EmailTheme.BODY_BACKGROUND, EmailTheme.HEADING_COLOR, cell));
             }
             headerHtml.append("""
                     <thead>
@@ -47,8 +51,8 @@ class TableBlock extends BaseEmailBlock {
             StringBuilder rowCells = new StringBuilder();
             for (String cell : row) {
                 rowCells.append("""
-                        <td style="border: 1px solid #d1d5db; padding: 12px;">%s</td>
-                        """.formatted(cell));
+                        <td style="border: 1px solid %s; color: %s; padding: 12px;">%s</td>
+                        """.formatted(EmailTheme.BORDER_COLOR, EmailTheme.TEXT_COLOR, cell));
             }
             bodyHtml.append("""
                     <tr>
@@ -57,18 +61,17 @@ class TableBlock extends BaseEmailBlock {
                     """.formatted(rowCells.toString()));
         }
 
-        // ----- Final HTML -----
+        // ----- Final MJML -----
         return """
-                <div style="%s">
-                    <table style="border-collapse: collapse; width: 100%%; border: 1px solid #d1d5db;">
+                <mj-table font-family="%s" padding="0" width="100%%" style="border-collapse: collapse; width: 100%%; border: 1px solid %s;">
+                    %s
+                    <tbody>
                         %s
-                        <tbody>
-                            %s
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </mj-table>
                 """.formatted(
-                baseStyle(),
+                EmailTheme.FONT_FAMILY,
+                EmailTheme.BORDER_COLOR,
                 headerHtml.toString(),
                 bodyHtml.toString()
         );

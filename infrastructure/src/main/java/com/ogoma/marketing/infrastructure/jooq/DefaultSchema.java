@@ -4,14 +4,29 @@
 package com.ogoma.marketing.infrastructure.jooq;
 
 
-import com.ogoma.marketing.infrastructure.jooq.tables.*;
+import com.ogoma.marketing.infrastructure.jooq.tables.AudienceMembership;
+import com.ogoma.marketing.infrastructure.jooq.tables.Audiences;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignAudience;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignChannels;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignSegments;
+import com.ogoma.marketing.infrastructure.jooq.tables.Campaigns;
+import com.ogoma.marketing.infrastructure.jooq.tables.ContactAttributeValues;
+import com.ogoma.marketing.infrastructure.jooq.tables.Contacts;
+import com.ogoma.marketing.infrastructure.jooq.tables.EmailTemplates;
+import com.ogoma.marketing.infrastructure.jooq.tables.FlywaySchemaHistory;
+import com.ogoma.marketing.infrastructure.jooq.tables.MessageOutbox;
+import com.ogoma.marketing.infrastructure.jooq.tables.Segments;
+import com.ogoma.marketing.infrastructure.jooq.tables.Shedlock;
+import com.ogoma.marketing.infrastructure.jooq.tables.SmsTemplates;
+import com.ogoma.marketing.infrastructure.jooq.tables.Users;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SchemaImpl;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**

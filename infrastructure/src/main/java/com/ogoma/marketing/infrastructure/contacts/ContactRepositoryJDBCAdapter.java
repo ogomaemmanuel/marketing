@@ -1,12 +1,16 @@
 package com.ogoma.marketing.infrastructure.contacts;
 
+import com.ogoma.marketing.core.application.contacts.commands.ExportContactsView;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDView;
+import com.ogoma.marketing.core.domain.audience.AudienceId;
 import com.ogoma.marketing.core.domain.contacts.ContactEntity;
 import com.ogoma.marketing.core.domain.contacts.ContactID;
 import com.ogoma.marketing.core.domain.contacts.ContactRepository;
+import com.ogoma.marketing.infrastructure.jooq.tables.AudienceMembership;
 import com.ogoma.marketing.infrastructure.jooq.tables.ContactAttributeValues;
 import com.ogoma.marketing.infrastructure.jooq.tables.Contacts;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.data.core.PropertyPath;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,9 +21,9 @@ import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.jooq.impl.DSL.multiset;
 import static org.jooq.impl.DSL.select;
@@ -37,9 +41,51 @@ public record ContactRepositoryJDBCAdapter(
     }
 
     @Override
+    public Iterable<ContactEntity> saveAll(Collection<ContactEntity> contactEntity) {
+        return jdbcAggregateTemplate.saveAll(contactEntity);
+    }
+
+    @Override
     public Optional<ContactEntity> findById(ContactID contactID) {
         return Optional.ofNullable(this.jdbcAggregateTemplate.findById(contactID, ContactEntity.class));
     }
+
+    @Override
+    public Stream<ExportContactsView> findAllByAudienceIds(
+            Set<AudienceId> audienceIds) {
+        audienceIds = Objects.requireNonNullElse(audienceIds, Set.of());
+        var condition = DSL.noCondition();
+        if (!audienceIds.isEmpty()) {
+            var ids = audienceIds.stream().map(AudienceId::id).collect(Collectors.toSet());
+            condition = DSL.exists(
+                    DSL.selectOne()
+                            .from(AudienceMembership.AUDIENCE_MEMBERSHIP)
+                            .where(AudienceMembership.AUDIENCE_MEMBERSHIP.CONTACT_ID
+                                    .eq(Contacts.CONTACTS.ID))
+                            .and(AudienceMembership.AUDIENCE_MEMBERSHIP.AUDIENCE_ID.in(ids))
+            );
+        }
+
+        return dslContext
+                .select(
+                        Contacts.CONTACTS.ID,
+                        Contacts.CONTACTS.FIRST_NAME,
+                        Contacts.CONTACTS.LAST_NAME,
+                        Contacts.CONTACTS.EMAIL,
+                        Contacts.CONTACTS.PHONE_NUMBER)
+                .from(Contacts.CONTACTS)
+                .where(condition)
+                .orderBy(Contacts.CONTACTS.ID)
+                .fetchSize(1_000)
+                .fetchStream().map(rec -> new ExportContactsView(
+                        rec.get(Contacts.CONTACTS.ID),
+                        rec.get(Contacts.CONTACTS.FIRST_NAME),
+                        rec.get(Contacts.CONTACTS.LAST_NAME),
+                        rec.get(Contacts.CONTACTS.EMAIL),
+                        rec.get(Contacts.CONTACTS.PHONE_NUMBER)
+                ));
+    }
+
 
     @Override
     public Optional<GetContactByIDView> findDetailsById(ContactID contactID) {

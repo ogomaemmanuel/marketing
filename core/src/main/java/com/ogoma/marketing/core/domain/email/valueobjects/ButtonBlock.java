@@ -1,6 +1,5 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
-
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,44 +18,81 @@ public class ButtonBlock extends BaseEmailBlock {
     @Pattern(regexp = "^(small|medium|large)")
     private String size;
 
-
     @Override
-    public String renderHtml() {
-        // Base style
-        String baseButtonStyle = """
-                display: inline-block;
-                text-decoration: none;
-                border-radius: 4px;
-                font-weight: 500;
-                text-align: center;
-                """;
-
-        // Size styles
-        String sizeStyle = switch (this.getSize()) {
-            case "small" -> "padding: 4px 12px; font-size: 14px;";
-            case "large" -> "padding: 12px 24px; font-size: 18px;";
-            case null, default -> "padding: 8px 16px; font-size: 16px;";
+    protected String renderContent() {
+        // Size mapping
+        String fontSize = switch (this.getSize() != null ? this.getSize() : "") {
+            case "small" -> "14px";
+            case "large" -> "18px";
+            default -> "16px";
         };
 
-        // Variant styles
-        String variantStyle = switch (this.getVariant()) {
-            case "primary" -> "background-color: #3b82f6; color: white;";
-            case "secondary" -> "background-color: #6b7280; color: white;";
-            case null, default -> "border: 1px solid #d1d5db; background-color: white; color: #374151;";
+        String innerPadding = switch (this.getSize() != null ? this.getSize() : "") {
+            case "small" -> "4px 12px";
+            case "large" -> "12px 24px";
+            default -> "8px 16px";
         };
 
-        String finalButtonStyle = baseButtonStyle + " " + sizeStyle + " " + variantStyle;
+        // Variant mapping (Mailchimp-style: signature yellow primary, dark secondary)
+        String bgColor;
+        String color;
+        String border = "none";
+
+        switch (this.getVariant() != null ? this.getVariant() : "") {
+            case "destructive" -> {
+                bgColor = EmailTheme.DESTRUCTIVE_COLOR;
+                color = EmailTheme.DESTRUCTIVE_TEXT_COLOR;
+            }
+            case "outline" -> {
+                bgColor = "transparent";
+                color = EmailTheme.TEXT_COLOR;
+                border = "1px solid %s".formatted(EmailTheme.TEXT_COLOR);
+            }
+            case "secondary" -> {
+                bgColor = EmailTheme.DARK_COLOR;
+                color = EmailTheme.DARK_TEXT_COLOR;
+            }
+            case "ghost" -> {
+                bgColor = "transparent";
+                color = EmailTheme.TEXT_COLOR;
+            }
+            case "link" -> {
+                bgColor = "transparent";
+                color = EmailTheme.LINK_COLOR;
+            }
+            default -> { // "default" or fallback
+                bgColor = EmailTheme.ACCENT_COLOR;
+                color = EmailTheme.ACCENT_TEXT_COLOR;
+            }
+        }
+
+        String targetUrl = this.getUrl() != null ? this.getUrl() : "#";
+        String buttonText = this.getText() != null ? this.getText() : "";
+        TextAlignment alignment = (this.getAlign() != null) ? this.getAlign() : TextAlignment.CENTER;
 
         return """
-                <div style="%s">
-                    <a href="%s" style="%s">%s</a>
-                </div>
+                <mj-button href="%s"
+                           background-color="%s"
+                           color="%s"
+                           border="%s"
+                           font-size="%s"
+                           inner-padding="%s"
+                           align="%s"
+                           border-radius="%s"
+                           font-weight="500"
+                           padding="0">
+                    %s
+                </mj-button>
                 """.formatted(
-                baseStyle(),
-                this.getUrl(),
-                finalButtonStyle,
-                this.getText()
+                targetUrl,
+                bgColor,
+                color,
+                border,
+                fontSize,
+                innerPadding,
+                alignment,
+                EmailTheme.BORDER_RADIUS,
+                buttonText
         );
     }
-
 }

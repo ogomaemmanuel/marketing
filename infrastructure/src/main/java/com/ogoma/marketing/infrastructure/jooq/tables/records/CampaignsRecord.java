@@ -5,13 +5,14 @@ package com.ogoma.marketing.infrastructure.jooq.tables.records;
 
 
 import com.ogoma.marketing.infrastructure.jooq.tables.Campaigns;
-import org.jooq.JSONB;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+
+import org.jooq.JSONB;
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**

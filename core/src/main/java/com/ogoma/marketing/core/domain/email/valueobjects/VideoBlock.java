@@ -20,18 +20,22 @@ class VideoBlock extends BaseEmailBlock {
     private Boolean autoPlay;
 
     @Override
-    public String renderHtml() {
-        String heightStyle = !"auto".equals(this.getHeight())
-                ? "height: \" + this.getHeight() + \";"
+    protected String renderContent() {
+        String heightStyle = (this.getHeight() != null && !"auto".equals(this.getHeight()))
+                ? "height: %s;".formatted(this.getHeight())
                 : "";
-        return String.format("""
-                        <div style="%s">
-                          <video controls="%s" autoplay="%s" style="max-width: 100%%; width: %s; %s">
-                            <source src="%s" type="video/mp4">
-                            Your email client does not support video playback.
-                          </video>
-                        </div>""",
-                this.baseStyle(), this.getControls(), this.getAutoPlay(),
+        return """
+                <mj-text padding="0">
+                  <div style="border-radius: %s; overflow: hidden;">
+                    <video controls="%s" autoplay="%s" style="max-width: 100%%; width: %s; %s">
+                      <source src="%s" type="video/mp4">
+                      Your email client does not support video playback.
+                    </video>
+                  </div>
+                </mj-text>
+                """.formatted(
+                EmailTheme.BORDER_RADIUS,
+                this.getControls(), this.getAutoPlay(),
                 this.getWidth(), heightStyle, this.getSrc()
         );
     }

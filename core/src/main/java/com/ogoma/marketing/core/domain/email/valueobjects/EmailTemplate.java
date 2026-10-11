@@ -1,6 +1,8 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.jcputney.mjml.MjmlRenderResult;
+import dev.jcputney.mjml.MjmlRenderer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,54 +26,48 @@ public class EmailTemplate implements Serializable {
     }
 
     public String renderHtml() {
-        String blocksHtml = this.blocks.stream().map(BaseEmailBlock::renderHtml).collect(Collectors.joining("\n      "));
-        return """
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                    <title>%s</title>
-                    <style type="text/css">
-                        body {
-                            font-family: Arial, Helvetica, sans-serif;
-                            font-size: 14px;
-                            line-height: 1.6;
-                            color: #333333;
-                            margin: 0;
-                            padding: 0;
-                            background-color: #f4f4f4;
-                        }
-                        .email-wrapper {
-                            background-color: #f4f4f4;
-                            padding: 20px 0;
-                        }
-                        .email-container {
-                            max-width: 600px;
-                            margin: 0 auto;
-                            background-color: #ffffff;
-                            padding: 20px;
-                            border-radius: 8px;
-                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                        }
-                        @media only screen and (max-width: 600px) {
-                            .email-container {
-                                width: 100%% !important; /* double %% to escape */
-                                padding: 10px !important;
-                            }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="email-wrapper">
-                        <div class="email-container">
-                            %s
-                        </div>
-                    </div>
-                </body>
-                </html>
-                """.formatted(Optional.ofNullable(emailSetting).map(EmailSetting::getSubject).orElse(""), blocksHtml);
+        String blocksHtml = Optional.ofNullable(this.blocks)
+                .orElseGet(ArrayList::new)
+                .stream()
+                .map(BaseEmailBlock::renderHtml)
+                .collect(Collectors.joining("\n          "));
 
+        String subject = Optional.ofNullable(emailSetting)
+                .map(EmailSetting::getSubject)
+                .orElse("");
+
+        String previewText = Optional.ofNullable(emailSetting)
+                .map(EmailSetting::getPreviewText)
+                .filter(text -> !text.isBlank())
+                .map("<mj-preview>%s</mj-preview>"::formatted)
+                .orElse("");
+
+        String mjmlString = """
+                <mjml>
+                  <mj-head>
+                    <mj-title>%s</mj-title>
+                    %s
+                    <mj-attributes>
+                      <mj-all font-family="%s" font-size="16px" color="%s" line-height="1.6" />
+                      <mj-text font-family="%s" font-size="16px" color="%s" line-height="1.6" />
+                    </mj-attributes>
+                  </mj-head>
+                  <mj-body background-color="%s" width="600px">
+                    %s
+                  </mj-body>
+                </mjml>
+                """.formatted(
+                subject,
+                previewText,
+                EmailTheme.FONT_FAMILY,
+                EmailTheme.TEXT_COLOR,
+                EmailTheme.FONT_FAMILY,
+                EmailTheme.TEXT_COLOR,
+                EmailTheme.BODY_BACKGROUND,
+                blocksHtml
+        );
+// One-liner with defaults
+        MjmlRenderResult result = MjmlRenderer.render(mjmlString);
+        return result.html();
     }
 }

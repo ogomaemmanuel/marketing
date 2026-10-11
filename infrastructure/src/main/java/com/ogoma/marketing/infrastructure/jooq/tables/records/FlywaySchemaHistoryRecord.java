@@ -5,10 +5,11 @@ package com.ogoma.marketing.infrastructure.jooq.tables.records;
 
 
 import com.ogoma.marketing.infrastructure.jooq.tables.FlywaySchemaHistory;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**

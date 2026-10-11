@@ -4,8 +4,37 @@
 package com.ogoma.marketing.infrastructure.jooq;
 
 
-import com.ogoma.marketing.infrastructure.jooq.tables.*;
-import com.ogoma.marketing.infrastructure.jooq.tables.records.*;
+import com.ogoma.marketing.infrastructure.jooq.tables.AudienceMembership;
+import com.ogoma.marketing.infrastructure.jooq.tables.Audiences;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignAudience;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignChannels;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignSegments;
+import com.ogoma.marketing.infrastructure.jooq.tables.Campaigns;
+import com.ogoma.marketing.infrastructure.jooq.tables.ContactAttributeValues;
+import com.ogoma.marketing.infrastructure.jooq.tables.Contacts;
+import com.ogoma.marketing.infrastructure.jooq.tables.EmailTemplates;
+import com.ogoma.marketing.infrastructure.jooq.tables.FlywaySchemaHistory;
+import com.ogoma.marketing.infrastructure.jooq.tables.MessageOutbox;
+import com.ogoma.marketing.infrastructure.jooq.tables.Segments;
+import com.ogoma.marketing.infrastructure.jooq.tables.Shedlock;
+import com.ogoma.marketing.infrastructure.jooq.tables.SmsTemplates;
+import com.ogoma.marketing.infrastructure.jooq.tables.Users;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.AudienceMembershipRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.AudiencesRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignAudienceRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignChannelsRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignSegmentsRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignsRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.ContactAttributeValuesRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.ContactsRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.EmailTemplatesRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.FlywaySchemaHistoryRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.MessageOutboxRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.SegmentsRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.ShedlockRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.SmsTemplatesRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.UsersRecord;
+
 import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;

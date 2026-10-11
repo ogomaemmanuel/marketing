@@ -5,10 +5,11 @@ package com.ogoma.marketing.infrastructure.jooq.tables.records;
 
 
 import com.ogoma.marketing.infrastructure.jooq.tables.ContactAttributeValues;
-import org.jooq.Record3;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.util.UUID;
+
+import org.jooq.Record3;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**

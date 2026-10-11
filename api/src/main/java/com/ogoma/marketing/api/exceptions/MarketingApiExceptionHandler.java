@@ -33,4 +33,8 @@ public record MarketingApiExceptionHandler() {
     public String handleRecordNotFoundException(RecordNotFoundException exception) {
         return exception.getMessage();
     }
+    @ExceptionHandler(Exception.class)
+    public String handleRecordNotFoundException(Exception exception) {
+        return exception.getMessage();
+    }
 }

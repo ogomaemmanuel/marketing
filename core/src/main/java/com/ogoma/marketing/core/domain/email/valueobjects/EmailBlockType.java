@@ -1,5 +1,6 @@
 package com.ogoma.marketing.core.domain.email.valueobjects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 
@@ -17,7 +18,8 @@ public enum EmailBlockType {
     SOCIAL("social-share"),
     RSS("rss"),
     VERTICAL_LAYOUT("vertical-layout"),
-    HORIZONTAL_LAYOUT("horizontal-layout");
+    HORIZONTAL_LAYOUT("horizontal-layout"),
+    HERO("hero");
 
     private final String value;
 
@@ -30,6 +32,8 @@ public enum EmailBlockType {
         return value;
     }
 
+
+    @JsonCreator
     public static EmailBlockType fromValue(String value) {
         for (EmailBlockType type : EmailBlockType.values()) {
             if (type.value.equals(value)) {
