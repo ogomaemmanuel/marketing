@@ -17,6 +17,7 @@ import {MultiSelectPopover} from "@/components/common/multi-select-popover";
 import {ChannelBadgeGroup} from "@/components/campaigns/channel-badge";
 import {campaignFormSchema, type CampaignFormValues} from "@/lib/validation/campaign";
 import {useAudiences} from "@/hooks/audiences/use-audiences";
+import {useSegments} from "@/hooks/segments/use-segments";
 import {useSmsTemplates} from "@/hooks/templates/use-sms-templates";
 import {useEmailTemplates} from "@/hooks/templates/use-email-templates";
 import {useCreateCampaign} from "@/hooks/campaigns/use-campaigns";
@@ -33,6 +34,7 @@ function CampaignWizard() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const audiences = useAudiences({ page: 0, size: 100 });
+  const segments = useSegments({ page: 0, size: 100 });
   const smsTemplates = useSmsTemplates({ page: 0, size: 100 });
   const emailTemplates = useEmailTemplates({ page: 0, size: 100 });
   const createCampaign = useCreateCampaign();
@@ -44,6 +46,7 @@ function CampaignWizard() {
       description: "",
       channels: [],
       targetAudienceIds: [],
+      targetSegmentIds: [],
       smsTemplateID: undefined,
       emailTemplateID: undefined,
     },
@@ -53,13 +56,16 @@ function CampaignWizard() {
   const values = useWatch({ control: form.control });
   const channels = values.channels ?? [];
   const targetAudienceIds = values.targetAudienceIds ?? [];
+  const targetSegmentIds = values.targetSegmentIds ?? [];
   const audienceOptions =
     audiences.data?.content.map((audience) => ({ value: audience.id, label: audience.name })) ?? [];
+  const segmentOptions =
+    segments.data?.content.map((segment) => ({ value: segment.id, label: segment.name })) ?? [];
 
   async function goNext() {
     const fieldsByStep: (keyof CampaignFormValues)[][] = [
       ["name", "channels"],
-      ["targetAudienceIds"],
+      ["targetAudienceIds", "targetSegmentIds"],
       ["smsTemplateID", "emailTemplateID"],
     ];
     const fields = fieldsByStep[step];
@@ -93,6 +99,9 @@ function CampaignWizard() {
 
   const selectedAudienceNames = audienceOptions
     .filter((option) => targetAudienceIds.includes(option.value))
+    .map((option) => option.label);
+  const selectedSegmentNames = segmentOptions
+    .filter((option) => targetSegmentIds.includes(option.value))
     .map((option) => option.label);
 
   return (
@@ -179,6 +188,19 @@ function CampaignWizard() {
                 before continuing.
               </p>
             )}
+            <Field
+              label="Target segments"
+              error={form.formState.errors.targetSegmentIds?.message}
+              description="Optionally narrow the campaign to one or more segments."
+            >
+              <MultiSelectPopover
+                options={segmentOptions}
+                selected={targetSegmentIds}
+                onChange={(values) => form.setValue("targetSegmentIds", values, { shouldValidate: true })}
+                placeholder={segments.isLoading ? "Loading segments..." : "Select segments"}
+                emptyLabel="No segments yet."
+              />
+            </Field>
           </div>
         )}
 
@@ -275,6 +297,10 @@ function CampaignWizard() {
             <div>
               <p className="text-xs text-muted-foreground">Audiences</p>
               <p className="text-sm text-foreground">{selectedAudienceNames.join(", ") || "None selected"}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Segments</p>
+              <p className="text-sm text-foreground">{selectedSegmentNames.join(", ") || "None selected"}</p>
             </div>
             {channels.includes("SMS") && (
               <div>

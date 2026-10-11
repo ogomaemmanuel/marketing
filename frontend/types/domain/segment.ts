@@ -1,8 +1,4 @@
-/**
- * Segmentation rule model. Only `POST /api/v1/segments` exists on the
- * backend today — there is no list/get endpoint yet, so segments can be
- * created but not browsed. The UI reflects that limitation explicitly.
- */
+/** Segmentation rule model. */
 export type RuleOperator =
   | "EQUAL"
   | "LESS_THAN"
@@ -42,6 +38,13 @@ export interface SegmentRule {
 export interface SegmentRuleGroup {
   condition: RuleCondition;
   rules: (SegmentRule | SegmentRuleGroup)[];
+}
+
+export interface SegmentListItem {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: string;
 }
 
 export interface CreateSegmentInput {
