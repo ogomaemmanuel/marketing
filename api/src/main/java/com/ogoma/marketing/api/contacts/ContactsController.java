@@ -57,7 +57,7 @@ public record ContactsController(
         return ResponseEntity.created(uri).body(contactEntity.getId().id());
     }
 
-    @PostMapping("/import")
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Mono<ResponseEntity<String>> importContacts(ImportContactsFromCsvRequest importContactsFromCsvRequest, @CurrentUser String userId) {
         return importContactsFromCsvRequest.toCommand(userId).flatMap(this.commandDispatcher::dispatch)
                 .then(Mono.fromCallable(() -> ResponseEntity.ok("Import completed")));
