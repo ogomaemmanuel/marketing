@@ -87,10 +87,8 @@ public record ImportContactsFromCsvRequest(
                      .readerFor(ContactDetails.class)
                      .with(CSV_SCHEMA)
                      .readValues(inputStream)) {
-
             // Parsing occurs on boundedElastic, not the Netty event loop.
             List<ContactDetails> contacts = iterator.readAll();
-
             return Flux.fromIterable(contacts);
 
         } catch (Exception exception) {

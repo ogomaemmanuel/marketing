@@ -1,10 +1,7 @@
 package com.ogoma.marketing.api.configs;
 
 import com.ogoma.marketing.core.abstractions.UnitOfWork;
-import com.ogoma.marketing.core.application.contacts.commands.AddContactCommandHandler;
-import com.ogoma.marketing.core.application.contacts.commands.AudienceMembershipValidator;
-import com.ogoma.marketing.core.application.contacts.commands.ImportContactsFromCsvCommandHandler;
-import com.ogoma.marketing.core.application.contacts.commands.UpdateContactCommandHandler;
+import com.ogoma.marketing.core.application.contacts.commands.*;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactByIDQueryHandler;
 import com.ogoma.marketing.core.application.contacts.queries.GetContactsQueryHandler;
 import com.ogoma.marketing.core.domain.audience.AudienceRepository;
@@ -58,6 +55,13 @@ public class ContactsConfig {
         return new ImportContactsFromCsvCommandHandler(
                 audienceMembershipValidator, unitOfWork, contactRepository, audienceMembershipRepository
         );
+    }
+
+    @Bean
+    ExportContactsCommandHandler exportContactsCommandHandler(
+            ContactRepository contactRepository
+    ) {
+        return new ExportContactsCommandHandler(contactRepository);
     }
 
 
