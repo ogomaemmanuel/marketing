@@ -101,11 +101,12 @@ public record ContactsController(
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-
         return bufferFactory.wrap(
                 stringWriter.toString()
                         .getBytes(StandardCharsets.UTF_8)
         );
+
+
     }
 
     @GetMapping("/{id}")

@@ -1,0 +1,7 @@
+[tools]
+
+java = "temurin-25"
+node = 22
+
+[tasks]
+run-docker="./docker-compose-run.sh"
