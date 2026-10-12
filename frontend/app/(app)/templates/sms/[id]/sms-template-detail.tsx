@@ -5,15 +5,12 @@ import {toast} from "sonner";
 import {CopyIcon} from "lucide-react";
 import {PageHeader} from "@/components/common/page-header";
 import {ErrorState} from "@/components/common/error-state";
-import {Card, CardContent} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
-import {SmsTemplateForm} from "@/components/templates/sms-template-form";
+import {SmsTemplateEditor} from "@/components/templates/sms-editor/sms-template-editor";
 import {SendTestMessageDialog} from "@/components/templates/send-test-message-dialog";
 import {useDuplicateSmsTemplate, useSmsTemplate, useUpdateSmsTemplate} from "@/hooks/templates/use-sms-templates";
 import type {SmsTemplateFormValues} from "@/lib/validation/sms-template";
-
-const FORM_ID = "edit-sms-template-form";
 
 function SmsTemplateDetail({ id }: { id: string }) {
   const router = useRouter();
@@ -70,16 +67,13 @@ function SmsTemplateDetail({ id }: { id: string }) {
           </>
         }
       />
-      <Card className="max-w-2xl">
-        <CardContent>
-          <SmsTemplateForm formId={FORM_ID} defaultValues={template.data} onSubmit={handleSubmit} />
-          <div className="mt-4 flex justify-end gap-2">
-            <Button type="submit" form={FORM_ID} disabled={updateTemplate.isPending}>
-              {updateTemplate.isPending ? "Saving..." : "Save changes"}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <SmsTemplateEditor
+        templateId={id}
+        defaultValues={template.data}
+        onSubmit={handleSubmit}
+        submitLabel={updateTemplate.isPending ? "Saving..." : "Save changes"}
+        isSubmitting={updateTemplate.isPending}
+      />
     </div>
   );
 }

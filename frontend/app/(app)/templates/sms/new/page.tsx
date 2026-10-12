@@ -3,13 +3,10 @@
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
 import {PageHeader} from "@/components/common/page-header";
-import {Card, CardContent} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {SmsTemplateForm} from "@/components/templates/sms-template-form";
+import {SmsTemplateEditor} from "@/components/templates/sms-editor/sms-template-editor";
 import {useCreateSmsTemplate} from "@/hooks/templates/use-sms-templates";
 import type {SmsTemplateFormValues} from "@/lib/validation/sms-template";
-
-const FORM_ID = "create-sms-template-form";
 
 export default function NewSmsTemplatePage() {
   const router = useRouter();
@@ -28,22 +25,19 @@ export default function NewSmsTemplatePage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        title="New SMS template"
+        title="Compose a new SMS"
         breadcrumbs={[{ label: "Templates", href: "/templates" }, { label: "New SMS template" }]}
       />
-      <Card className="max-w-2xl">
-        <CardContent>
-          <SmsTemplateForm formId={FORM_ID} onSubmit={handleSubmit} />
-          <div className="mt-4 flex justify-end gap-2">
-            <Button variant="outline" onClick={() => router.push("/templates")}>
-              Cancel
-            </Button>
-            <Button type="submit" form={FORM_ID} disabled={createSmsTemplate.isPending}>
-              {createSmsTemplate.isPending ? "Creating..." : "Create template"}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <SmsTemplateEditor
+        onSubmit={handleSubmit}
+        submitLabel={createSmsTemplate.isPending ? "Creating..." : "Create template"}
+        isSubmitting={createSmsTemplate.isPending}
+        secondaryActions={
+          <Button type="button" variant="ghost" onClick={() => router.push("/templates")}>
+            Cancel
+          </Button>
+        }
+      />
     </div>
   );
 }
