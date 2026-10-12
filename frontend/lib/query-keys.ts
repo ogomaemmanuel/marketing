@@ -12,6 +12,10 @@ export const queryKeys = {
     list: (params: SearchParams) => ["audiences", "list", params] as const,
     detail: (id: string) => ["audiences", "detail", id] as const,
   },
+  segments: {
+    all: ["segments"] as const,
+    list: (params: SearchParams) => ["segments", "list", params] as const,
+  },
   campaigns: {
     all: ["campaigns"] as const,
     list: (params: SearchParams) => ["campaigns", "list", params] as const,

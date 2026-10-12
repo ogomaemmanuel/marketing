@@ -1,11 +1,24 @@
-import {useMutation} from "@tanstack/react-query";
-import {createSegment} from "@/lib/api/segments";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {createSegment, getSegments} from "@/lib/api/segments";
+import {queryKeys} from "@/lib/query-keys";
 import type {NormalizedApiError} from "@/types/api/errors";
-import type {CreateSegmentInput} from "@/types/domain/segment";
+import type {PagedModel, SearchParams} from "@/types/api/pagination";
+import type {CreateSegmentInput, SegmentListItem} from "@/types/domain/segment";
 
-/** No invalidation needed: there is no segments list query yet. */
+export function useSegments(params: SearchParams) {
+  return useQuery<PagedModel<SegmentListItem>, NormalizedApiError>({
+    queryKey: queryKeys.segments.list(params),
+    queryFn: () => getSegments(params),
+    placeholderData: (previous) => previous,
+  });
+}
+
 export function useCreateSegment() {
+  const queryClient = useQueryClient();
   return useMutation<string, NormalizedApiError, CreateSegmentInput>({
     mutationFn: createSegment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.segments.all });
+    },
   });
 }

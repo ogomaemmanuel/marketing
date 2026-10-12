@@ -48,6 +48,11 @@ describe("campaignFormSchema", () => {
     }
   });
 
+  it("accepts optional target segment ids", () => {
+    const result = campaignFormSchema.safeParse({ ...base, targetSegmentIds: ["segment-1"] });
+    expect(result.success).toBe(true);
+  });
+
   it("accepts a campaign using both channels when both templates are provided", () => {
     const result = campaignFormSchema.safeParse({
       ...base,

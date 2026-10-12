@@ -8,6 +8,7 @@ export const campaignFormSchema = z
     description: z.string().trim().optional(),
     channels: z.array(campaignChannelSchema).min(1, "Select at least one channel"),
     targetAudienceIds: z.array(z.string()).min(1, "Select at least one audience"),
+    targetSegmentIds: z.array(z.string()).optional(),
     smsTemplateID: z.string().optional(),
     emailTemplateID: z.string().optional(),
   })
