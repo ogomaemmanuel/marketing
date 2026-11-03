@@ -4,6 +4,8 @@
 package com.ogoma.marketing.infrastructure.jooq;
 
 
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignEngagements;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignMessageStatus;
 import com.ogoma.marketing.infrastructure.jooq.tables.FlywaySchemaHistory;
 
 import org.jooq.Index;
@@ -23,4 +25,9 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex(DSL.name("flyway_schema_history_s_idx"), FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
+    public static final Index IDX_CAMPAIGN_ENGAGEMENTS_RECEIVED_AT = Internal.createIndex(DSL.name("idx_campaign_engagements_received_at"), CampaignEngagements.CAMPAIGN_ENGAGEMENTS, new OrderField[] { CampaignEngagements.CAMPAIGN_ENGAGEMENTS.RECEIVED_AT }, false);
+    public static final Index IDX_CAMPAIGN_ENGAGEMENTS_TRACKING_ID = Internal.createIndex(DSL.name("idx_campaign_engagements_tracking_id"), CampaignEngagements.CAMPAIGN_ENGAGEMENTS, new OrderField[] { CampaignEngagements.CAMPAIGN_ENGAGEMENTS.TRACKING_ID }, false);
+    public static final Index IDX_CAMPAIGN_MESSAGE_STATUS_CAMPAIGN_ID = Internal.createIndex(DSL.name("idx_campaign_message_status_campaign_id"), CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS, new OrderField[] { CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS.CAMPAIGN_ID }, false);
+    public static final Index IDX_CAMPAIGN_MESSAGE_STATUS_CONTACT_ID = Internal.createIndex(DSL.name("idx_campaign_message_status_contact_id"), CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS, new OrderField[] { CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS.CONTACT_ID }, false);
+    public static final Index IDX_CAMPAIGN_MESSAGE_STATUS_STATUS = Internal.createIndex(DSL.name("idx_campaign_message_status_status"), CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS, new OrderField[] { CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS.STATUS }, false);
 }

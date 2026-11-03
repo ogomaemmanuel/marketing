@@ -27,7 +27,7 @@ class SpacerBlock extends BaseEmailBlock {
     protected String renderContent() {
         int heightVal = (this.getHeight() != null && this.getHeight() > 0) ? this.getHeight() : 20;
         String bgColor = (this.getBackgroundColor() != null && !"transparent".equals(this.getBackgroundColor()))
-                ? this.getBackgroundColor()
+                ? EmailTemplateSafety.color(this.getBackgroundColor(), "transparent")
                 : "transparent";
 
         return """

@@ -5,15 +5,17 @@ import com.ogoma.marketing.core.domain.audience.AudienceId;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public record ExportContactsRequest(
-        Set<AudienceId> audienceIds
+        Set<UUID> audienceIds
 ) {
     public ExportContactsRequest {
         audienceIds = Objects.requireNonNullElse(audienceIds, Set.of());
     }
 
     ExportContactsCommand toCommand(String userId) {
-        return new ExportContactsCommand(audienceIds,userId);
+        return new ExportContactsCommand(audienceIds.stream().map(AudienceId::new).collect(Collectors.toSet()), userId);
     }
 }

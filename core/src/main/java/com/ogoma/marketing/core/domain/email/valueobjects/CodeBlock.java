@@ -11,7 +11,7 @@ import tools.jackson.databind.annotation.JsonSerialize;
 @Setter
 @JsonSerialize
 @JsonDeserialize
-class CodeBlock extends BaseEmailBlock {
+class  CodeBlock extends BaseEmailBlock {
     private String content;
     private String language;
     private String showLineNumbers;
@@ -37,11 +37,11 @@ class CodeBlock extends BaseEmailBlock {
         };
 
         String bgColor = (this.getBackgroundColor() != null && !this.getBackgroundColor().isBlank())
-                ? this.getBackgroundColor()
+                ? EmailTemplateSafety.color(this.getBackgroundColor(), "#1e293b")
                 : "#1e293b";
 
         String txtColor = (this.getTextColor() != null && !this.getTextColor().isBlank())
-                ? this.getTextColor()
+                ? EmailTemplateSafety.color(this.getTextColor(), "#f8fafc")
                 : "#f8fafc";
 
         String safeContent = this.getContent() != null ? StringEscapeUtils.escapeHtml4(this.getContent()) : "";

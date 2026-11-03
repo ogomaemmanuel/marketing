@@ -8,6 +8,8 @@ import com.ogoma.marketing.infrastructure.jooq.tables.AudienceMembership;
 import com.ogoma.marketing.infrastructure.jooq.tables.Audiences;
 import com.ogoma.marketing.infrastructure.jooq.tables.CampaignAudience;
 import com.ogoma.marketing.infrastructure.jooq.tables.CampaignChannels;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignEngagements;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignMessageStatus;
 import com.ogoma.marketing.infrastructure.jooq.tables.CampaignSegments;
 import com.ogoma.marketing.infrastructure.jooq.tables.Campaigns;
 import com.ogoma.marketing.infrastructure.jooq.tables.ContactAttributeValues;
@@ -23,6 +25,8 @@ import com.ogoma.marketing.infrastructure.jooq.tables.records.AudienceMembership
 import com.ogoma.marketing.infrastructure.jooq.tables.records.AudiencesRecord;
 import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignAudienceRecord;
 import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignChannelsRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignEngagementsRecord;
+import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignMessageStatusRecord;
 import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignSegmentsRecord;
 import com.ogoma.marketing.infrastructure.jooq.tables.records.CampaignsRecord;
 import com.ogoma.marketing.infrastructure.jooq.tables.records.ContactAttributeValuesRecord;
@@ -58,6 +62,8 @@ public class Keys {
     public static final UniqueKey<AudiencesRecord> AUDIENCES_PKEY = Internal.createUniqueKey(Audiences.AUDIENCES, DSL.name("audiences_pkey"), new TableField[] { Audiences.AUDIENCES.ID }, true);
     public static final UniqueKey<CampaignAudienceRecord> CAMPAIGN_AUDIENCE_PKEY = Internal.createUniqueKey(CampaignAudience.CAMPAIGN_AUDIENCE, DSL.name("campaign_audience_pkey"), new TableField[] { CampaignAudience.CAMPAIGN_AUDIENCE.CAMPAIGN_ID, CampaignAudience.CAMPAIGN_AUDIENCE.AUDIENCE_ID }, true);
     public static final UniqueKey<CampaignChannelsRecord> CAMPAIGN_CHANNELS_PKEY = Internal.createUniqueKey(CampaignChannels.CAMPAIGN_CHANNELS, DSL.name("campaign_channels_pkey"), new TableField[] { CampaignChannels.CAMPAIGN_CHANNELS.CAMPAIGN_ID, CampaignChannels.CAMPAIGN_CHANNELS.CHANNEL }, true);
+    public static final UniqueKey<CampaignEngagementsRecord> CAMPAIGN_ENGAGEMENTS_PKEY = Internal.createUniqueKey(CampaignEngagements.CAMPAIGN_ENGAGEMENTS, DSL.name("campaign_engagements_pkey"), new TableField[] { CampaignEngagements.CAMPAIGN_ENGAGEMENTS.ID }, true);
+    public static final UniqueKey<CampaignMessageStatusRecord> CAMPAIGN_MESSAGE_STATUS_PKEY = Internal.createUniqueKey(CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS, DSL.name("campaign_message_status_pkey"), new TableField[] { CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS.ID }, true);
     public static final UniqueKey<CampaignSegmentsRecord> CAMPAIGN_SEGMENTS_PKEY = Internal.createUniqueKey(CampaignSegments.CAMPAIGN_SEGMENTS, DSL.name("campaign_segments_pkey"), new TableField[] { CampaignSegments.CAMPAIGN_SEGMENTS.CAMPAIGN_ID, CampaignSegments.CAMPAIGN_SEGMENTS.SEGMENT_ID }, true);
     public static final UniqueKey<CampaignsRecord> CAMPAIGNS_PKEY = Internal.createUniqueKey(Campaigns.CAMPAIGNS, DSL.name("campaigns_pkey"), new TableField[] { Campaigns.CAMPAIGNS.ID }, true);
     public static final UniqueKey<ContactAttributeValuesRecord> CONTACT_ATTRIBUTE_VALUES_PKEY = Internal.createUniqueKey(ContactAttributeValues.CONTACT_ATTRIBUTE_VALUES, DSL.name("contact_attribute_values_pkey"), new TableField[] { ContactAttributeValues.CONTACT_ATTRIBUTE_VALUES.CONTACT_ID, ContactAttributeValues.CONTACT_ATTRIBUTE_VALUES.ATTRIBUTE, ContactAttributeValues.CONTACT_ATTRIBUTE_VALUES.VALUE }, true);

@@ -23,17 +23,22 @@ class TableBlock extends BaseEmailBlock {
             return "";
         }
 
+        // Bound attacker-controlled collection sizes before building potentially huge output.
+        if (this.getData().size() > 500 || this.getData().stream()
+                .filter(java.util.Objects::nonNull).mapToInt(List::size).sum() > 5000) return "";
+
         StringBuilder headerHtml = new StringBuilder();
         StringBuilder bodyHtml = new StringBuilder();
 
         // ----- Header -----
         if (this.isHasHeader()) {
             List<String> headerRow = this.getData().getFirst();
+            if (headerRow == null) headerRow = List.of();
             StringBuilder headerCells = new StringBuilder();
             for (String cell : headerRow) {
                 headerCells.append("""
                         <th style="border: 1px solid %s; background-color: %s; color: %s; padding: 12px; text-align: left;">%s</th>
-                        """.formatted(EmailTheme.BORDER_COLOR, EmailTheme.BODY_BACKGROUND, EmailTheme.HEADING_COLOR, cell));
+                        """.formatted(EmailTheme.BORDER_COLOR, EmailTheme.BODY_BACKGROUND, EmailTheme.HEADING_COLOR, EmailTemplateSafety.text(cell)));
             }
             headerHtml.append("""
                     <thead>
@@ -48,11 +53,12 @@ class TableBlock extends BaseEmailBlock {
         int startRow = this.isHasHeader() ? 1 : 0;
         for (int i = startRow; i < this.getData().size(); i++) {
             List<String> row = this.getData().get(i);
+            if (row == null) continue;
             StringBuilder rowCells = new StringBuilder();
             for (String cell : row) {
                 rowCells.append("""
                         <td style="border: 1px solid %s; color: %s; padding: 12px;">%s</td>
-                        """.formatted(EmailTheme.BORDER_COLOR, EmailTheme.TEXT_COLOR, cell));
+                        """.formatted(EmailTheme.BORDER_COLOR, EmailTheme.TEXT_COLOR, EmailTemplateSafety.text(cell)));
             }
             bodyHtml.append("""
                     <tr>

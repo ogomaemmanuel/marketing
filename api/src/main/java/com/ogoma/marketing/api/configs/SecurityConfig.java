@@ -12,7 +12,7 @@ public class SecurityConfig {
         return (http -> {
             String[] excludedPaths = {
                     "/v3/api-docs/**",//OpenAPI v3 JSON/YAML definitions
-                    "/email-templates/**", //OpenAPI v3 JSON/YAML definitions
+                    "/api/v1/engagement-tracking/**",
                     "/swagger-ui/**",     // Swagger UI HTML, JS, and CSS files
                     "/swagger-ui.html"};
             http.authorizeExchange(

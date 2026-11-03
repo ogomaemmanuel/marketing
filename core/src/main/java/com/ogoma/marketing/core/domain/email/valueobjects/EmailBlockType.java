@@ -11,7 +11,6 @@ public enum EmailBlockType {
     TABLE("table"),
     BUTTON("button"),
     IMAGE("image"),
-    VIDEO("video"),
     SPACER("spacer"),
     DIVIDER("divider"),
     CODE("code"),

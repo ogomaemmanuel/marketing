@@ -15,7 +15,7 @@ public class ButtonBlock extends BaseEmailBlock {
     private String url;
     @Pattern(regexp = "^(default|destructive|outline|secondary|ghost|link)$", message = "Invalid button variant")
     private String variant;
-    @Pattern(regexp = "^(small|medium|large)")
+    @Pattern(regexp = "^(small|medium|large)$")
     private String size;
 
     @Override
@@ -66,7 +66,7 @@ public class ButtonBlock extends BaseEmailBlock {
             }
         }
 
-        String targetUrl = this.getUrl() != null ? this.getUrl() : "#";
+        String targetUrl = EmailTemplateSafety.attribute(EmailTemplateSafety.url(this.getUrl()));
         String buttonText = this.getText() != null ? this.getText() : "";
         TextAlignment alignment = (this.getAlign() != null) ? this.getAlign() : TextAlignment.CENTER;
 
@@ -90,9 +90,9 @@ public class ButtonBlock extends BaseEmailBlock {
                 border,
                 fontSize,
                 innerPadding,
-                alignment,
+                alignment.toCss(),
                 EmailTheme.BORDER_RADIUS,
-                buttonText
+                EmailTemplateSafety.text(buttonText)
         );
     }
 }

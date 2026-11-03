@@ -29,6 +29,7 @@ import java.util.List;
 @Import({
         JdbcClientConfig.class,
         JDBCConverterRegistry.class,
+
         CampaignRepositoryJdbcAdapter.class,
         TemporalConfig.class})
 @EnableJdbcRepositories(basePackages = "com.ogoma.marketing")

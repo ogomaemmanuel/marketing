@@ -21,7 +21,7 @@ class ImageBlock extends BaseEmailBlock {
 
     @Override
     protected String renderContent() {
-        var rawSrc = valueOrEmpty(getSrc());
+        var rawSrc = EmailTemplateSafety.url(valueOrEmpty(getSrc()));
         // Escape '&' so strict XML SAX parsers don't fail on URL parameters like &w=3096
         var src = rawSrc.replace("&", "&amp;");
 
@@ -30,7 +30,7 @@ class ImageBlock extends BaseEmailBlock {
         // 1. Fix width: MJML defaults to 100% column width when width attribute is omitted.
         // If width is "100%" or empty, don't pass the width attribute.
         var widthAttribute = hasText(getWidth()) && !StringUtils.defaultString(getWidth()).equalsIgnoreCase("100%")
-                ? "width=\"%s\"".formatted(getWidth())
+                ? "width=\"%s\"".formatted(EmailTemplateSafety.attribute(EmailTemplateSafety.dimension(getWidth(), "100%")))
                 : "";
 
         var alignment = getAlign() != null
@@ -40,7 +40,7 @@ class ImageBlock extends BaseEmailBlock {
         // 2. Fix height: Do not pass height="auto" as an attribute to mj-image.
         var heightAttribute = hasText(getHeight())
                 && !"auto".equalsIgnoreCase(getHeight())
-                ? "height=\"%s\"".formatted(getHeight())
+                ? "height=\"%s\"".formatted(EmailTemplateSafety.attribute(EmailTemplateSafety.dimension(getHeight(), "auto")))
                 : "";
 
         return """

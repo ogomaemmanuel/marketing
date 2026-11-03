@@ -19,18 +19,19 @@ class ParagraphBlock extends BaseEmailBlock {
 
     @Override
     protected String renderSection(String padding, String background) {
-        return super.renderSection(padding, hasCustomBackground() ? this.getBackgroundColor() : background);
+        return super.renderSection(padding, hasCustomBackground()
+                ? EmailTemplateSafety.color(this.getBackgroundColor(), EmailTheme.CONTENT_BACKGROUND) : background);
     }
 
     @Override
     protected String renderContent() {
         String safeContent = this.getContent() != null ? StringEscapeUtils.escapeHtml4(this.getContent()) : "";
         TextAlignment alignment = (this.getAlign() != null) ? this.getAlign() : TextAlignment.LEFT;
-        String textColor = (this.getColor() != null && !this.getColor().isBlank()) ? this.getColor() : EmailTheme.TEXT_COLOR;
-        String textFontFamily = (this.getFontFamily() != null && !this.getFontFamily().isBlank()) ? this.getFontFamily() : EmailTheme.FONT_FAMILY;
-        String textFontSize = (this.getFontSize() != null && !this.getFontSize().isBlank()) ? this.getFontSize() : "16px";
+        String textColor = EmailTemplateSafety.color(this.getColor(), EmailTheme.TEXT_COLOR);
+        String textFontFamily = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+        String textFontSize = EmailTemplateSafety.dimension(this.getFontSize(), "16px");
         String containerBackground = hasCustomBackground()
-                ? " container-background-color=\"%s\"".formatted(this.getBackgroundColor())
+                ? " container-background-color=\"%s\"".formatted(EmailTemplateSafety.color(this.getBackgroundColor(), EmailTheme.CONTENT_BACKGROUND))
                 : "";
 
         return """
