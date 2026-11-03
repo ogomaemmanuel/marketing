@@ -37,7 +37,7 @@ class ListBlock extends BaseEmailBlock {
             for (String item : getItems()) {
                 listItems.append("""
                         <li style="margin-bottom: 4px;">%s</li>
-                        """.formatted(item));
+                        """.formatted(EmailTemplateSafety.text(item)));
             }
             return """
                     <mj-text align="%s" color="%s" font-family="%s" padding="0">
@@ -67,7 +67,7 @@ class ListBlock extends BaseEmailBlock {
                             <td style="vertical-align: top; width: 24px; color: %s; font-weight: bold; padding-bottom: 8px;">%s</td>
                             <td style="vertical-align: top; padding-bottom: 8px; %s">%s</td>
                         </tr>
-                        """.formatted(checkColor, checkSymbol, textStyle, item));
+                        """.formatted(checkColor, checkSymbol, textStyle, EmailTemplateSafety.text(item)));
             }
 
             return """
@@ -86,7 +86,7 @@ class ListBlock extends BaseEmailBlock {
         for (String item : getItems()) {
             listItems.append("""
                     <li style="margin-bottom: 4px;">%s</li>
-                    """.formatted(item));
+                    """.formatted(EmailTemplateSafety.text(item)));
         }
 
         return """

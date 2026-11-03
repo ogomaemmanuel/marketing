@@ -8,6 +8,8 @@ import lombok.Setter;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.annotation.JsonSerialize;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @JsonSerialize
@@ -17,15 +19,13 @@ class HeadingBlock extends BaseEmailBlock {
     @Min(1)
     @Max(6)
     @NotNull
-    private Short level;
+    private Integer level;
 
     @Override
     protected String renderContent() {
         // Defaults to H1 if not set
-        short headingLevel = this.getLevel() != null ? this.getLevel() : 1;
-
+        int headingLevel = Math.clamp(Objects.requireNonNullElse(this.level, 1), 1, 6);
         TextAlignment alignment = (this.getAlign() != null) ? this.getAlign() : TextAlignment.LEFT;
-
         return """
                 <mj-text
                          align="%s"
@@ -40,7 +40,7 @@ class HeadingBlock extends BaseEmailBlock {
                 EmailTheme.FONT_FAMILY,
                 headingLevel,
                 EmailTheme.HEADING_COLOR,
-                this.getContent(),
+                EmailTemplateSafety.text(this.getContent()),
                 headingLevel
         );
     }

@@ -8,6 +8,8 @@ import com.ogoma.marketing.infrastructure.jooq.tables.AudienceMembership;
 import com.ogoma.marketing.infrastructure.jooq.tables.Audiences;
 import com.ogoma.marketing.infrastructure.jooq.tables.CampaignAudience;
 import com.ogoma.marketing.infrastructure.jooq.tables.CampaignChannels;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignEngagements;
+import com.ogoma.marketing.infrastructure.jooq.tables.CampaignMessageStatus;
 import com.ogoma.marketing.infrastructure.jooq.tables.CampaignSegments;
 import com.ogoma.marketing.infrastructure.jooq.tables.Campaigns;
 import com.ogoma.marketing.infrastructure.jooq.tables.ContactAttributeValues;
@@ -61,6 +63,16 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>campaign_channels</code>.
      */
     public final CampaignChannels CAMPAIGN_CHANNELS = CampaignChannels.CAMPAIGN_CHANNELS;
+
+    /**
+     * The table <code>campaign_engagements</code>.
+     */
+    public final CampaignEngagements CAMPAIGN_ENGAGEMENTS = CampaignEngagements.CAMPAIGN_ENGAGEMENTS;
+
+    /**
+     * The table <code>campaign_message_status</code>.
+     */
+    public final CampaignMessageStatus CAMPAIGN_MESSAGE_STATUS = CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS;
 
     /**
      * The table <code>campaign_segments</code>.
@@ -137,6 +149,8 @@ public class DefaultSchema extends SchemaImpl {
             Audiences.AUDIENCES,
             CampaignAudience.CAMPAIGN_AUDIENCE,
             CampaignChannels.CAMPAIGN_CHANNELS,
+            CampaignEngagements.CAMPAIGN_ENGAGEMENTS,
+            CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS,
             CampaignSegments.CAMPAIGN_SEGMENTS,
             Campaigns.CAMPAIGNS,
             ContactAttributeValues.CONTACT_ATTRIBUTE_VALUES,

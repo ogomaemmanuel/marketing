@@ -1,0 +1,1 @@
+alter table campaign_message_status add column if not exists tracking_id uuid

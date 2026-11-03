@@ -33,7 +33,6 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = ListBlock.class, name = "list"),
         @JsonSubTypes.Type(value = SpacerBlock.class, name = "spacer"),
         @JsonSubTypes.Type(value = TableBlock.class, name = "table"),
-        @JsonSubTypes.Type(value = VideoBlock.class, name = "video"),
         @JsonSubTypes.Type(value = HeroBlock.class, name = "hero"),
         @JsonSubTypes.Type(value = HorizontalLayoutBlock.class, name = "horizontal-layout"),
         @JsonSubTypes.Type(value = VerticalLayoutBlock.class, name = "vertical-layout"),

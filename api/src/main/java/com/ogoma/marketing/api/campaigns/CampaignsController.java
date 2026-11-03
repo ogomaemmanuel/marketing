@@ -8,6 +8,8 @@ import com.ogoma.marketing.core.application.campaign.queries.GetCampaignByIDQuer
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignByIDView;
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignsQuery;
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignsView;
+import com.ogoma.marketing.core.application.engagement.GetEngagementAnalyticsQuery;
+import com.ogoma.marketing.core.application.engagement.GetEngagementAnalyticsView;
 import com.ogoma.marketing.core.domain.campaigns.CampaignID;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,6 +54,11 @@ public record CampaignsController(
     @GetMapping
     public PagedModel<GetCampaignsView> getCampaigns(@RequestParam(required = false) String searchTerm, Pageable pageable) {
         return new PagedModel<>(this.queryDispatcher.dispatch(new GetCampaignsQuery(searchTerm, pageable)));
+    }
+
+    @GetMapping("/analytics")
+    public GetEngagementAnalyticsView campaignAnalytics() {
+        return this.queryDispatcher.dispatch(new GetEngagementAnalyticsQuery());
     }
 
     @PostMapping("/{id}/actions/send")

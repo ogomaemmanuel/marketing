@@ -9,22 +9,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 
+import java.time.Clock;
+
 @Configuration
 public class SendCampaignConfig {
 
     @Bean
     public SendCampaignActivities sendCampaignActivities(
-     JdbcAggregateTemplate jdbcAggregateTemplate,
-     MessageRouter messageRouter,
-     TemplateRenderer templateRenderer,
-     DSLContext dslContext
+            JdbcAggregateTemplate jdbcAggregateTemplate,
+            MessageRouter messageRouter,
+            TemplateRenderer templateRenderer,
+            DSLContext dslContext,
+            Clock clock,
+            EngagementTrackingProperties trackingProperties
 
-    ){
+    ) {
         return new SendCampaignActivitiesImpl(
                 jdbcAggregateTemplate,
                 messageRouter,
                 templateRenderer,
-                dslContext
+                dslContext,
+                clock,
+                trackingProperties
         );
 
     }

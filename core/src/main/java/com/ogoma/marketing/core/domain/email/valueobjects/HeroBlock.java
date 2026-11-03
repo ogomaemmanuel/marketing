@@ -72,7 +72,7 @@ public class HeroBlock extends BaseEmailBlock {
     /** Stacked fallback used when the hero is placed inside a layout column. */
     @Override
     protected String renderContent() {
-        var bg = colorOrDefault(backgroundColor, EmailTheme.DARK_COLOR);
+        var bg = colorOrDefault(backgroundColor);
         var image = StringUtils.isBlank(imageUrl) ? "" : """
                 <mj-image src="%s" alt="Hero" padding="0" border-radius="%s" fluid-on-mobile="true"/>
                 """.formatted(escapeAttribute(imageUrl), EmailTheme.BORDER_RADIUS);
@@ -148,9 +148,9 @@ public class HeroBlock extends BaseEmailBlock {
 
                 </mj-section>
                 """.formatted(
-                colorOrDefault(backgroundColor, EmailTheme.DARK_COLOR),
+                colorOrDefault(backgroundColor),
                 escapeAttribute(imageUrl),
-                valueOrDefault(minHeight, "400px"),
+                EmailTemplateSafety.dimension(minHeight, "400px"),
                 EmailTheme.CARD_BORDER_RADIUS,
                 EmailTheme.DARK_TEXT_COLOR,
                 escapeHtml(title),
@@ -238,7 +238,7 @@ public class HeroBlock extends BaseEmailBlock {
 
                 </mj-section>
                 """.formatted(
-                colorOrDefault(backgroundColor, EmailTheme.DARK_COLOR),
+                colorOrDefault(backgroundColor),
                 EmailTheme.CARD_BORDER_RADIUS,
                 imageFirst ? imageColumn : textColumn,
                 imageFirst ? textColumn : imageColumn
@@ -311,10 +311,10 @@ public class HeroBlock extends BaseEmailBlock {
 
             </mj-section>
             """.formatted(
-                colorOrDefault(backgroundColor, EmailTheme.DARK_COLOR),
+                colorOrDefault(backgroundColor),
                 EmailTheme.CARD_BORDER_RADIUS,
                 escapeAttribute(imageUrl),
-                valueOrDefault( minHeight,"400px"),
+                EmailTemplateSafety.dimension(minHeight, "400px"),
                 EmailTheme.CARD_BORDER_RADIUS,
                 EmailTheme.CARD_BORDER_RADIUS,
                 EmailTheme.DARK_TEXT_COLOR,
@@ -459,12 +459,9 @@ public class HeroBlock extends BaseEmailBlock {
     }
 
     private static String colorOrDefault(
-            String value,
-            String defaultValue
+            String value
     ) {
-        return value == null || value.isBlank()
-                ? defaultValue
-                : value;
+        return EmailTemplateSafety.color(value, EmailTheme.DARK_COLOR);
     }
 
     private static String escapeHtml(String value) {
@@ -474,6 +471,6 @@ public class HeroBlock extends BaseEmailBlock {
     }
 
     private static String escapeAttribute(String value) {
-        return escapeHtml(value);
+        return EmailTemplateSafety.attribute(EmailTemplateSafety.url(value));
     }
 }

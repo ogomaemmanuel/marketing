@@ -1,7 +1,20 @@
 [tools]
 
-java = "temurin-25"
-node = 22
+java = "temurin-27"
+node = "24"
+maven = "latest"
+kubectl = "latest"
+kustomize ="latest"
 
 [tasks]
-run-docker="./docker-compose-run.sh"
+run-docker = "./docker-compose-run.sh"
+package-java = "mvn package -DskipTests -Daether.connector.https.securityMode=insecure"
+install-frontend-deps="cd frontend && npm install --force"
+run-frontend-dev="cd frontend && npm run dev"
+build-front-end= "cd frontend && npm run build:standalone"
+
+
+[env]
+NODE_ENV = "development"
+NODE_TLS_REJECT_UNAUTHORIZED=0
+
