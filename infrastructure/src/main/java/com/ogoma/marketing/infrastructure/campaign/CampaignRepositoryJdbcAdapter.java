@@ -87,7 +87,7 @@ public record CampaignRepositoryJdbcAdapter(
                                 .convertFrom(result ->
                                         result.map(r ->
                                                 new TargetSegment(
-                                                        r.get( Segments.SEGMENTS.ID),
+                                                        r.get(Segments.SEGMENTS.ID),
                                                         r.get(Segments.SEGMENTS.NAME)
                                                 )
                                         )
@@ -95,26 +95,26 @@ public record CampaignRepositoryJdbcAdapter(
                                 .as("target_segments"),
                         // 1. Correct multiset structure with type-safe conversion
                         multiset(
-                                dslContext.select(CampaignChannels.CAMPAIGN_CHANNELS.CHANNEL.convert( converter))
+                                dslContext.select(CampaignChannels.CAMPAIGN_CHANNELS.CHANNEL.convert(converter))
                                         .from(CampaignChannels.CAMPAIGN_CHANNELS)
                                         // The correlation here is enough; no need to filter by campaignID twice
                                         .where(CampaignChannels.CAMPAIGN_CHANNELS.CAMPAIGN_ID.eq(Campaigns.CAMPAIGNS.ID))
                         )
-                                .convertFrom(result->result.map(Record1::value1))
+                                .convertFrom(result -> result.map(Record1::value1))
                                 .as("channels")
                 ).from(Campaigns.CAMPAIGNS)
                 .where(Campaigns.CAMPAIGNS.ID.eq(campaignID.id()))
                 .fetchOptional(r ->
-                new GetCampaignByIDView(
-                        r.get(Campaigns.CAMPAIGNS.ID),
-                        r.get(Campaigns.CAMPAIGNS.NAME),
-                        r.get(Campaigns.CAMPAIGNS.DESCRIPTION),
-                        r.get(Campaigns.CAMPAIGNS.STATUS),
-                        r.value7(),
-                        r.value6(),
-                        r.value5()
-                )
-        );
+                        new GetCampaignByIDView(
+                                r.get(Campaigns.CAMPAIGNS.ID),
+                                r.get(Campaigns.CAMPAIGNS.NAME),
+                                r.get(Campaigns.CAMPAIGNS.DESCRIPTION),
+                                r.get(Campaigns.CAMPAIGNS.STATUS),
+                                r.value7(),
+                                r.value6(),
+                                r.value5()
+                        )
+                );
     }
 
     @Override
@@ -134,5 +134,11 @@ public record CampaignRepositoryJdbcAdapter(
         var dataQuery = Query.query(criteria).with(pageable);
         var data = jdbcAggregateTemplate.findAll(dataQuery, CampaignEntity.class);
         return new PageImpl<>(data, pageable, count);
+    }
+
+    @Override
+    public Boolean existsByName(String name) {
+        var criteriaDef = Criteria.where(CampaignEntity::getName).is(name.trim()).ignoreCase(true);
+        return this.jdbcAggregateTemplate.exists(Query.query(criteriaDef), CampaignEntity.class);
     }
 }

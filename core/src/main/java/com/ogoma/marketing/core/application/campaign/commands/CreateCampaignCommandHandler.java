@@ -6,6 +6,7 @@ import com.ogoma.marketing.core.domain.campaigns.CampaignConfiguration;
 import com.ogoma.marketing.core.domain.campaigns.CampaignEntity;
 import com.ogoma.marketing.core.domain.campaigns.CampaignID;
 import com.ogoma.marketing.core.domain.campaigns.CampaignRepository;
+import com.ogoma.marketing.core.sharedkernel.exceptions.DuplicateRecordException;
 
 import java.time.Clock;
 import java.util.Objects;
@@ -22,6 +23,9 @@ public record CreateCampaignCommandHandler(
     @Override
     public CampaignID handle(CreateCampaignCommand command) {
         Objects.requireNonNull(command, "command must not be null");
+        if (campaignRepository.existsByName(command.name())) {
+            throw new DuplicateRecordException("Campaign with name %s already exist".formatted(command.name()));
+        }
         return unitOfWork.execute(() -> {
             CampaignConfiguration configuration = new CampaignConfiguration(
                     command.channels(),

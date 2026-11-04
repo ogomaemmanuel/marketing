@@ -1,4 +1,4 @@
-package com.ogoma.marketing.core.application.segments;
+package com.ogoma.marketing.core.application.segments.commands;
 
 import com.ogoma.marketing.core.abstractions.Command;
 import com.ogoma.marketing.core.domain.audience.RuleSet;

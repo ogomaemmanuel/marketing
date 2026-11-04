@@ -54,4 +54,11 @@ public record AudienceRepositoryJDBCAdapter(
         var data = jdbcAggregateTemplate.findAll(listQuery, AudienceEntity.class);
         return new PageImpl<>(data, pageable, count);
     }
+
+    @Override
+    public Boolean existsByName(String searchTerm) {
+        var criteriaDef = Criteria.where(AudienceEntity::getName).is(searchTerm.trim()).ignoreCase(true);
+        return jdbcAggregateTemplate.exists(Query.query(criteriaDef), AudienceEntity.class);
+    }
+
 }

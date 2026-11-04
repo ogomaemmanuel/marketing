@@ -9,5 +9,8 @@ public interface SegmentRepository {
     Segment save(Segment segment);
 
     Page<Segment> findSegments(Pageable pageable, String searchTerm);
+
     Optional<Segment> findByID(SegmentID segmentID);
+
+    Boolean existsByName(String name);
 }

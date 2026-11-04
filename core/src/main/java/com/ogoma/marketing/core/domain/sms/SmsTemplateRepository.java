@@ -11,5 +11,5 @@ public interface SmsTemplateRepository {
     Optional<SmsTemplateEntity> findSmsTemplateByID(SmsTemplateID smsTemplateID);
     Page<SmsTemplateEntity> findSmsTemplates(Pageable pageable);
     Page<SmsTemplateEntity> findSmsTemplates(String searchTerm,Pageable pageable);
-
+    Boolean existByName(String name);
 }

@@ -36,7 +36,7 @@ public class EmailTemplateEntity {
         Assert.hasText(createdBy, "Template creator  is required");
         Assert.notNull(emailTemplate, "Email Template is required");
         this();
-        this.name = name;
+        this.name = name.trim();
         this.createdBy = createdBy;
         this.lastUpdatedBy = createdBy;
         this.emailTemplate = emailTemplate;

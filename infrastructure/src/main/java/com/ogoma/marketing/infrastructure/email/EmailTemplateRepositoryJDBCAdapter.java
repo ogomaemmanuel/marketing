@@ -6,6 +6,8 @@ import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
+import org.springframework.data.relational.core.query.Criteria;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,10 +15,11 @@ import java.util.Optional;
 
 @Repository
 public record EmailTemplateRepositoryJDBCAdapter(
-        JdbcAggregateTemplate jdbcAggregateTemplate, EmailTemplateJDBCRepository emailTemplateJDBCRepository) implements EmailTemplateRepository {
+        JdbcAggregateTemplate jdbcAggregateTemplate,
+        EmailTemplateJDBCRepository emailTemplateJDBCRepository) implements EmailTemplateRepository {
     @Override
     public Page<EmailTemplateEntity> getEmailTemplates(Pageable pageable) {
-       return emailTemplateJDBCRepository.findAll(pageable);
+        return emailTemplateJDBCRepository.findAll(pageable);
 //        Criteria criteria = Criteria.empty();
 //        Query countQuery = Query.query(criteria);
 //        Query dataQuery = Query.query(criteria).with(pageable);
@@ -36,5 +39,12 @@ public record EmailTemplateRepositoryJDBCAdapter(
     @Override
     public Optional<EmailTemplateEntity> getTemplateByID(EmailTemplateID id) {
         return Optional.ofNullable(this.jdbcAggregateTemplate.findById(id, EmailTemplateEntity.class));
+    }
+
+    @Override
+    public Boolean existsByName(String name) {
+        var criteriaDef = Criteria.where(EmailTemplateEntity::getName)
+                .is(name.trim()).ignoreCase(true);
+        return jdbcAggregateTemplate.exists(Query.query(criteriaDef), EmailTemplateEntity.class);
     }
 }
