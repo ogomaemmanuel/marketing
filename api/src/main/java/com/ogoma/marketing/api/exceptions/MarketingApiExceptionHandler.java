@@ -33,11 +33,13 @@ public record MarketingApiExceptionHandler() {
     }
 
     @ExceptionHandler(RecordNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleRecordNotFoundException(RecordNotFoundException exception) {
         return exception.getMessage();
     }
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleRecordNotFoundException(Exception exception, ServerWebExchange webExchange) {
         log.error("Error: endpoint {}", webExchange.getRequest().getPath().value(), exception);
         return "internal server error, if this persists, contact system admin";
