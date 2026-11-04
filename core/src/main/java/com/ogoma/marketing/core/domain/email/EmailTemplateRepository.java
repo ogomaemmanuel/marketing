@@ -11,4 +11,5 @@ public interface EmailTemplateRepository {
     EmailTemplateEntity saveTemplate(EmailTemplateEntity emailTemplateEntity);
 
     Optional<EmailTemplateEntity> getTemplateByID(EmailTemplateID id);
+    Boolean existsByName(String name);
 }

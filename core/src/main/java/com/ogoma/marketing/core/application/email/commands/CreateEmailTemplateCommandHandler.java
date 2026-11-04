@@ -4,6 +4,7 @@ import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.email.EmailTemplateEntity;
 import com.ogoma.marketing.core.domain.email.EmailTemplateID;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
+import com.ogoma.marketing.core.sharedkernel.exceptions.DuplicateRecordException;
 
 public record CreateEmailTemplateCommandHandler(
         EmailTemplateRepository emailTemplateRepository
@@ -15,6 +16,9 @@ public record CreateEmailTemplateCommandHandler(
 
     @Override
     public EmailTemplateID handle(CreateEmailTemplateCommand command) {
+        if (this.emailTemplateRepository.existsByName(command.name())) {
+            throw new DuplicateRecordException("Email template with %s name already exist".formatted(command.name()));
+        }
         var entity = EmailTemplateEntity.createNew(
                 command.name(),
                 command.createdBy(),
