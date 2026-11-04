@@ -54,6 +54,12 @@ public record SegmentJDBCRepositoryAdaptor(JdbcAggregateTemplate jdbcAggregateTe
         return Optional.ofNullable(jdbcAggregateTemplate.findById(segmentID, Segment.class));
     }
 
+    @Override
+    public Boolean existsByName(String name) {
+        var criteriaDef = Criteria.where(Segment::getName).is(name.trim()).ignoreCase(true);
+        return jdbcAggregateTemplate.exists(Query.query(criteriaDef), Segment.class);
+    }
+
     private Criteria buildCriteria(String searchTerm) {
         if (!StringUtils.hasText(searchTerm)) {
             return Criteria.empty();

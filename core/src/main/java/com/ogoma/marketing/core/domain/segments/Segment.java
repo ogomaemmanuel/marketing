@@ -36,9 +36,9 @@ public class Segment extends AggregateRoot<SegmentID> {
         Assert.hasText(createdBy, "Created by is required");
         Assert.notNull(createdAt, "Created at is required");
         super(new SegmentID());
-        this.name = name;
+        this.name = name.trim();
         this.ruleSet = rules;
-        this.description=description;
+        this.description = description;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.lastUpdatedAt = createdAt;
@@ -51,7 +51,7 @@ public class Segment extends AggregateRoot<SegmentID> {
                                     String createdBy,
                                     Clock clock) {
         Assert.notNull(clock, "Clock is required");
-        return new Segment(name,description, rules, createdBy, clock.instant());
+        return new Segment(name, description, rules, createdBy, clock.instant());
     }
 
     public void updateRules(RuleSet rules, String updatedBy, Clock clock) {

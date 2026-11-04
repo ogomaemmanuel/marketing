@@ -70,7 +70,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         CustomAssert.hasLength(createdBy, () -> new IllegalArgumentException("Created by is required"));
         CustomAssert.notNull(createdAt, () -> new IllegalArgumentException("Created at is required"));
         super(new CampaignID());
-        this.name = name;
+        this.name = name.trim();
         this.description = description;
         this.audiences.addAll(toAudienceRefs(audienceIds));
         this.segments.addAll(toSegmentRefs(segmentIDS));

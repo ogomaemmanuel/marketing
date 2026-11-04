@@ -13,4 +13,5 @@ public interface AudienceRepository {
     Optional<AudienceEntity> findById(AudienceId audienceID);
     Set<AudienceId> findStaticAudienceIds(Collection<AudienceId> audienceIds);
     Page<AudienceEntity> findAllBy(String searchTerm, Pageable pageable);
+    Boolean existsByName(String searchTerm);
 }

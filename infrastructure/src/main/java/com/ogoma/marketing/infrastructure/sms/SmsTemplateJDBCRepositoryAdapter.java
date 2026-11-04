@@ -29,12 +29,12 @@ public class SmsTemplateJDBCRepositoryAdapter implements SmsTemplateRepository {
 
     @Override
     public SmsTemplateEntity saveSmsTemplate(SmsTemplateEntity smsTemplateEntity) {
-        return jdbcRepository.save(smsTemplateEntity);
+        return jdbcAggregateTemplate.save(smsTemplateEntity);
     }
 
     @Override
     public Optional<SmsTemplateEntity> findSmsTemplateByID(SmsTemplateID smsTemplateID) {
-        return this.jdbcRepository.findById(smsTemplateID);
+        return Optional.ofNullable(this.jdbcAggregateTemplate.findById(smsTemplateID, SmsTemplateEntity.class));
     }
 
     @Override
@@ -56,12 +56,18 @@ public class SmsTemplateJDBCRepositoryAdapter implements SmsTemplateRepository {
         );
         Query countQuery = Query.query(criteria);
         long count = jdbcAggregateTemplate.count(countQuery, SmsTemplateEntity.class);
-        if(count==0){
+        if (count == 0) {
             return Page.empty(pageable);
         }
         Query listQuery = Query.query(criteria).with(pageable);
         List<SmsTemplateEntity> smsTemplateEntities =
                 jdbcAggregateTemplate.findAll(listQuery, SmsTemplateEntity.class);
         return new PageImpl<>(smsTemplateEntities, pageable, count);
+    }
+
+    @Override
+    public Boolean existByName(String name) {
+        var criteriaDef = Criteria.where(SmsTemplateEntity::getName).is(name.trim()).ignoreCase(true);
+        return jdbcAggregateTemplate.exists(Query.query(criteriaDef), SmsTemplateEntity.class);
     }
 }

@@ -29,7 +29,7 @@ public record EmailTemplatesController(
 ) {
 
     @PostMapping
-    public Void createEmailTemplate(@RequestBody CreateEmailTemplateRequest createEmailTemplateRequest, @CurrentUser String username) {
+    public EmailTemplateID createEmailTemplate(@RequestBody CreateEmailTemplateRequest createEmailTemplateRequest, @CurrentUser String username) {
         return this.commandDispatcher.dispatch(createEmailTemplateRequest.toCommandWith(username));
     }
 
@@ -57,7 +57,7 @@ public record EmailTemplatesController(
     }
 
     @PostMapping(value = "/{id}/clone")
-    public Void clone(@PathVariable UUID id, CloneEmailTemplateRequest request,@CurrentUser final String userID) {
+    public Void clone(@PathVariable UUID id, CloneEmailTemplateRequest request, @CurrentUser final String userID) {
         return this.commandDispatcher.dispatch(new CloneEmailTemplateCommand(new EmailTemplateID(id), request.suggestedName(), userID));
     }
 }

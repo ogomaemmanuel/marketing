@@ -13,4 +13,5 @@ public interface CampaignRepository {
     Optional<CampaignEntity> findByID(CampaignID campaignID);
     Optional<GetCampaignByIDView> findDetailsByID(CampaignID campaignID);
     Page<CampaignEntity> findAllBy(String searchTerm,Pageable pageable);
+    Boolean existsByName(String name);
 }

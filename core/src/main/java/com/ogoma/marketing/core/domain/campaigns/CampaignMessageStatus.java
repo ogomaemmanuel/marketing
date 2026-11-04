@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 public class CampaignMessageStatus extends AggregateRoot<CampaignMessageStatusID> {
     public enum Status {
-        SENT, IN_PROGRESS, FAILED
+        DELIVERED, IN_PROGRESS, BOUNCED
     }
 
     private CampaignID campaignID;
@@ -62,12 +62,12 @@ public class CampaignMessageStatus extends AggregateRoot<CampaignMessageStatusID
     }
 
     public void markAsSent(Clock clock) {
-        this.status = Status.SENT;
+        this.status = Status.DELIVERED;
         this.lastUpdatedAt = clock.instant();
     }
 
     public void markAsFailed(Clock clock) {
-        this.status = Status.FAILED;
+        this.status = Status.BOUNCED;
         this.lastUpdatedAt = clock.instant();
     }
 }

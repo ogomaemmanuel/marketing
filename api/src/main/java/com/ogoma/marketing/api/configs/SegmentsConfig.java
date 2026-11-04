@@ -1,6 +1,6 @@
 package com.ogoma.marketing.api.configs;
 
-import com.ogoma.marketing.core.application.segments.CreateSegmentCommandHandler;
+import com.ogoma.marketing.core.application.segments.commands.CreateSegmentCommandHandler;
 import com.ogoma.marketing.core.application.segments.queries.GetSegmentByIDQueryHandler;
 import com.ogoma.marketing.core.application.segments.queries.GetSegmentsQueryHandler;
 import com.ogoma.marketing.core.domain.segments.SegmentRepository;
