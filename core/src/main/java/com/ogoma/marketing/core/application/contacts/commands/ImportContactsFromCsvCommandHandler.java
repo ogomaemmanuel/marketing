@@ -6,6 +6,7 @@ import com.ogoma.marketing.core.domain.contacts.AudienceMembershipEntity;
 import com.ogoma.marketing.core.domain.contacts.AudienceMembershipRepository;
 import com.ogoma.marketing.core.domain.contacts.ContactEntity;
 import com.ogoma.marketing.core.domain.contacts.ContactRepository;
+import org.jspecify.annotations.NonNull;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -22,12 +23,12 @@ public record ImportContactsFromCsvCommandHandler(
 
 
     @Override
-    public Class<ImportContactsFromCsvCommand> supports() {
+    public @NonNull Class<ImportContactsFromCsvCommand> supports() {
         return ImportContactsFromCsvCommand.class;
     }
 
     @Override
-    public Mono<Void> handle(ImportContactsFromCsvCommand command) {
+    public Mono<Void> handle(@NonNull ImportContactsFromCsvCommand command) {
         return Mono.fromRunnable(() -> {
             if (command.contactDetails().isEmpty()) {
                 return;

@@ -8,6 +8,7 @@ import com.ogoma.marketing.core.domain.contacts.AudienceMembershipRepository;
 import com.ogoma.marketing.core.domain.contacts.ContactEntity;
 import com.ogoma.marketing.core.domain.contacts.ContactRepository;
 import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Set;
@@ -19,12 +20,12 @@ public record UpdateContactCommandHandler(
         UnitOfWork unitOfWork
 ) implements CommandHandler<UpdateContactCommand, ContactEntity> {
     @Override
-    public Class<UpdateContactCommand> supports() {
+    public @NonNull Class<UpdateContactCommand> supports() {
         return UpdateContactCommand.class;
     }
 
     @Override
-    public ContactEntity handle(UpdateContactCommand command) {
+    public ContactEntity handle(@NonNull UpdateContactCommand command) {
         return unitOfWork.execute(() -> {
             ContactEntity contactEntity = this.contactRepository.findById(command.contactID()).orElseThrow(() -> new RecordNotFoundException("Contact not found"));
             Set<AudienceId> audienceIds = command.audienceIds() == null ? Set.of() : command.audienceIds();

@@ -2,6 +2,7 @@ package com.ogoma.marketing.core.application.transactionalmessages;
 
 import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.abstractions.NotificationWorkflowStarterService;
+import org.jspecify.annotations.NonNull;
 
 public record SendTransactionalEmailCommandHandler(
         NotificationWorkflowStarterService notificationWorkflowStarterService
@@ -9,12 +10,12 @@ public record SendTransactionalEmailCommandHandler(
 
 
     @Override
-    public Class<SendTransactionalEmailCommand> supports() {
+    public @NonNull Class<SendTransactionalEmailCommand> supports() {
         return SendTransactionalEmailCommand.class;
     }
 
     @Override
-    public Void handle(SendTransactionalEmailCommand command) {
+    public Void handle(@NonNull SendTransactionalEmailCommand command) {
         notificationWorkflowStarterService.startWorkflow(command);
         return null;
     }
