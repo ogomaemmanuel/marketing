@@ -3,17 +3,18 @@ package com.ogoma.marketing.core.application.segments.queries;
 import com.ogoma.marketing.core.abstractions.QueryHandler;
 import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;
 import com.ogoma.marketing.core.domain.segments.SegmentRepository;
+import org.jspecify.annotations.NonNull;
 
 public record GetSegmentByIDQueryHandler(
         SegmentRepository segmentRepository
 ) implements QueryHandler<GetSegmentByIDQuery, GetSegmentByIDView> {
     @Override
-    public Class<GetSegmentByIDQuery> supports() {
+    public @NonNull Class<GetSegmentByIDQuery> supports() {
         return GetSegmentByIDQuery.class;
     }
 
     @Override
-    public GetSegmentByIDView handle(GetSegmentByIDQuery query) {
+    public GetSegmentByIDView handle(@NonNull GetSegmentByIDQuery query) {
         return this.segmentRepository.findByID(query.segmentID()).map(segment -> new GetSegmentByIDView(
                 segment.getId().id(),
                 segment.getName(),

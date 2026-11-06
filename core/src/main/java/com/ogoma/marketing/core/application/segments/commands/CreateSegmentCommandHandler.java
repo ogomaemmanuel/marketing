@@ -6,6 +6,7 @@ import com.ogoma.marketing.core.domain.segments.SegmentID;
 import com.ogoma.marketing.core.domain.segments.SegmentRepository;
 import com.ogoma.marketing.core.sharedkernel.exceptions.DuplicateRecordException;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 
 import java.time.Clock;
 
@@ -13,12 +14,12 @@ import java.time.Clock;
 public record CreateSegmentCommandHandler(SegmentRepository segmentRepository,
                                           Clock clock) implements CommandHandler<CreateSegmentCommand, SegmentID> {
     @Override
-    public Class<CreateSegmentCommand> supports() {
+    public @NonNull Class<CreateSegmentCommand> supports() {
         return CreateSegmentCommand.class;
     }
 
     @Override
-    public SegmentID handle(CreateSegmentCommand command) {
+    public SegmentID handle(@NonNull CreateSegmentCommand command) {
         if (segmentRepository.existsByName(command.name())) {
             throw new DuplicateRecordException("Segment with %s name already exist".formatted(command.name()));
         }

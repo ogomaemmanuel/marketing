@@ -4,6 +4,7 @@ import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.campaigns.CampaignEntity;
 import com.ogoma.marketing.core.domain.campaigns.CampaignRepository;
 import com.ogoma.marketing.core.domain.exceptions.RecordNotFoundException;
+import org.jspecify.annotations.NonNull;
 
 import java.time.Clock;
 
@@ -12,12 +13,12 @@ public record SendCampaignCommandHandler(
         Clock clock
 ) implements CommandHandler<SendCampaignCommand, Void> {
     @Override
-    public Class<SendCampaignCommand> supports() {
+    public @NonNull Class<SendCampaignCommand> supports() {
         return SendCampaignCommand.class;
     }
 
     @Override
-    public Void handle(SendCampaignCommand command) {
+    public Void handle(@NonNull SendCampaignCommand command) {
         CampaignEntity campaignEntity = this.campaignRepository.findByID(command.id()).orElseThrow(() -> new RecordNotFoundException("Campaign not found with id %s".formatted(command.id())));
         campaignEntity.startSending(command.senderId(), clock);
         this.campaignRepository.save(campaignEntity);

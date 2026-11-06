@@ -1,8 +1,10 @@
 package com.ogoma.marketing.core.abstractions;
 
+import org.jspecify.annotations.NonNull;
+
 public interface CommandHandler<T extends Command<R>, R> {
 
-    Class<T> supports();
+   @NonNull Class<T> supports();
 
-    R handle(T command);
+    R handle(@NonNull T command);
 }

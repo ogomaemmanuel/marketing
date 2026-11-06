@@ -3,6 +3,7 @@ package com.ogoma.marketing.core.application.engagement;
 import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.engagment.CampaignEngagement;
 import com.ogoma.marketing.core.domain.engagment.CampaignEngagementRepository;
+import org.jspecify.annotations.NonNull;
 
 import java.time.Clock;
 
@@ -11,12 +12,12 @@ public record RecordEngagementCommandHandler(
         CampaignEngagementRepository campaignEngagementRepository
 ) implements CommandHandler<RecordEngagementCommand, Void> {
     @Override
-    public Class<RecordEngagementCommand> supports() {
+    public @NonNull Class<RecordEngagementCommand> supports() {
         return RecordEngagementCommand.class;
     }
 
     @Override
-    public Void handle(RecordEngagementCommand command) {
+    public Void handle(@NonNull RecordEngagementCommand command) {
         CampaignEngagement campaignEngagement = CampaignEngagement.createNew(
                 command.trackingId(),
                 command.engagementType(),

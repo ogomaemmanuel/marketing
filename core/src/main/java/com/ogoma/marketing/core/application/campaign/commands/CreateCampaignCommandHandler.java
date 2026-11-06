@@ -7,6 +7,7 @@ import com.ogoma.marketing.core.domain.campaigns.CampaignEntity;
 import com.ogoma.marketing.core.domain.campaigns.CampaignID;
 import com.ogoma.marketing.core.domain.campaigns.CampaignRepository;
 import com.ogoma.marketing.core.sharedkernel.exceptions.DuplicateRecordException;
+import org.jspecify.annotations.NonNull;
 
 import java.time.Clock;
 import java.util.Objects;
@@ -16,12 +17,12 @@ public record CreateCampaignCommandHandler(
         Clock clock,
         UnitOfWork unitOfWork) implements CommandHandler<CreateCampaignCommand, CampaignID> {
     @Override
-    public Class<CreateCampaignCommand> supports() {
+    public @NonNull Class<CreateCampaignCommand> supports() {
         return CreateCampaignCommand.class;
     }
 
     @Override
-    public CampaignID handle(CreateCampaignCommand command) {
+    public CampaignID handle(@NonNull CreateCampaignCommand command) {
         Objects.requireNonNull(command, "command must not be null");
         if (campaignRepository.existsByName(command.name())) {
             throw new DuplicateRecordException("Campaign with name %s already exist".formatted(command.name()));

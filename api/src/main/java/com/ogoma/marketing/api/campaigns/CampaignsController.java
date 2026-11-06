@@ -8,6 +8,8 @@ import com.ogoma.marketing.core.application.campaign.queries.GetCampaignByIDQuer
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignByIDView;
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignsQuery;
 import com.ogoma.marketing.core.application.campaign.queries.GetCampaignsView;
+import com.ogoma.marketing.core.application.engagement.GetCampaignComparisonQuery;
+import com.ogoma.marketing.core.application.engagement.GetCampaignComparisonView;
 import com.ogoma.marketing.core.application.engagement.GetEngagementAnalyticsQuery;
 import com.ogoma.marketing.core.application.engagement.GetEngagementAnalyticsView;
 import com.ogoma.marketing.core.domain.campaigns.CampaignID;
@@ -59,6 +61,11 @@ public record CampaignsController(
     @GetMapping("/analytics")
     public GetEngagementAnalyticsView campaignAnalytics() {
         return this.queryDispatcher.dispatch(new GetEngagementAnalyticsQuery());
+    }
+
+    @GetMapping("/analytics/campaign-comparison")
+    public GetCampaignComparisonView campaignComparison() {
+        return this.queryDispatcher.dispatch(new GetCampaignComparisonQuery());
     }
 
     @PostMapping("/{id}/actions/send")

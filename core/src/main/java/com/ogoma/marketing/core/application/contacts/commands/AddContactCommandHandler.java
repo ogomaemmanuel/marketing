@@ -8,6 +8,7 @@ import com.ogoma.marketing.core.domain.contacts.AudienceMembershipEntity;
 import com.ogoma.marketing.core.domain.contacts.AudienceMembershipRepository;
 import com.ogoma.marketing.core.domain.contacts.ContactEntity;
 import com.ogoma.marketing.core.domain.contacts.ContactRepository;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Set;
@@ -21,12 +22,12 @@ public record AddContactCommandHandler(
 
 ) implements CommandHandler<AddContactCommand, ContactEntity> {
     @Override
-    public Class<AddContactCommand> supports() {
+    public @NonNull Class<AddContactCommand> supports() {
         return AddContactCommand.class;
     }
 
     @Override
-    public ContactEntity handle(AddContactCommand command) {
+    public ContactEntity handle(@NonNull AddContactCommand command) {
         return unitOfWork.execute(() -> {
             Set<AudienceId> audienceIds = command.audienceIds() == null ? Set.of() : command.audienceIds();
             validateStaticAudiences(audienceIds);

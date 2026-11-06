@@ -4,6 +4,7 @@ import com.ogoma.marketing.core.abstractions.CommandHandler;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateEntity;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateRepository;
 import com.ogoma.marketing.core.sharedkernel.exceptions.DuplicateRecordException;
+import org.jspecify.annotations.NonNull;
 
 public class CreateSmsTemplateCommandHandler implements CommandHandler<CreateSmsTemplateCommand, SmsTemplateEntity> {
     private final SmsTemplateRepository smsTemplateRepository;
@@ -13,12 +14,12 @@ public class CreateSmsTemplateCommandHandler implements CommandHandler<CreateSms
     }
 
     @Override
-    public Class<CreateSmsTemplateCommand> supports() {
+    public @NonNull Class<CreateSmsTemplateCommand> supports() {
         return CreateSmsTemplateCommand.class;
     }
 
     @Override
-    public SmsTemplateEntity handle(CreateSmsTemplateCommand command) {
+    public SmsTemplateEntity handle(@NonNull CreateSmsTemplateCommand command) {
         if (this.smsTemplateRepository.existByName(command.name())) {
             throw new DuplicateRecordException("Sms template with %s name already exist".formatted(command.name()));
         }

@@ -5,17 +5,18 @@ import com.ogoma.marketing.core.domain.email.EmailTemplateEntity;
 import com.ogoma.marketing.core.domain.email.EmailTemplateID;
 import com.ogoma.marketing.core.domain.email.EmailTemplateRepository;
 import com.ogoma.marketing.core.sharedkernel.exceptions.DuplicateRecordException;
+import org.jspecify.annotations.NonNull;
 
 public record CreateEmailTemplateCommandHandler(
         EmailTemplateRepository emailTemplateRepository
 ) implements CommandHandler<CreateEmailTemplateCommand, EmailTemplateID> {
     @Override
-    public Class<CreateEmailTemplateCommand> supports() {
+    public @NonNull Class<CreateEmailTemplateCommand> supports() {
         return CreateEmailTemplateCommand.class;
     }
 
     @Override
-    public EmailTemplateID handle(CreateEmailTemplateCommand command) {
+    public EmailTemplateID handle(@NonNull CreateEmailTemplateCommand command) {
         if (this.emailTemplateRepository.existsByName(command.name())) {
             throw new DuplicateRecordException("Email template with %s name already exist".formatted(command.name()));
         }
