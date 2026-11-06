@@ -2,6 +2,7 @@ package com.ogoma.marketing.core.application.sms.queries;
 
 import com.ogoma.marketing.core.abstractions.QueryHandler;
 import com.ogoma.marketing.core.domain.sms.SmsTemplateRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
 
 public class GetSmsTemplatesQueryHandler implements QueryHandler<GetSmsTemplatesQuery, Page<GetSmsTemplatesView>> {
@@ -12,12 +13,12 @@ public class GetSmsTemplatesQueryHandler implements QueryHandler<GetSmsTemplates
     }
 
     @Override
-    public Class<GetSmsTemplatesQuery> supports() {
+    public @NonNull Class<GetSmsTemplatesQuery> supports() {
         return GetSmsTemplatesQuery.class;
     }
 
     @Override
-    public Page<GetSmsTemplatesView> handle(GetSmsTemplatesQuery query) {
+    public Page<GetSmsTemplatesView> handle(@NonNull GetSmsTemplatesQuery query) {
         return this.smsTemplateRepository.findSmsTemplates(query.searchTerm(),query.pageable()).map(GetSmsTemplatesView::new);
     }
 }

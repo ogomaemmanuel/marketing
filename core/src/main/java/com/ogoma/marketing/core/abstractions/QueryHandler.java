@@ -1,7 +1,10 @@
 package com.ogoma.marketing.core.abstractions;
 
-public interface QueryHandler<Q extends  Query<R>,R >{
+import org.jspecify.annotations.NonNull;
 
-    Class<Q> supports();
-    R handle(Q query);
+public interface QueryHandler<Q extends Query<R>, R> {
+
+    @NonNull Class<Q> supports();
+
+    R handle(@NonNull Q query);
 }

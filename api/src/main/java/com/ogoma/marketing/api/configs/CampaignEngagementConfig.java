@@ -1,5 +1,6 @@
 package com.ogoma.marketing.api.configs;
 
+import com.ogoma.marketing.core.application.engagement.GetCampaignComparisonQueryHandler;
 import com.ogoma.marketing.core.application.engagement.GetEngagementAnalyticsQueryHandler;
 import com.ogoma.marketing.core.application.engagement.RecordEngagementCommandHandler;
 import com.ogoma.marketing.core.domain.engagment.CampaignEngagementRepository;
@@ -19,10 +20,19 @@ public class CampaignEngagementConfig {
     ) {
         return new RecordEngagementCommandHandler(clock, campaignEngagementRepository);
     }
+
     @Bean
     GetEngagementAnalyticsQueryHandler getEngagementAnalyticsQueryHandler(
             CampaignEngagementRepository campaignEngagementRepository
     ) {
         return new GetEngagementAnalyticsQueryHandler(campaignEngagementRepository);
     }
+
+    @Bean
+    GetCampaignComparisonQueryHandler getCampaignComparisonQueryHandler(
+            CampaignEngagementRepository campaignEngagementRepository
+    ) {
+        return new GetCampaignComparisonQueryHandler(campaignEngagementRepository);
+    }
+
 }

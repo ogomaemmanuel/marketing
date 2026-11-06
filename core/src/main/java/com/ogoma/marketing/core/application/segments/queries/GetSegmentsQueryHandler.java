@@ -2,18 +2,19 @@ package com.ogoma.marketing.core.application.segments.queries;
 
 import com.ogoma.marketing.core.abstractions.QueryHandler;
 import com.ogoma.marketing.core.domain.segments.SegmentRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
 
 public record GetSegmentsQueryHandler(
         SegmentRepository segmentRepository
 ) implements QueryHandler<GetSegmentsQuery, Page<GetSegmentsListItemView>> {
     @Override
-    public Class<GetSegmentsQuery> supports() {
+    public @NonNull Class<GetSegmentsQuery> supports() {
         return GetSegmentsQuery.class;
     }
 
     @Override
-    public Page<GetSegmentsListItemView> handle(GetSegmentsQuery query) {
+    public Page<GetSegmentsListItemView> handle(@NonNull GetSegmentsQuery query) {
         return this.segmentRepository.findSegments(query.pageable(), query.searchTerm())
                 .map(segment -> new GetSegmentsListItemView(
                         segment.getId().id(),
