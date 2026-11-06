@@ -1,14 +1,18 @@
 package com.ogoma.marketing.infrastructure.engagement;
 
+import com.ogoma.marketing.core.application.engagement.GetCampaignComparisonView;
 import com.ogoma.marketing.core.application.engagement.GetEngagementAnalyticsView;
 import com.ogoma.marketing.core.domain.engagment.CampaignEngagement;
 import com.ogoma.marketing.core.domain.engagment.CampaignEngagementRepository;
 import com.ogoma.marketing.core.domain.engagment.EngagementType;
 import com.ogoma.marketing.infrastructure.jooq.tables.CampaignEngagements;
 import com.ogoma.marketing.infrastructure.jooq.tables.CampaignMessageStatus;
+import com.ogoma.marketing.infrastructure.jooq.tables.Campaigns;
 import org.jooq.DSLContext;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
 
 import static org.jooq.impl.DSL.*;
 
@@ -76,4 +80,59 @@ public record CampaignEngagementRepositoryAdapter(
                 .crossJoin(engagementStats)
                 .fetchAnyInto(GetEngagementAnalyticsView.class);
     }
+
+    @Override
+    public GetCampaignComparisonView getCampaignComparisonData() {
+        var campaigns = Campaigns.CAMPAIGNS.as("c");
+        var cms = CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS.as("cms");
+        var eg = CampaignEngagements.CAMPAIGN_ENGAGEMENTS.as("eg");
+
+        var deliveredStatus = com.ogoma.marketing.core.domain.campaigns.CampaignMessageStatus.Status.DELIVERED.name();
+        var openType = EngagementType.OPEN.name();
+        var clickType = EngagementType.CLICK.name();
+
+        var deliveryStats = dslContext
+                .select(
+                        cms.CAMPAIGN_ID.as("campaign_id"),
+                        countDistinct(cms.TRACKING_ID)
+                                .filterWhere(cms.STATUS.equalIgnoreCase(deliveredStatus))
+                                .as("deliveries")
+                )
+                .from(cms)
+                .groupBy(cms.CAMPAIGN_ID)
+                .asTable("delivery_stats");
+
+        var engagementStats = dslContext
+                .select(
+                        cms.CAMPAIGN_ID.as("campaign_id"),
+                        countDistinct(eg.TRACKING_ID)
+                                .filterWhere(eg.ENGAGEMENT_TYPE.equalIgnoreCase(openType))
+                                .as("opens"),
+                        countDistinct(eg.TRACKING_ID)
+                                .filterWhere(eg.ENGAGEMENT_TYPE.equalIgnoreCase(clickType))
+                                .as("clicks")
+                )
+                .from(cms)
+                .join(eg).on(eg.TRACKING_ID.eq(cms.TRACKING_ID))
+                .groupBy(cms.CAMPAIGN_ID)
+                .asTable("engagement_stats");
+
+        var performance = dslContext
+                .select(
+                        campaigns.ID.cast(String.class).as("campaignId"),
+                        campaigns.NAME.as("campaignName"),
+                        coalesce(deliveryStats.field("deliveries", Long.class), 0L).as("deliveries"),
+                        coalesce(engagementStats.field("opens", Long.class), 0L).as("opens"),
+                        coalesce(engagementStats.field("clicks", Long.class), 0L).as("clicks")
+                )
+                .from(campaigns)
+                .leftJoin(deliveryStats)
+                .on(deliveryStats.field("campaign_id", UUID.class).eq(campaigns.ID))
+                .leftJoin(engagementStats)
+                .on(engagementStats.field("campaign_id", UUID.class).eq(campaigns.ID))
+                .fetchInto(GetCampaignComparisonView.CampaignPerformanceDto.class);
+        return new GetCampaignComparisonView(performance);
+    }
+
+
 }
