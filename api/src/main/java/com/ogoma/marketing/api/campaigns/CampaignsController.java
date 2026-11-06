@@ -58,7 +58,8 @@ public record CampaignsController(
     }
 
     @GetMapping("/analytics")
-    public GetEngagementAnalyticsView campaignAnalytics(GetEngagementAnalyticsRequest analyticsRequest) {
+    public GetEngagementAnalyticsView campaignAnalytics(
+            @Parameter GetEngagementAnalyticsRequest analyticsRequest) {
         return this.queryDispatcher.dispatch(analyticsRequest.toQuery());
     }
 
