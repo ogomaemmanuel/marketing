@@ -48,11 +48,13 @@ jobs:
           cache: maven
       - name: Maven Package
         run: mvn -B clean package -DskipTests
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: "./api"
-          push: true
-          tags: mudho/maketing-api:latest
+      - name: Build and push multi-arch images with Docker Compose
+        run: docker compose build --push
+#      - name: Build and push
+#        uses: docker/build-push-action@v3
+#        with:
+#          platforms: linux/amd64,linux/arm64
+#          context: "./api"
+#          push: true
+#          tags: mudho/maketing-api:latest
 

@@ -1,11 +1,15 @@
 services:
   api:
     container_name: "marketing-service-api"
+    image: marketing-service-api
     networks:
       - marketing
     build:
       context: ./api
       dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+        - linux/amd64
     restart: unless-stopped
     ports:
       - "7057:7056"
@@ -29,12 +33,16 @@ services:
       SERVER_ADDRESS: 0.0.0.0
   frontend:
     container_name: "marketing-frontend-ui"
+    image: marketing-frontend-ui
     networks:
       - marketing
     platform: linux/arm64
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+        - linux/amd64
       args:
         NODE_BASE_IMAGE: node:22-alpine
     restart: unless-stopped
@@ -54,11 +62,15 @@ services:
       AUTH_SECRET: ${AUTH_SECRET}
   notification-sender:
     container_name: "notification-sender"
+    image: transactional-message-sender
     networks:
       - marketing
     build:
       context: ./workers/transactional-message-sender
       dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+        - linux/amd64
     restart: unless-stopped
     depends_on:
       postgres-db:
@@ -76,10 +88,14 @@ services:
       EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
   campaign-sender:
     container_name: campaign-sender
+    image: marketing-campaign-sender
     networks:
       - marketing
     build:
       context: ./workers/campaigns-batch-processor
+      platforms:
+        - linux/arm64
+        - linux/amd64
       dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
