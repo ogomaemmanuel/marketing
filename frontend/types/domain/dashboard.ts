@@ -6,6 +6,7 @@ export interface DashboardStats {
   totalAudiences: number;
   totalCampaigns: number;
   totalSmsTemplates: number;
+  totalEmailTemplates: number;
 }
 
 /** One entry of GET /api/v1/dashboard/campaigns-by-channel. */

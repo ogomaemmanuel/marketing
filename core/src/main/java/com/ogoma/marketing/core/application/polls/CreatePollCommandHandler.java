@@ -34,6 +34,8 @@ public record CreatePollCommandHandler(
                     command.options(),
                     command.orientation(),
                     command.listStyle(),
+                    command.startTime(),
+                    command.endTime(),
                     command.createdBy(),
                     clock
             );

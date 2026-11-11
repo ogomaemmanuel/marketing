@@ -17,10 +17,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Table(name = "campaigns")
@@ -43,16 +40,14 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
     @Embedded.Nullable()
     private CampaignConfiguration campaignConfiguration;
     @MappedCollection(idColumn = "campaign_id")
-    @Getter(AccessLevel.PACKAGE)
     Set<CampaignChannel> channels = new HashSet<>();
 
     @MappedCollection(idColumn = "campaign_id")
     @Getter(AccessLevel.PACKAGE)
-    private Set<CampaignAudience> audiences = new HashSet<>();
-
+    private  Set<CampaignAudience> audiences = new HashSet<>();
     @MappedCollection(idColumn = "campaign_id")
     @Getter(AccessLevel.PACKAGE)
-    private Set<CampaignSegment> segments = new HashSet<>();
+    private  Set<CampaignSegment> segments = new HashSet<>();
 
     private CampaignEntity() {
         super(null);
@@ -80,7 +75,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this.createdBy = createdBy;
         this.status = Status.DRAFT;
         this.lastUpdatedBy = createdBy;
-        this.channels = configuration.channels().stream().map(CampaignChannel::new).collect(Collectors.toSet());
+        this.channels.addAll(syncChannels(configuration));
 
     }
 
@@ -132,6 +127,7 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
         this.audiences.addAll(toAudienceRefs(audienceIds));
         this.segments.clear();
         this.segments.addAll(toSegmentRefs(segmentIDS));
+        this.channels.addAll(syncChannels(configuration));
         this.touch(updatedBy, clock.instant());
     }
 
@@ -159,14 +155,11 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
     }
 
     public Set<AudienceId> getAudienceRefs() {
-        return getAudiences().stream().map(CampaignAudience::audienceId).collect(Collectors.toSet());
+        return Optional.ofNullable( getAudiences()).orElse(Set.of()).stream().map(CampaignAudience::audienceId).collect(Collectors.toSet());
     }
 
     private static Set<CampaignAudience> toAudienceRefs(Set<AudienceId> ids) {
-        if (ids == null) {
-            return Collections.emptySet();
-        }
-        return ids.stream()
+        return Optional.ofNullable(ids).orElse(Set.of()).stream()
                 .map(CampaignAudience::new)
                 .collect(Collectors.toCollection(HashSet::new));
     }
@@ -179,18 +172,16 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
     }
 
     public Set<Channel> getChannels() {
-        return this.channels.stream().map(CampaignChannel::channel).collect(Collectors.toSet());
+        return Optional.ofNullable(this.channels).orElse(Set.of()).stream().map(CampaignChannel::channel).collect(Collectors.toSet());
     }
 
     private Collection<CampaignSegment> toSegmentRefs(Set<SegmentID> segmentIDS) {
-        if (segmentIDS == null) {
-            return Set.of();
-        }
-        return segmentIDS.stream().map(CampaignSegment::new).collect(Collectors.toSet());
+
+        return Optional.ofNullable(segmentIDS).orElse(Set.of()).stream().map(CampaignSegment::new).collect(Collectors.toSet());
     }
 
     public Set<SegmentID> getSegmentRefs() {
-        return this.getSegments().stream().map(CampaignSegment::segmentId).collect(Collectors.toSet());
+        return Optional.ofNullable(this.getSegments()).orElse(Set.of()).stream().map(CampaignSegment::segmentId).collect(Collectors.toSet());
     }
 
     public SmsTemplateID getSmsTemplateId() {
@@ -199,6 +190,11 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
 
     public EmailTemplateID getEmailTemplateId() {
         return campaignConfiguration.emailTemplateID();
+    }
+
+    private Set<CampaignChannel> syncChannels(CampaignConfiguration configuration){
+        channels.clear();
+       return Optional.ofNullable(configuration.channels()).orElse(Set.of()).stream().map(CampaignChannel::new).collect(Collectors.toSet());
     }
 
 }

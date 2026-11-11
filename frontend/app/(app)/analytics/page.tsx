@@ -1,6 +1,6 @@
 "use client";
 
-import {BarChart3Icon, MegaphoneIcon, TrendingUpIcon, UsersIcon} from "lucide-react";
+import {BarChart3Icon, MegaphoneIcon, UsersIcon} from "lucide-react";
 import {PageHeader} from "@/components/common/page-header";
 import {ChartCard} from "@/components/charts/chart-card";
 import {ChannelBreakdownChart} from "@/components/charts/channel-breakdown-chart";
@@ -10,16 +10,21 @@ import {ErrorState} from "@/components/common/error-state";
 import {Skeleton} from "@/components/ui/skeleton";
 import {useCampaignChannelBreakdown} from "@/hooks/dashboard/use-dashboard-summary";
 import {useAudienceGrowth} from "@/hooks/analytics/use-audience-growth";
+import {useCampaignComparison, useEngagementAnalytics} from "@/hooks/analytics/use-engagement-analytics";
+import {EngagementSummaryCard} from "@/components/analytics/engagement-summary-card";
+import {CampaignComparisonTable} from "@/components/analytics/campaign-comparison-table";
 
 export default function AnalyticsPage() {
   const breakdown = useCampaignChannelBreakdown();
   const growth = useAudienceGrowth();
+  const engagement = useEngagementAnalytics();
+  const comparison = useCampaignComparison();
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Analytics"
-        description="Insights from the data the backend currently exposes — presented as clearly as the rest of the studio."
+        description="Delivery, engagement and audience insights across your campaigns."
       />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -55,20 +60,25 @@ export default function AnalyticsPage() {
         </ChartCard>
       </div>
 
-      <ChartCard title="Engagement analytics" description="Delivery, open, click and conversion rates.">
-        <EmptyState
-          icon={TrendingUpIcon}
-          title="Not available yet"
-          description="The backend doesn't currently expose delivery, open, click or conversion metrics for campaigns or transactional messages. This section will populate automatically once that data is available."
-        />
-      </ChartCard>
+      <EngagementSummaryCard
+        title="Engagement analytics"
+        badge={<span className="text-xs text-muted-foreground">All campaigns</span>}
+        data={engagement.data}
+        isLoading={engagement.isLoading}
+        error={engagement.error}
+        onRetry={() => engagement.refetch()}
+      />
 
       <ChartCard title="Campaign comparison" description="Compare performance across campaigns.">
-        <EmptyState
-          icon={BarChart3Icon}
-          title="Not available yet"
-          description="Comparing campaigns requires performance data (opens, clicks, deliveries) that the backend doesn't return today."
-        />
+        {comparison.isLoading ? (
+          <Skeleton className="h-[240px] w-full" />
+        ) : comparison.error ? (
+          <ErrorState error={comparison.error} onRetry={() => comparison.refetch()} />
+        ) : !comparison.data || comparison.data.campaigns.length === 0 ? (
+          <EmptyState icon={BarChart3Icon} title="No campaign performance yet" />
+        ) : (
+          <CampaignComparisonTable campaigns={comparison.data.campaigns} />
+        )}
       </ChartCard>
     </div>
   );

@@ -6,3 +6,5 @@ public interface EventRouter {
 
     void route(DomainEvent event);
 }
+
+

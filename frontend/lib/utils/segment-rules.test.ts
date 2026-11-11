@@ -1,6 +1,63 @@
 import {describe, expect, it} from "vitest";
-import {operatorNeedsValue, operatorValueHint, serializeRule, serializeRuleGroup, toRuleValue,} from "./segment-rules";
+import {
+    createEditorGroup,
+    createEditorRule,
+    operatorNeedsValue,
+    operatorValueHint,
+    serializeRule,
+    serializeRuleGroup,
+    toRuleValue,
+    toSegmentRuleGroup,
+    updateEditorNode,
+    validateEditorGroup,
+} from "./segment-rules";
 import type {SegmentRuleGroup} from "@/types/domain/segment";
+
+describe("editor tree", () => {
+  it("converts a nested editor tree to the backend rule group", () => {
+    const nested = createEditorGroup("OR", [
+      createEditorRule({ column: "first_name", operator: "IN", value: "Jane, John" }),
+      createEditorRule({ column: "age", operator: "BETWEEN", value: "18,65" }),
+    ]);
+    const root = createEditorGroup("AND", [createEditorRule({ column: "email", operator: "IS_NOT_EMPTY" }), nested]);
+
+    expect(toSegmentRuleGroup(root)).toEqual({
+      condition: "AND",
+      rules: [
+        { column: "email", operator: "IS_NOT_EMPTY", value: { kind: "none" } },
+        {
+          condition: "OR",
+          rules: [
+            { column: "first_name", operator: "IN", value: { kind: "list", values: ["Jane", "John"] } },
+            { column: "age", operator: "BETWEEN", value: { kind: "range", min: "18", max: "65" } },
+          ],
+        },
+      ],
+    });
+  });
+
+  it("updates and removes nested nodes by id", () => {
+    const rule = createEditorRule({ column: "email" });
+    const nested = createEditorGroup("OR", [rule]);
+    const root = createEditorGroup("AND", [nested]);
+
+    const renamed = updateEditorNode(root, rule.id, (node) => ({ ...node, column: "phone_number" }));
+    expect((renamed.children[0] as typeof nested).children[0]).toMatchObject({ column: "phone_number" });
+
+    const removed = updateEditorNode(root, nested.id, () => null);
+    expect(removed.children).toHaveLength(0);
+  });
+
+  it("reports errors for invalid rules and empty groups", () => {
+    const badColumn = createEditorRule({ column: "email; drop", operator: "EQUAL", value: "x" });
+    const missingValue = createEditorRule({ column: "email", operator: "EQUAL", value: "" });
+    const emptyGroup = createEditorGroup("OR", []);
+    const root = createEditorGroup("AND", [badColumn, missingValue, emptyGroup]);
+
+    const errors = validateEditorGroup(root);
+    expect(Object.keys(errors).sort()).toEqual([badColumn.id, missingValue.id, emptyGroup.id].sort());
+  });
+});
 
 describe("operatorNeedsValue", () => {
   it("returns false for empty/null-check operators", () => {

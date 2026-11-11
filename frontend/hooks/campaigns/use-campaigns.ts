@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {createCampaign, getCampaignById, getCampaigns} from "@/lib/api/campaigns";
+import {createCampaign, getCampaignById, getCampaigns, sendCampaign} from "@/lib/api/campaigns";
 import {queryKeys} from "@/lib/query-keys";
 import type {NormalizedApiError} from "@/types/api/errors";
 import type {PagedModel, SearchParams} from "@/types/api/pagination";
@@ -26,5 +26,16 @@ export function useCreateCampaign() {
   return useMutation<string, NormalizedApiError, CreateCampaignInput>({
     mutationFn: createCampaign,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.campaigns.all }),
+  });
+}
+
+export function useSendCampaign() {
+  const queryClient = useQueryClient();
+  return useMutation<void, NormalizedApiError, string>({
+    mutationFn: sendCampaign,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.campaigns.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.analytics.all });
+    },
   });
 }

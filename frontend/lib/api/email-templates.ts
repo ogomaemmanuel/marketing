@@ -3,6 +3,7 @@ import {toPageableSearchParams} from "@/lib/api/pageable";
 import type {PagedModel, SearchParams} from "@/types/api/pagination";
 import type {
     CreateEmailTemplateInput,
+    EmailTemplate,
     EmailTemplateDetail,
     EmailTemplateListItem,
     UpdateEmailTemplateInput,
@@ -62,6 +63,17 @@ export function previewEmailTemplate(id: string) {
   return apiRequest<string>({
     method: "GET",
     url: `/email-templates/${id}/preview`,
+    responseType: "text",
+    transformResponse: (data) => data,
+  });
+}
+
+/** Renders an unsaved template body to HTML. */
+export function renderEmailTemplate(template: EmailTemplate) {
+  return apiRequest<string>({
+    method: "POST",
+    url: "/email-templates/preview",
+    data: template,
     responseType: "text",
     transformResponse: (data) => data,
   });

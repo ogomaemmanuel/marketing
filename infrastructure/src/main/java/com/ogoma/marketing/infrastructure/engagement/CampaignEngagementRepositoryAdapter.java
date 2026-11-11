@@ -12,6 +12,7 @@ import org.jooq.DSLContext;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
 import java.util.UUID;
 
 import static org.jooq.impl.DSL.*;
@@ -27,9 +28,12 @@ public record CampaignEngagementRepositoryAdapter(
     }
 
     @Override
-    public GetEngagementAnalyticsView getEngagementAnalytics() {
+    public GetEngagementAnalyticsView getEngagementAnalytics(Set<UUID> campaignIds) {
         var eg = CampaignEngagements.CAMPAIGN_ENGAGEMENTS.as("eg");
         var cms = CampaignMessageStatus.CAMPAIGN_MESSAGE_STATUS.as("cms");
+        var campaignFilter = campaignIds == null || campaignIds.isEmpty()
+                ? noCondition()
+                : cms.CAMPAIGN_ID.in(campaignIds);
         // 1. Global delivery statistics (single row)
         var deliveryStats = dslContext
                 .select(
@@ -44,6 +48,7 @@ public record CampaignEngagementRepositoryAdapter(
                                 .as("bounced")
                 )
                 .from(cms)
+                .where(campaignFilter)
                 .asTable("d");
 
         // 2. Global engagement statistics (single row)
@@ -63,6 +68,9 @@ public record CampaignEngagementRepositoryAdapter(
                                 .as("total_clicks")
                 )
                 .from(eg)
+                .where(campaignIds == null || campaignIds.isEmpty()
+                        ? noCondition()
+                        : eg.TRACKING_ID.in(select(cms.TRACKING_ID).from(cms).where(campaignFilter)))
                 .asTable("e");
 
         // 3. Cross join and map fields in the exact order of GetEngagementAnalyticsView components:

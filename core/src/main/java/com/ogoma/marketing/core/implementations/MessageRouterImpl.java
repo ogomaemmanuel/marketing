@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class MessageRouterImpl implements MessageRouter {
-    private Map<Class<? extends Message>, MessageSenderService<? extends Message>> messageSenderServiceMap = new ConcurrentHashMap<>();
+    private final Map<Class<? extends Message>, MessageSenderService<? extends Message>> messageSenderServiceMap = new ConcurrentHashMap<>();
 
     public MessageRouterImpl(List<MessageSenderService<? extends Message>> messageSenderServices) {
 

@@ -1,0 +1,62 @@
+---
+- name: Install and Configure Stalwart Mail Server on Oracle Cloud
+  hosts: stalwart_servers
+  become: yes
+  vars:
+    stalwart_install_dir: "/opt/stalwart"
+    # Ports required for a fully functional mail server
+    mail_ports:
+      - 25   # SMTP
+      - 80   # HTTP (for ACME challenge / Let's Encrypt)
+      - 443  # HTTPS
+      - 465  # SMTPS
+      - 587  # Submission
+      - 143  # IMAP
+      - 993  # IMAPS
+      - 8080 # Admin Web UI
+
+  tasks:
+    - name: Update apt cache and install dependencies
+      apt:
+        update_cache: yes
+        name:
+          - curl
+          - tar
+          - ufw
+          - jq
+        state: present
+
+    - name: Ensure UFW allows essential mail ports
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop: "{{ mail_ports }}"
+
+    - name: Ensure UFW is enabled and active
+      ufw:
+        state: enabled
+        policy: allow
+
+    - name: Check if Stalwart is already installed
+      stat:
+        path: "{{ stalwart_install_dir }}/bin/stalwart-mail"
+      register: stalwart_binary
+
+    - name: Download and run Stalwart official installer script
+      shell: |
+        curl --proto '=https' --tlsv1.2 -sSf https://get.stalw.art/install.sh | sh
+      when: not stalwart_binary.stat.exists
+      register: stalwart_install_output
+
+    - name: Display Stalwart installation credentials (if freshly installed)
+      debug:
+        msg: "{{ stalwart_install_output.stdout_lines }}"
+      when: stalwart_install_output.changed
+
+    - name: Ensure systemd service is enabled and started
+      systemd:
+        name: stalwart-mail
+        state: started
+        enabled: yes
+        daemon_reload: yes

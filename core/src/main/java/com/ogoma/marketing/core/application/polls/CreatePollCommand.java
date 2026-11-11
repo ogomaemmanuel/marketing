@@ -5,6 +5,7 @@ import com.ogoma.marketing.core.domain.polls.valueobjects.ListStyle;
 import com.ogoma.marketing.core.domain.polls.valueobjects.Orientation;
 import com.ogoma.marketing.core.domain.polls.valueobjects.PollID;
 
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 public record CreatePollCommand(
@@ -15,6 +16,8 @@ public record CreatePollCommand(
         Set<String> options,
         Orientation orientation,
         ListStyle listStyle,
+        ZonedDateTime startTime,
+        ZonedDateTime endTime,
         String createdBy
 ) implements Command<PollID> {
     public CreatePollCommand {

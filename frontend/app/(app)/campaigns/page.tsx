@@ -9,6 +9,7 @@ import {Button} from "@/components/ui/button";
 import {SearchInput} from "@/components/common/search-input";
 import {DataTable, type DataTableColumn} from "@/components/tables/data-table";
 import {ChannelBadgeGroup} from "@/components/campaigns/channel-badge";
+import {CampaignStatusBadge} from "@/components/campaigns/campaign-status-badge";
 import {useCampaigns} from "@/hooks/campaigns/use-campaigns";
 import {useListQueryState} from "@/hooks/use-list-query-state";
 import type {CampaignListItem} from "@/types/domain/campaign";
@@ -38,6 +39,11 @@ function CampaignsPageContent() {
       id: "channels",
       header: "Channels",
       cell: (campaign) => <ChannelBadgeGroup channels={campaign.channels} />,
+    },
+    {
+      id: "status",
+      header: "Status",
+      cell: (campaign) => <CampaignStatusBadge status={campaign.status} />,
     },
   ];
 
