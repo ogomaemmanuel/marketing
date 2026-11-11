@@ -44,10 +44,10 @@ public class CampaignEntity extends AggregateRoot<CampaignID> {
 
     @MappedCollection(idColumn = "campaign_id")
     @Getter(AccessLevel.PACKAGE)
-    private final Set<CampaignAudience> audiences = new HashSet<>();
+    private  Set<CampaignAudience> audiences = new HashSet<>();
     @MappedCollection(idColumn = "campaign_id")
     @Getter(AccessLevel.PACKAGE)
-    private final Set<CampaignSegment> segments = new HashSet<>();
+    private  Set<CampaignSegment> segments = new HashSet<>();
 
     private CampaignEntity() {
         super(null);
