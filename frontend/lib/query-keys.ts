@@ -37,6 +37,11 @@ export const queryKeys = {
     stats: ["dashboard", "stats"] as const,
     campaignsByChannel: ["dashboard", "campaigns-by-channel"] as const,
   },
+  analytics: {
+    all: ["analytics"] as const,
+    engagement: (campaignIds: string[]) => ["analytics", "engagement", [...campaignIds].sort()] as const,
+    comparison: ["analytics", "comparison"] as const,
+  },
   user: {
     synced: ["user", "synced"] as const,
   },

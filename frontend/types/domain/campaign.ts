@@ -16,6 +16,7 @@ export interface CampaignListItem {
   name: string;
   description?: string;
   channels: CampaignChannel[];
+  status: CampaignStatus;
 }
 
 export interface CampaignDetail {

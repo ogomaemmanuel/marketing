@@ -56,6 +56,12 @@ public record EmailTemplatesController(
                 .map(GetEmailTemplateByIDView::emailTemplate).map(EmailTemplate::renderHtml).orElse("");
     }
 
+    /** Renders an unsaved template so the builder can preview and export it. */
+    @PostMapping(value = "/preview", produces = MediaType.TEXT_HTML_VALUE)
+    public String renderPreview(@RequestBody EmailTemplate emailTemplate) {
+        return emailTemplate.renderHtml();
+    }
+
     @PostMapping(value = "/{id}/clone")
     public Void clone(@PathVariable UUID id, CloneEmailTemplateRequest request, @CurrentUser final String userID) {
         return this.commandDispatcher.dispatch(new CloneEmailTemplateCommand(new EmailTemplateID(id), request.suggestedName(), userID));

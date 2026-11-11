@@ -26,3 +26,10 @@ export function createCampaign(input: CreateCampaignInput) {
     data: input,
   });
 }
+
+export function sendCampaign(id: string) {
+  return apiRequest<void>({
+    method: "POST",
+    url: `/api/v1/campaigns/${id}/actions/send`,
+  });
+}

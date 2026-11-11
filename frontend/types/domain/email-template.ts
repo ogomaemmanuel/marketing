@@ -12,7 +12,10 @@ export type EmailBlockType =
   | "video"
   | "spacer"
   | "divider"
-  | "code";
+  | "code"
+  | "hero"
+  | "horizontal-layout"
+  | "vertical-layout";
 
 interface BaseEmailBlock {
   id?: string;
@@ -101,6 +104,47 @@ export interface VideoBlock extends BaseEmailBlock {
   autoPlay?: boolean;
 }
 
+export type LayoutGap = "none" | "small" | "medium" | "large";
+
+export interface HeroBlock extends BaseEmailBlock {
+  type: "hero";
+  title?: string;
+  subtitle?: string;
+  backgroundColor?: string;
+  imageUrl?: string;
+  ctaButtonText?: string;
+  ctaLink?: string;
+  /** Backend serializes enums upper-case and accepts either case. */
+  imagePosition?: "left" | "right" | "top" | "background";
+  buttonVariant?: "primary" | "secondary" | "outline";
+  buttonSize?: "small" | "medium" | "large";
+  minHeight?: string;
+}
+
+/** Columns: each child occupies one column slot; null marks an empty slot. */
+export interface HorizontalLayoutBlock extends BaseEmailBlock {
+  type: "horizontal-layout";
+  columns?: number;
+  columnWidthInPercentage?: string;
+  children?: (EmailBlock | null)[];
+  backgroundColor?: string;
+  borderRadius?: number;
+  gap?: LayoutGap;
+  verticalAlign?: "top" | "center" | "bottom";
+}
+
+/** Container: children stacked vertically. */
+export interface VerticalLayoutBlock extends BaseEmailBlock {
+  type: "vertical-layout";
+  children?: EmailBlock[];
+  gap?: LayoutGap;
+  backgroundColor?: string;
+  borderRadius?: number;
+  borderWidth?: number;
+  borderColor?: string;
+  borderStyle?: "solid" | "dashed" | "dotted";
+}
+
 export type EmailBlock =
   | HeadingBlock
   | ParagraphBlock
@@ -111,7 +155,10 @@ export type EmailBlock =
   | ListBlock
   | TableBlock
   | CodeBlock
-  | VideoBlock;
+  | VideoBlock
+  | HeroBlock
+  | HorizontalLayoutBlock
+  | VerticalLayoutBlock;
 
 export interface EmailTemplateMetaData {
   title?: string;
@@ -122,6 +169,7 @@ export interface EmailTemplateMetaData {
 
 export interface EmailSetting {
   subject?: string;
+  previewText?: string;
   senderName?: string;
   replyTo?: string;
 }
