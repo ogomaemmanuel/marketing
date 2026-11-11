@@ -5,6 +5,7 @@ import {
     getEmailTemplateById,
     getEmailTemplates,
     previewEmailTemplate,
+    renderEmailTemplate,
     updateEmailTemplate,
 } from "@/lib/api/email-templates";
 import {queryKeys} from "@/lib/query-keys";
@@ -12,6 +13,7 @@ import type {NormalizedApiError} from "@/types/api/errors";
 import type {PagedModel, SearchParams} from "@/types/api/pagination";
 import type {
     CreateEmailTemplateInput,
+    EmailTemplate,
     EmailTemplateDetail,
     EmailTemplateListItem,
     UpdateEmailTemplateInput,
@@ -39,6 +41,16 @@ export function useEmailTemplatePreview(id: string | undefined) {
     queryFn: () => previewEmailTemplate(id as string),
     enabled: Boolean(id),
     staleTime: 10_000,
+  });
+}
+
+export function useRenderedEmailTemplate(template: EmailTemplate, enabled: boolean) {
+  return useQuery<string, NormalizedApiError>({
+    queryKey: [...queryKeys.emailTemplates.all, "render", JSON.stringify(template)],
+    queryFn: () => renderEmailTemplate(template),
+    enabled,
+    placeholderData: (previous) => previous,
+    staleTime: 30_000,
   });
 }
 

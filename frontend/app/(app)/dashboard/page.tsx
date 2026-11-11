@@ -18,10 +18,11 @@ import {ErrorState} from "@/components/common/error-state";
 import {ChartCard} from "@/components/charts/chart-card";
 import {ChannelBreakdownChart} from "@/components/charts/channel-breakdown-chart";
 import {ChannelBadgeGroup} from "@/components/campaigns/channel-badge";
+import {CampaignStatusBadge} from "@/components/campaigns/campaign-status-badge";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Skeleton} from "@/components/ui/skeleton";
-import {formatDate} from "@/lib/utils/format";
+import {formatDate, formatNumber} from "@/lib/utils/format";
 import {
     useCampaignChannelBreakdown,
     useDashboardStats,
@@ -91,9 +92,13 @@ export default function DashboardPage() {
           isLoading={stats.isLoading}
         />
         <StatCard
-          label="SMS templates"
-          value={stats.data?.totalSmsTemplates ?? "—"}
-          description="Reusable SMS content"
+          label="Templates"
+          value={stats.data ? stats.data.totalEmailTemplates + stats.data.totalSmsTemplates : "—"}
+          description={
+            stats.data
+              ? `${formatNumber(stats.data.totalEmailTemplates)} email · ${formatNumber(stats.data.totalSmsTemplates)} SMS`
+              : "Reusable email and SMS content"
+          }
           icon={MessageSquareTextIcon}
           isLoading={stats.isLoading}
         />
@@ -202,7 +207,10 @@ export default function DashboardPage() {
                     </span>
                   )}
                 </div>
-                <ChannelBadgeGroup channels={campaign.channels} />
+                <div className="flex items-center gap-2">
+                  <ChannelBadgeGroup channels={campaign.channels} />
+                  <CampaignStatusBadge status={campaign.status} />
+                </div>
               </Link>
             ))}
           </div>

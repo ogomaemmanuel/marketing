@@ -21,7 +21,7 @@ export default function NewEmailTemplatePage() {
 
   function handleSave() {
     if (!value.name.trim()) {
-      toast.error("Give the template a name before saving");
+      toast.error("Add a template name in the Settings tab before saving");
       return;
     }
     createTemplate.mutate(value, {

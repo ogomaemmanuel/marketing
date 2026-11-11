@@ -1,4 +1,4 @@
-import type {RuleOperator, RuleValue, SegmentRule, SegmentRuleGroup} from "@/types/domain/segment";
+import type {RuleCondition, RuleOperator, RuleValue, SegmentRule, SegmentRuleGroup} from "@/types/domain/segment";
 
 export const OPERATOR_LABELS: Record<RuleOperator, string> = {
   EQUAL: "Equals",
@@ -89,4 +89,107 @@ export function serializeRuleGroup(group: SegmentRuleGroup): Record<string, unkn
       "rules" in rule ? serializeRuleGroup(rule) : serializeRule(rule),
     ),
   };
+}
+
+/* ---------- Editor tree (UI state for the nested rule builder) ---------- */
+
+export const MAX_RULE_GROUP_DEPTH = 3;
+
+/** Contact table columns the backend can filter on (RuleSet only accepts [A-Za-z0-9_.]). */
+export const SUGGESTED_RULE_COLUMNS = ["email", "first_name", "last_name", "phone_number"] as const;
+
+const COLUMN_PATTERN = /^[A-Za-z0-9_.]+$/;
+
+export interface EditorRule {
+  kind: "rule";
+  id: string;
+  column: string;
+  operator: RuleOperator;
+  value: string;
+}
+
+export interface EditorRuleGroup {
+  kind: "group";
+  id: string;
+  condition: RuleCondition;
+  children: EditorNode[];
+}
+
+export type EditorNode = EditorRule | EditorRuleGroup;
+
+let editorIdCounter = 0;
+function nextEditorId() {
+  editorIdCounter += 1;
+  return `node-${editorIdCounter}`;
+}
+
+export function createEditorRule(partial: Partial<Omit<EditorRule, "kind" | "id">> = {}): EditorRule {
+  return { kind: "rule", id: nextEditorId(), column: "", operator: "EQUAL", value: "", ...partial };
+}
+
+export function createEditorGroup(condition: RuleCondition = "AND", children?: EditorNode[]): EditorRuleGroup {
+  return { kind: "group", id: nextEditorId(), condition, children: children ?? [createEditorRule()] };
+}
+
+/** Applies `update` to the node with `id`; returning null removes it. */
+export function updateEditorNode(
+  group: EditorRuleGroup,
+  id: string,
+  update: (node: EditorNode) => EditorNode | null,
+): EditorRuleGroup {
+  const children: EditorNode[] = [];
+  for (const child of group.children) {
+    if (child.id === id) {
+      const next = update(child);
+      if (next) children.push(next);
+    } else if (child.kind === "group") {
+      children.push(updateEditorNode(child, id, update));
+    } else {
+      children.push(child);
+    }
+  }
+  return { ...group, children };
+}
+
+export function toSegmentRuleGroup(group: EditorRuleGroup): SegmentRuleGroup {
+  return {
+    condition: group.condition,
+    rules: group.children.map((child) =>
+      child.kind === "group"
+        ? toSegmentRuleGroup(child)
+        : { column: child.column.trim(), operator: child.operator, value: toRuleValue(child.operator, child.value.trim()) },
+    ),
+  };
+}
+
+function validateRule(rule: EditorRule): string | undefined {
+  const column = rule.column.trim();
+  if (!column) return "Field is required";
+  if (!COLUMN_PATTERN.test(column)) return "Field may only contain letters, numbers, _ and .";
+  const value = toRuleValue(rule.operator, rule.value.trim());
+  switch (value.kind) {
+    case "single":
+      return value.value ? undefined : "Value is required";
+    case "list":
+      return value.values.length > 0 ? undefined : "Enter at least one value";
+    case "range":
+      return value.min && value.max ? undefined : "Enter both min and max";
+    case "none":
+      return undefined;
+  }
+}
+
+/** Returns a map of node id -> error message; empty when the tree is valid. */
+export function validateEditorGroup(group: EditorRuleGroup): Record<string, string> {
+  const errors: Record<string, string> = {};
+  if (group.children.length === 0) errors[group.id] = "Add at least one rule";
+  for (const child of group.children) {
+    if (child.kind === "group") {
+      Object.assign(errors, validateEditorGroup(child));
+    } else {
+      const error = validateRule(child);
+      if (error) errors[child.id] = error;
+    }
+  }
+  return errors;
 }

@@ -1,10 +1,10 @@
 "use client";
 
 import {useState} from "react";
-import {useFieldArray, useForm, useWatch} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "sonner";
-import {FilterIcon, PlusIcon, Trash2Icon} from "lucide-react";
+import {FilterIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
@@ -17,54 +17,57 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Field} from "@/components/forms/field";
+import {SegmentRuleBuilder} from "@/components/contacts/segment-rule-builder";
 import {segmentFormSchema, type SegmentFormValues} from "@/lib/validation/segment";
-import {OPERATOR_LABELS, operatorNeedsValue, operatorValueHint, toRuleValue} from "@/lib/utils/segment-rules";
+import {
+    createEditorGroup,
+    createEditorRule,
+    type EditorRuleGroup,
+    toSegmentRuleGroup,
+    validateEditorGroup,
+} from "@/lib/utils/segment-rules";
 import {useCreateSegment} from "@/hooks/segments/use-segments";
-import type {RuleOperator} from "@/types/domain/segment";
 
 const FORM_ID = "create-segment-form";
 
+function initialRuleGroup(): EditorRuleGroup {
+  return createEditorGroup("AND", [createEditorRule({ column: "email", operator: "IS_NOT_EMPTY" })]);
+}
+
 function SegmentCreateDialog() {
   const [open, setOpen] = useState(false);
+  const [ruleGroup, setRuleGroup] = useState<EditorRuleGroup>(initialRuleGroup);
+  const [ruleErrors, setRuleErrors] = useState<Record<string, string>>({});
   const createSegment = useCreateSegment();
 
   const form = useForm<SegmentFormValues>({
     resolver: zodResolver(segmentFormSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      condition: "AND",
-      rules: [{ column: "email", operator: "IS_NOT_EMPTY", value: "" }],
-    },
+    defaultValues: { name: "", description: "" },
   });
-  const rules = useFieldArray({ control: form.control, name: "rules" });
-  const condition = useWatch({ control: form.control, name: "condition" });
-  const watchedRules = useWatch({ control: form.control, name: "rules" }) ?? [];
+
+  function handleRuleGroupChange(next: EditorRuleGroup) {
+    setRuleGroup(next);
+    if (Object.keys(ruleErrors).length > 0) setRuleErrors(validateEditorGroup(next));
+  }
 
   function handleSubmit(values: SegmentFormValues) {
+    const errors = validateEditorGroup(ruleGroup);
+    setRuleErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     createSegment.mutate(
       {
         name: values.name,
         description: values.description,
-        ruleSet: {
-          ruleGroup: {
-            condition: values.condition,
-            rules: values.rules.map((rule) => ({
-              column: rule.column,
-              operator: rule.operator,
-              value: toRuleValue(rule.operator, rule.value ?? ""),
-            })),
-          },
-        },
+        ruleSet: { ruleGroup: toSegmentRuleGroup(ruleGroup) },
       },
       {
-        onSuccess: (id) => {
-          toast.success("Segment created", {
-            description: `Segment id ${id}. There is no segment list yet — save this id if you need it later.`,
-          });
+        onSuccess: () => {
+          toast.success("Segment created");
           form.reset();
+          setRuleGroup(initialRuleGroup());
+          setRuleErrors({});
           setOpen(false);
         },
         onError: (error) => toast.error(error.message),
@@ -79,98 +82,27 @@ function SegmentCreateDialog() {
           <FilterIcon /> Create segment
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create segment</DialogTitle>
           <DialogDescription>
-            Define rules to describe a segment of contacts. There is no segment list yet on the
-            backend, so note down the id shown after creation.
+            Describe a segment of contacts with rules. Add groups to combine AND / OR conditions.
           </DialogDescription>
         </DialogHeader>
-        <form id={FORM_ID} onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Field label="Segment name" required error={form.formState.errors.name?.message}>
-              <Input {...form.register("name")} placeholder="e.g. High-value customers" />
-            </Field>
-            <Field label="Match">
-              <Select
-                value={condition}
-                onValueChange={(value) => form.setValue("condition", value as "AND" | "OR")}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="AND">All rules (AND)</SelectItem>
-                  <SelectItem value="OR">Any rule (OR)</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
-          </div>
+        <form
+          id={FORM_ID}
+          onSubmit={form.handleSubmit(handleSubmit, () => setRuleErrors(validateEditorGroup(ruleGroup)))}
+          className="flex flex-col gap-4"
+        >
+          <Field label="Segment name" required error={form.formState.errors.name?.message}>
+            <Input {...form.register("name")} placeholder="e.g. High-value customers" />
+          </Field>
           <Field label="Description">
             <Textarea rows={2} {...form.register("description")} placeholder="Optional" />
           </Field>
-
-          <div className="flex flex-col gap-3">
-            {rules.fields.map((field, index) => {
-              const operator = watchedRules[index]?.operator ?? "EQUAL";
-              return (
-                <div key={field.id} className="flex flex-col gap-2 rounded-lg border border-border p-3 sm:flex-row sm:items-start">
-                  <Input
-                    placeholder="Field (email, firstName, attribute key...)"
-                    {...form.register(`rules.${index}.column`)}
-                    className="sm:w-52"
-                  />
-                  <Select
-                    value={operator}
-                    onValueChange={(value) => form.setValue(`rules.${index}.operator`, value as RuleOperator)}
-                  >
-                    <SelectTrigger className="sm:w-56">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(OPERATOR_LABELS).map(([value, label]) => (
-                        <SelectItem key={value} value={value}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {operatorNeedsValue(operator) && (
-                    <Input
-                      placeholder={operatorValueHint(operator) || "Value"}
-                      {...form.register(`rules.${index}.value`)}
-                      className="flex-1"
-                    />
-                  )}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    disabled={rules.fields.length === 1}
-                    onClick={() => rules.remove(index)}
-                    aria-label="Remove rule"
-                  >
-                    <Trash2Icon className="size-4" />
-                  </Button>
-                </div>
-              );
-            })}
-            {form.formState.errors.rules?.message && (
-              <p className="text-xs font-medium text-destructive">
-                {form.formState.errors.rules.message}
-              </p>
-            )}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="self-start"
-              onClick={() => rules.append({ column: "", operator: "EQUAL", value: "" })}
-            >
-              <PlusIcon /> Add rule
-            </Button>
-          </div>
+          <Field label="Rules" required>
+            <SegmentRuleBuilder value={ruleGroup} onChange={handleRuleGroupChange} errors={ruleErrors} />
+          </Field>
         </form>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => setOpen(false)}>

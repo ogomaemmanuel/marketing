@@ -23,7 +23,7 @@ public record GetCampaignComparisonView(
 
         @JsonProperty
         public double openRate() {
-            return opens == 0 ? 0.0 : (double) opens / deliveries;
+            return deliveries == 0 ? 0.0 : (double) opens / deliveries;
         }
     }
 }

@@ -23,17 +23,10 @@ export const ruleOperatorSchema = z.enum([
   "NOT_BETWEEN",
 ]);
 
-export const segmentRuleFormSchema = z.object({
-  column: z.string().trim().min(1, "Field is required"),
-  operator: ruleOperatorSchema,
-  value: z.string().trim().optional(),
-});
-
+/** Rules are edited as a nested tree and validated by validateEditorGroup. */
 export const segmentFormSchema = z.object({
   name: z.string().trim().min(1, "Segment name is required"),
   description: z.string().trim().optional(),
-  condition: z.enum(["AND", "OR"]),
-  rules: z.array(segmentRuleFormSchema).min(1, "Add at least one rule"),
 });
 
 export type SegmentFormValues = z.infer<typeof segmentFormSchema>;

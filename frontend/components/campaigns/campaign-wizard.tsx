@@ -21,10 +21,14 @@ import {useSegments} from "@/hooks/segments/use-segments";
 import {useSmsTemplates} from "@/hooks/templates/use-sms-templates";
 import {useEmailTemplates} from "@/hooks/templates/use-email-templates";
 import {useCreateCampaign} from "@/hooks/campaigns/use-campaigns";
+import {useEmailTemplatePreview} from "@/hooks/templates/use-email-templates";
+import {Skeleton} from "@/components/ui/skeleton";
+import {ErrorState} from "@/components/common/error-state";
 import {cn} from "@/lib/utils/cn";
 import type {CampaignChannel} from "@/types/domain/campaign";
 
-const STEPS = ["Details", "Audience", "Content", "Review"] as const;
+const STEPS = ["Details", "Audience", "Content", "Preview"] as const;
+const LAST_STEP = STEPS.length - 1;
 const CHANNEL_OPTIONS: { value: CampaignChannel; label: string; description: string }[] = [
   { value: "EMAIL", label: "Email", description: "Send a rich HTML email built from a template." },
   { value: "SMS", label: "SMS", description: "Send a short text message to mobile numbers." },
@@ -57,6 +61,10 @@ function CampaignWizard() {
   const channels = values.channels ?? [];
   const targetAudienceIds = values.targetAudienceIds ?? [];
   const targetSegmentIds = values.targetSegmentIds ?? [];
+  const emailPreview = useEmailTemplatePreview(
+    step === LAST_STEP && channels.includes("EMAIL") ? values.emailTemplateID : undefined,
+  );
+  const selectedSmsTemplate = smsTemplates.data?.content.find((t) => t.id === values.smsTemplateID);
   const audienceOptions =
     audiences.data?.content.map((audience) => ({ value: audience.id, label: audience.name })) ?? [];
   const segmentOptions =
@@ -73,7 +81,7 @@ function CampaignWizard() {
       const valid = await form.trigger(fields);
       if (!valid) return;
     }
-    setStep((current) => Math.min(current + 1, STEPS.length - 1));
+    setStep((current) => Math.min(current + 1, LAST_STEP));
   }
 
   function goBack() {
@@ -88,6 +96,7 @@ function CampaignWizard() {
   }
 
   function handleSubmit(values: CampaignFormValues) {
+    if (step !== LAST_STEP) return;
     createCampaign.mutate(values, {
       onSuccess: (id) => {
         toast.success("Campaign created");
@@ -129,7 +138,18 @@ function CampaignWizard() {
         ))}
       </ol>
 
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-6">
+      <form
+        onSubmit={(event) => {
+          // Enter key / implicit submits advance the wizard; only the final step creates the campaign.
+          if (step < LAST_STEP) {
+            event.preventDefault();
+            void goNext();
+            return;
+          }
+          void form.handleSubmit(handleSubmit)(event);
+        }}
+        className="flex flex-col gap-6"
+      >
         {step === 0 && (
           <div className="flex flex-col gap-4">
             <Field label="Campaign name" htmlFor="campaign-name" required error={form.formState.errors.name?.message}>
@@ -278,44 +298,73 @@ function CampaignWizard() {
           </div>
         )}
 
-        {step === 3 && (
-          <div className="flex flex-col gap-4 rounded-xl border border-border bg-muted/30 p-5">
-            <div>
-              <p className="text-xs text-muted-foreground">Name</p>
-              <p className="text-sm font-medium text-foreground">{values.name}</p>
-            </div>
-            {values.description && (
+        {step === LAST_STEP && (
+          <div className="flex flex-col gap-4">
+            <p className="text-sm text-muted-foreground">
+              Review your campaign and its content. Nothing is saved until you click{" "}
+              <span className="font-medium text-foreground">Create campaign</span>.
+            </p>
+            <div className="flex flex-col gap-4 rounded-xl border border-border bg-muted/30 p-5">
               <div>
-                <p className="text-xs text-muted-foreground">Description</p>
-                <p className="text-sm text-foreground">{values.description}</p>
+                <p className="text-xs text-muted-foreground">Name</p>
+                <p className="text-sm font-medium text-foreground">{values.name}</p>
               </div>
-            )}
-            <div>
-              <p className="mb-1 text-xs text-muted-foreground">Channels</p>
-              <ChannelBadgeGroup channels={channels} />
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Audiences</p>
-              <p className="text-sm text-foreground">{selectedAudienceNames.join(", ") || "None selected"}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Segments</p>
-              <p className="text-sm text-foreground">{selectedSegmentNames.join(", ") || "None selected"}</p>
+              {values.description && (
+                <div>
+                  <p className="text-xs text-muted-foreground">Description</p>
+                  <p className="text-sm text-foreground">{values.description}</p>
+                </div>
+              )}
+              <div>
+                <p className="mb-1 text-xs text-muted-foreground">Channels</p>
+                <ChannelBadgeGroup channels={channels} />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Audiences</p>
+                <p className="text-sm text-foreground">{selectedAudienceNames.join(", ") || "None selected"}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Segments</p>
+                <p className="text-sm text-foreground">{selectedSegmentNames.join(", ") || "None selected"}</p>
+              </div>
+              {channels.includes("SMS") && (
+                <div>
+                  <p className="text-xs text-muted-foreground">SMS template</p>
+                  <p className="text-sm text-foreground">{selectedSmsTemplate?.name ?? "—"}</p>
+                </div>
+              )}
+              {channels.includes("EMAIL") && (
+                <div>
+                  <p className="text-xs text-muted-foreground">Email template</p>
+                  <p className="text-sm text-foreground">
+                    {emailTemplates.data?.content.find((t) => t.id === values.emailTemplateID)?.name ?? "—"}
+                  </p>
+                </div>
+              )}
             </div>
             {channels.includes("SMS") && (
-              <div>
-                <p className="text-xs text-muted-foreground">SMS template</p>
-                <p className="text-sm text-foreground">
-                  {smsTemplates.data?.content.find((t) => t.id === values.smsTemplateID)?.name ?? "—"}
-                </p>
+              <div className="flex flex-col gap-2">
+                <p className="text-sm font-medium text-foreground">SMS preview</p>
+                <div className="max-w-sm rounded-2xl rounded-bl-sm bg-muted px-4 py-3 text-sm whitespace-pre-wrap text-foreground">
+                  {selectedSmsTemplate?.content || "No content"}
+                </div>
               </div>
             )}
             {channels.includes("EMAIL") && (
-              <div>
-                <p className="text-xs text-muted-foreground">Email template</p>
-                <p className="text-sm text-foreground">
-                  {emailTemplates.data?.content.find((t) => t.id === values.emailTemplateID)?.name ?? "—"}
-                </p>
+              <div className="flex flex-col gap-2">
+                <p className="text-sm font-medium text-foreground">Email preview</p>
+                {emailPreview.isLoading ? (
+                  <Skeleton className="h-[480px] w-full" />
+                ) : emailPreview.error ? (
+                  <ErrorState error={emailPreview.error} onRetry={() => emailPreview.refetch()} />
+                ) : (
+                  <iframe
+                    title="Email template preview"
+                    srcDoc={emailPreview.data}
+                    className="h-[480px] w-full rounded-md border border-border bg-white"
+                    sandbox=""
+                  />
+                )}
               </div>
             )}
           </div>
@@ -325,12 +374,12 @@ function CampaignWizard() {
           <Button type="button" variant="outline" onClick={goBack} disabled={step === 0}>
             Back
           </Button>
-          {step < STEPS.length - 1 ? (
-            <Button type="button" onClick={goNext}>
+          {step < LAST_STEP ? (
+            <Button key="next" type="button" onClick={goNext}>
               Continue
             </Button>
           ) : (
-            <Button type="submit" disabled={createCampaign.isPending}>
+            <Button key="submit" type="submit" disabled={createCampaign.isPending}>
               {createCampaign.isPending ? "Creating campaign..." : "Create campaign"}
             </Button>
           )}
