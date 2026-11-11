@@ -1,5 +1,5 @@
-ARG NODE_BASE_IMAGE=559104660845.dkr.ecr.eu-west-1.amazonaws.com/node:24-alpine-patched
-FROM ${NODE_BASE_IMAGE} AS builder
+ARG NODE_BASE_IMAGE=node:24.22.2-alpine3.23
+FROM --platform=$BUILDPLATFORM ${NODE_BASE_IMAGE} AS builder
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 WORKDIR /app
