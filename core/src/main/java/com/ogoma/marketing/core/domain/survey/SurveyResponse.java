@@ -5,9 +5,13 @@ import com.ogoma.marketing.core.sharedkernel.ddd.AggregateRoot;
 import java.util.List;
 
 public class SurveyResponse extends AggregateRoot<SurveyResponseID> {
+
+    private SurveyID surveyID;
+
+    private Integer surveyVersion;
     private SurveyResponseStatus status;
     private List<SurveyAnswer> answers;
-    protected SurveyResponse() {
+    private SurveyResponse() {
         super(null);
     }
 }

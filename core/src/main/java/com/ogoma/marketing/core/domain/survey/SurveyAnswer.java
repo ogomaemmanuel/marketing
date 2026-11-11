@@ -1,5 +1,8 @@
 package com.ogoma.marketing.core.domain.survey;
 
-public class SurveyAnswer {
+import java.util.UUID;
 
+public class SurveyAnswer {
+   private UUID questionId;
+  private   String answer;
 }

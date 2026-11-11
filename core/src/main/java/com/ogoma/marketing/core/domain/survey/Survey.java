@@ -5,6 +5,7 @@ import com.ogoma.marketing.core.domain.survey.events.SurveyPublishedEvent;
 import com.ogoma.marketing.core.domain.survey.valueobjects.Question;
 import com.ogoma.marketing.core.sharedkernel.ddd.AggregateRoot;
 import lombok.Getter;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.util.Assert;
 
@@ -23,7 +24,8 @@ public class Survey extends AggregateRoot<SurveyID> {
     private Instant createdAt;
     private Instant lastUpdatedAt;
     private int surveyVersion;
-    private final List<Question> questions = new ArrayList<>();
+    @MappedCollection(idColumn = "survey_id")
+    private  List<Question> questions = new ArrayList<>();
 
     private Survey() {
         super(null);
