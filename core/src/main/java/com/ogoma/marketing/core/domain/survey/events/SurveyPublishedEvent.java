@@ -1,4 +1,26 @@
 package com.ogoma.marketing.core.domain.survey.events;
 
-public class SurveyPublishedEvent {
+import com.ogoma.marketing.core.domain.survey.Survey;
+import com.ogoma.marketing.core.sharedkernel.ddd.DomainEvent;
+
+import java.util.UUID;
+
+public record SurveyPublishedEvent(
+        UUID aggregateID
+) implements DomainEvent {
+    @Override
+    public String aggregateType() {
+        return Survey.class.getName();
+    }
+
+
+    @Override
+    public String eventVersion() {
+        return "V0";
+    }
+
+    @Override
+    public String eventName() {
+        return "survey-published-event";
+    }
 }

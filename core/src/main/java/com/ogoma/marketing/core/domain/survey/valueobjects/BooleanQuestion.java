@@ -1,4 +1,10 @@
-package com.ogoma.marketing.core.domain.survey;
+package com.ogoma.marketing.core.domain.survey.valueobjects;
 
-public class BooleanQuestion {
+import java.util.UUID;
+
+public record BooleanQuestion(
+        boolean isRequired,
+        String text,
+        UUID id
+) implements Question {
 }

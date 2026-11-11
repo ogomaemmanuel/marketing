@@ -1,4 +1,5 @@
 package com.ogoma.marketing.core.domain.survey;
 
-public class SurveyStatus {
+public enum SurveyStatus {
+    DRAFT,ACTIVE,PAUSED, CLOSED,ARCHIVED
 }

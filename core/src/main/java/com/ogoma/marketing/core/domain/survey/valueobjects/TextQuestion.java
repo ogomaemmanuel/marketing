@@ -1,4 +1,11 @@
-package com.ogoma.marketing.core.domain.survey;
+package com.ogoma.marketing.core.domain.survey.valueobjects;
 
-public class TextQuestion {
+import java.util.UUID;
+
+public record TextQuestion(
+        UUID id,
+      boolean isRequired,
+      String text
+
+) implements Question{
 }

@@ -1,4 +1,14 @@
 package com.ogoma.marketing.core.domain.survey.valueobjects;
 
-public class SurveyScreen {
+import java.util.List;
+import java.util.UUID;
+
+public record SurveyScreen(
+        UUID id,
+        String title,
+
+        Integer indexPosition,
+        List<Question> questions
+) {
+
 }

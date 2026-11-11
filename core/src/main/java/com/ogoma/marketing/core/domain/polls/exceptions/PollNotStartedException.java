@@ -1,4 +1,4 @@
-package com.ogoma.marketing.core.domain.polls.entities;
+package com.ogoma.marketing.core.domain.polls.exceptions;
 
 public class PollNotStartedException extends RuntimeException{
     public PollNotStartedException(String message) {

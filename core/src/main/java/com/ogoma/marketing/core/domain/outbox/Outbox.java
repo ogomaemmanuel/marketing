@@ -40,13 +40,6 @@ public class Outbox extends Entity<OutboxID> {
             Instant createdAt
 
     ) {
-        Assert.notNull(payload, "Payload is required");
-        Assert.notNull(aggregateID, "Aggregate id is required");
-        Assert.hasText(aggregateType, "Aggregate type is required");
-        Assert.hasText(eventType, "Event type  is required");
-        Assert.hasText(eventVersion, "Event version  is required");
-        Assert.hasText(eventName, "Event name is required");
-        Assert.notNull(createdAt, "Created at is required");
         super(new OutboxID());
         this.aggregateType = aggregateType;
         this.aggregateID = aggregateID;
@@ -65,6 +58,13 @@ public class Outbox extends Entity<OutboxID> {
             String eventName,
             Serializable payload,
             Clock clock) {
+        Assert.notNull(payload, "Payload is required");
+        Assert.notNull(aggregateID, "Aggregate id is required");
+        Assert.hasText(aggregateType, "Aggregate type is required");
+        Assert.hasText(eventType, "Event type  is required");
+        Assert.hasText(eventVersion, "Event version  is required");
+        Assert.hasText(eventName, "Event name is required");
+        Assert.notNull(clock, "Clock at is required");
         return new Outbox(aggregateType, aggregateID, eventType, eventVersion, eventName, payload, clock.instant());
     }
 

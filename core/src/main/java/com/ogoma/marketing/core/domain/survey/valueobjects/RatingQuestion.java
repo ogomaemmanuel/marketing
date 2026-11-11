@@ -1,4 +1,10 @@
-package com.ogoma.marketing.core.domain.survey;
+package com.ogoma.marketing.core.domain.survey.valueobjects;
 
-public class RatingQuestion {
+import java.util.UUID;
+
+public record RatingQuestion(
+        boolean isRequired,
+        String text,
+        UUID id
+) implements Question {
 }

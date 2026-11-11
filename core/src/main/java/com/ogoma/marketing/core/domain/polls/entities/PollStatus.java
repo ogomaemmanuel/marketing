@@ -1,4 +1,5 @@
 package com.ogoma.marketing.core.domain.polls.entities;
 
-public class PollStatus {
+public enum PollStatus {
+    DRAFT, PUBLISHED, CLOSED
 }

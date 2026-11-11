@@ -15,10 +15,12 @@ public class SecurityConfig {
                     "/api/v1/engagement-tracking/**",
                     "/swagger-ui/**",     // Swagger UI HTML, JS, and CSS files
                     "/swagger-ui.html"};
-            http.authorizeExchange(
-                    authorize -> authorize
-                            .pathMatchers(excludedPaths).permitAll()
-            );
+            http
+                    .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
+                    .authorizeExchange(
+                            authorize -> authorize
+                                    .pathMatchers(excludedPaths).permitAll()
+                    );
         });
     }
 }

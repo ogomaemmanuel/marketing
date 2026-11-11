@@ -1,4 +1,10 @@
-package com.ogoma.marketing.core.domain.survey;
+package com.ogoma.marketing.core.domain.survey.valueobjects;
 
-public interface Question {
+import java.util.UUID;
+
+public sealed interface Question permits BooleanQuestion, DateQuestion, EmailQuestion, MultiChoiceQuestion, RatingQuestion, SingleChoiceQuestion, TextQuestion {
+     boolean isRequired();
+
+     UUID id();
+     String text();
 }
