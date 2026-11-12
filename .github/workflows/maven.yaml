@@ -52,15 +52,16 @@ jobs:
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
         run: docker compose build --push
-#      - name: Build and push
-#        uses: docker/build-push-action@v3
-#        with:
-#          platforms: linux/amd64,linux/arm64
-#          context: "./api"
-#          push: true
-#          tags: mudho/maketing-api:latest
+  #      - name: Build and push
+  #        uses: docker/build-push-action@v3
+  #        with:
+  #          platforms: linux/amd64,linux/arm64
+  #          context: "./api"
+  #          push: true
+  #          tags: mudho/maketing-api:latest
   deploy:
     needs: push-image-to-docker-hub
+    environment: dev
     runs-on: ubuntu-latest
     steps:
       - name: Copy docker-compose.yml to server
@@ -80,11 +81,12 @@ jobs:
           key: ${{ secrets.MARKETING_HOST_SSH_KEY }}
           port: ${{ secrets.MARKETING_HOST_PORT }}
           script: |
-            cd /opt/myapp
+            cd /opt/marketing
             cat << 'EOF' > .env
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             REDIS_URL=${{ secrets.REDIS_URL }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
+            API_URL=${{ vars.API_URL }}
             EOF
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose pull
