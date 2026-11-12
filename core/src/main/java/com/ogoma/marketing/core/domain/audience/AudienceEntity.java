@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.Clock;
 import java.time.Instant;
 
 /**
@@ -30,6 +31,7 @@ public class AudienceEntity {
     private AudienceType type;
     @Column("ruleset")
     private RuleSet ruleSet;
+    private boolean test;
 
     private AudienceEntity() {
     }
@@ -84,6 +86,18 @@ public class AudienceEntity {
 
     ) {
         return new AudienceEntity(name, createdBy, AudienceType.DYNAMIC, ruleSet);
+    }
+
+    public void markAsTest(Clock clock, String userId) {
+        this.test = true;
+        this.updatedBy = userId;
+        this.updatedAt = clock.instant();
+    }
+
+    public void markAsNonTest(Clock clock, String userId) {
+        this.test = false;
+        this.updatedBy = userId;
+        this.updatedAt = clock.instant();
     }
 
 

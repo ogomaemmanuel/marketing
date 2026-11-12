@@ -59,4 +59,36 @@ jobs:
 #          context: "./api"
 #          push: true
 #          tags: mudho/maketing-api:latest
+  deploy:
+    needs: push-image-to-docker-hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.MARKETING_HOST }}
+          username: ${{ secrets.MARKETING_HOST_USERNAME }}
+          key: ${{ secrets.MARKETING_HOST_SSH_KEY }}
+          port: ${{ secrets.MARKETING_HOST_PORT }}
+          source: "compose.yaml"
+          target: "/opt/marketing"
+      - name: Pull and restart containers via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.MARKETING_HOST }}
+          username: ${{ secrets.MARKETING_HOST_USERNAME }}
+          key: ${{ secrets.MARKETING_HOST_SSH_KEY }}
+          port: ${{ secrets.MARKETING_HOST_PORT }}
+          script: |
+            cd /opt/myapp
+            cat << 'EOF' > .env
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            REDIS_URL=${{ secrets.REDIS_URL }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            EOF
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f
+
 

@@ -25,8 +25,6 @@ import java.util.UUID;
 public record AudienceController(
         CommandDispatcher commandDispatcher,
         QueryDispatcher queryDispatcher) {
-    private static final String BASE_PATH = "/api/v1/audiences";
-
     @PostMapping
     public ResponseEntity<AddAudienceResponse> createAudience(
             @RequestBody @Valid final AddAudienceRequest audienceRequest,
@@ -34,7 +32,7 @@ public record AudienceController(
             UriComponentsBuilder uriComponentsBuilder) {
         AudienceId audienceId = this.commandDispatcher.dispatch(audienceRequest.toCommand(userId)).getId();
         URI location = uriComponentsBuilder
-                .path(BASE_PATH + "/{id}")
+                .path("/{id}")
                 .buildAndExpand(audienceId.id())
                 .toUri();
         return ResponseEntity.created(location).body(new AddAudienceResponse(audienceId));

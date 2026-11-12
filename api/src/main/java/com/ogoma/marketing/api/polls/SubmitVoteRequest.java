@@ -6,7 +6,7 @@ import com.ogoma.marketing.core.domain.polls.valueobjects.PollID;
 import java.util.UUID;
 
 public record SubmitVoteRequest(
-        UUID campaigId,
+        UUID campaignId,
         UUID pollId,
         UUID trackingId,
         String feedback

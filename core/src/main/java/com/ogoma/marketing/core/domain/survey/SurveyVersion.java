@@ -17,7 +17,7 @@ public class SurveyVersion extends Entity<SurveyVersionID> {
     private int surveyVersion;
     private List<Question> questions = new ArrayList<>();
 
-    protected SurveyVersion() {
+    private SurveyVersion() {
         super(null);
     }
 }
