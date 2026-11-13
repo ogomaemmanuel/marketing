@@ -37,7 +37,7 @@ services:
     image:  ${DOCKER_REGISTRY:-docker.io}/${DOCKER_USER:-}/marketing-frontend-ui:latest
     networks:
       - marketing
-    platform: linux/arm64
+    platform: ${LINUX_PLATFORM:-linux/arm64}
     pull_policy: ${PULL_POLICY:-build}
     build:
       context: ./frontend
