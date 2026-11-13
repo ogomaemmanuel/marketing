@@ -10,4 +10,5 @@ echo "📦 Packaging application..."
 
 echo "🚀 Starting Docker containers..."
 
-docker compose --env-file "${ENV_FILE}" up --build -d
+docker compose --env-file "${ENV_FILE}" up --build -d --remove-orphans
+docker image prune -f
