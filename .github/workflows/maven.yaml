@@ -117,8 +117,8 @@ jobs:
             REDIS_URL=$REDIS_URL
             JWT_SECRET=$JWT_SECRET
             API_URL=$API_URL
-            PULL_POLICY: always
-            FRONT_END_HOST_PORT: 8431
+            PULL_POLICY=always
+            FRONT_END_HOST_PORT=8431
             DB_USERNAME=$DB_USERNAME
             DB_PASSWORD=$DB_PASSWORD
             AUTH_SECRET=$AUTH_SECRET
