@@ -71,6 +71,10 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Check workspace files
+        run: |
+          pwd
+          ls -la
       - name: Copy docker-compose.yml to server
         uses: appleboy/scp-action@v1
         with:
