@@ -102,12 +102,12 @@ jobs:
           username: ${{ secrets.MARKETING_HOST_USERNAME }}
           password: ${{secrets.MARKETING_HOST_PASSWORD}}
           port: ${{ secrets.MARKETING_HOST_PORT }}
-          envs: DATABASE_URL,REDIS_URL,JWT_SECRET,API_URL,GHCR_TOKEN,GHCR_USER,DOCKER_REGISTRY
+          envs: DATABASE_URL,REDIS_URL,JWT_SECRET,API_URL,GHCR_TOKEN,GHCR_USER,DOCKER_REGISTRY,AUTH_MICROSOFT_ENTRA_ID_API_SCOPE,AUTH_MICROSOFT_ENTRA_ID_ID,AUTH_MICROSOFT_ENTRA_ID_SECRET,AUTH_MICROSOFT_ENTRA_ID_TENANT_ID,AUTH_MICROSOFT_ENTRA_ID_ISSUER
           script: |
             set +x
             cd /opt/marketing
             umask 077
-            cat > .env <<'EOF'
+            cat > .env <<EOF
             DATABASE_URL=$DATABASE_URL
             DOCKER_REGISTRY=$DOCKER_REGISTRY
             DOCKER_USER=$GHCR_USER
