@@ -97,6 +97,8 @@ jobs:
             cd /opt/marketing
             cat << 'EOF' > .env
             DATABASE_URL=${{ secrets.DATABASE_URL }}
+            DOCKER_REGISTRY=${{ env.REGISTRY }}
+            DOCKER_USER=${{ github.actor }}
             REDIS_URL=${{ secrets.REDIS_URL }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             API_URL=${{ vars.API_URL }}
@@ -105,5 +107,5 @@ jobs:
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
-
-
+            
+            
