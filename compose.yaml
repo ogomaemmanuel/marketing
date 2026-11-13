@@ -1,7 +1,7 @@
 services:
   api:
     container_name: "marketing-service-api"
-    image: ${DOCKER_USER:-}/marketing-service-api:latest
+    image: ${DOCKER_REGISTRY:-docker.io}/${DOCKER_USER:-}/marketing-service-api:latest
     networks:
       - marketing
     build:
@@ -33,7 +33,7 @@ services:
       SERVER_ADDRESS: 0.0.0.0
   frontend:
     container_name: "marketing-frontend-ui"
-    image: ${DOCKER_USER:-}/marketing-frontend-ui:latest
+    image:  ${DOCKER_REGISTRY:-docker.io}/${DOCKER_USER:-}/marketing-frontend-ui:latest
     networks:
       - marketing
     platform: linux/arm64
@@ -62,7 +62,7 @@ services:
       AUTH_SECRET: ${AUTH_SECRET}
   notification-sender:
     container_name: "notification-sender"
-    image: ${DOCKER_USER:-}/marketing-transactional-message-sender:latest
+    image:  ${DOCKER_REGISTRY:-docker.io}/${DOCKER_USER:-}/marketing-transactional-message-sender:latest
     networks:
       - marketing
     build:
@@ -88,7 +88,7 @@ services:
       EMAIL_PASSWORD: ${EMAIL_PASSWORD:-testpwd}
   campaign-sender:
     container_name: campaign-sender
-    image: ${DOCKER_USER:-}/marketing-campaign-sender:latest
+    image:  ${DOCKER_REGISTRY:-docker.io}/${DOCKER_USER:-}/marketing-campaign-sender:latest
     networks:
       - marketing
     build:
