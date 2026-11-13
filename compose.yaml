@@ -158,7 +158,7 @@ services:
       - temporal-server
   mailpit:
     image: axllent/mailpit:latest
-    container_name: mailpit
+    container_name: mailpit-smtp
     restart: unless-stopped
     networks:
       - marketing
