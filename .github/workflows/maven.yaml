@@ -80,7 +80,7 @@ jobs:
           username: ${{ secrets.MARKETING_HOST_USERNAME }}
           password: ${{secrets.MARKETING_HOST_PASSWORD}}
           port: ${{ secrets.MARKETING_HOST_PORT }}
-          source: "compose.yaml"
+          source: "compose.yaml,docker"
           target: "/opt/marketing"
       - name: Pull and restart containers via SSH
         uses: appleboy/ssh-action@v1.2.5
@@ -117,6 +117,7 @@ jobs:
             REDIS_URL=$REDIS_URL
             JWT_SECRET=$JWT_SECRET
             API_URL=$API_URL
+            PULL_POLICY: always
             DB_USERNAME=$DB_USERNAME
             DB_PASSWORD=$DB_PASSWORD
             AUTH_SECRET=$AUTH_SECRET
@@ -129,7 +130,7 @@ jobs:
             printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             unset GHCR_TOKEN
             docker compose pull
-            docker compose up -d --remove-orphans
+            docker compose up -d --build --remove-orphans
             docker image prune -f
             
             
