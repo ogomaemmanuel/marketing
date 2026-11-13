@@ -2,6 +2,8 @@ on:
   push:
     branches:
       - main
+env:
+  REGISTRY: ghcr.io
 jobs:
   test:
     name: Unit test
@@ -38,8 +40,9 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASS }}
+          registry: ${{env.REGISTRY}}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up java
         uses: actions/setup-java@v3
         with:
@@ -50,13 +53,48 @@ jobs:
         run: mvn -B clean package -DskipTests
       - name: Build and push multi-arch images with Docker Compose
         env:
-          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_USER: ${{ github.actor }}
         run: docker compose build --push
-#      - name: Build and push
-#        uses: docker/build-push-action@v3
-#        with:
-#          platforms: linux/amd64,linux/arm64
-#          context: "./api"
-#          push: true
-#          tags: mudho/maketing-api:latest
+  #      - name: Build and push
+  #        uses: docker/build-push-action@v3
+  #        with:
+  #          platforms: linux/amd64,linux/arm64
+  #          context: "./api"
+  #          push: true
+  #          tags: mudho/maketing-api:latest
+  deploy:
+    needs: push-image-to-docker-hub
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.MARKETING_HOST }}
+          username: ${{ secrets.MARKETING_HOST_USERNAME }}
+          password: ${{secrets.MARKETING_HOST_PASSWORD}}
+          key: ${{ secrets.MARKETING_HOST_SSH_KEY }}
+          port: ${{ secrets.MARKETING_HOST_PORT }}
+          source: "compose.yaml"
+          target: "/opt/marketing"
+      - name: Pull and restart containers via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.MARKETING_HOST }}
+          username: ${{ secrets.MARKETING_HOST_USERNAME }}
+          password: ${{secrets.MARKETING_HOST_PASSWORD}}
+          port: ${{ secrets.MARKETING_HOST_PORT }}
+          script: |
+            cd /opt/marketing
+            cat << 'EOF' > .env
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            REDIS_URL=${{ secrets.REDIS_URL }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            API_URL=${{ vars.API_URL }}
+            EOF
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f
+
 

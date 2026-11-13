@@ -24,7 +24,7 @@ public class Survey extends AggregateRoot<SurveyID> {
     private Instant createdAt;
     private Instant lastUpdatedAt;
     private int surveyVersion;
-    @MappedCollection(idColumn = "survey_id")
+    @MappedCollection(keyColumn = "survey_id")
     private  List<Question> questions = new ArrayList<>();
 
     private Survey() {
