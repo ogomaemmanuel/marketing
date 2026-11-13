@@ -10,6 +10,7 @@ services:
       platforms:
         - linux/arm64
         - linux/amd64
+    pull_policy: ${PULL_POLICY:-build}
     restart: unless-stopped
     ports:
       - "7057:7056"
@@ -37,6 +38,7 @@ services:
     networks:
       - marketing
     platform: linux/arm64
+    pull_policy: ${PULL_POLICY:-build}
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -72,6 +74,7 @@ services:
         - linux/arm64
         - linux/amd64
     restart: unless-stopped
+    pull_policy: ${PULL_POLICY:-build}
     depends_on:
       postgres-db:
         condition: service_healthy
@@ -98,6 +101,7 @@ services:
         - linux/amd64
       dockerfile: Dockerfile
     restart: unless-stopped
+    pull_policy: ${PULL_POLICY:-build}
     depends_on:
       postgres-db:
         condition: service_healthy
