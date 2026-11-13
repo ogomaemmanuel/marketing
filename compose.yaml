@@ -59,8 +59,8 @@ services:
       AUTH_MICROSOFT_ENTRA_ID_TENANT_ID: ${AUTH_MICROSOFT_ENTRA_ID_TENANT_ID}
       AUTH_MICROSOFT_ENTRA_ID_ISSUER: ${AUTH_MICROSOFT_ENTRA_ID_ISSUER}
       AUTH_MICROSOFT_ENTRA_ID_API_SCOPE: ${AUTH_MICROSOFT_ENTRA_ID_API_SCOPE}
-      API_URL: http://api:7056
-      AUTH_URL: http://localhost:3000
+      API_URL: ${API_URL:-http://api:7056}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
       AUTH_SECRET: ${AUTH_SECRET}
   notification-sender:
     container_name: "notification-sender"
