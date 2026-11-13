@@ -73,10 +73,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Check workspace files
-        run: |
-          pwd
-          ls -la
       - name: Copy docker-compose.yml to server
         uses: appleboy/scp-action@v1
         with:
@@ -88,22 +84,39 @@ jobs:
           target: "/opt/marketing"
       - name: Pull and restart containers via SSH
         uses: appleboy/ssh-action@v1.2.5
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          API_URL: ${{ vars.API_URL }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          DOCKER_REGISTRY: ${{ env.REGISTRY }}
+          AUTH_MICROSOFT_ENTRA_ID_API_SCOPE: ${{vars.AUTH_MICROSOFT_ENTRA_ID_API_SCOPE}}
+          AUTH_MICROSOFT_ENTRA_ID_ID: ${{vars.AUTH_MICROSOFT_ENTRA_ID_ID}}
+          AUTH_MICROSOFT_ENTRA_ID_SECRET: ${{secrets.AUTH_MICROSOFT_ENTRA_ID_SECRET}}
+          AUTH_MICROSOFT_ENTRA_ID_TENANT_ID: ${{vars.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID}}
+          AUTH_MICROSOFT_ENTRA_ID_ISSUER: ${{vars.AUTH_MICROSOFT_ENTRA_ID_ISSUER}}
         with:
           host: ${{ secrets.MARKETING_HOST }}
           username: ${{ secrets.MARKETING_HOST_USERNAME }}
           password: ${{secrets.MARKETING_HOST_PASSWORD}}
           port: ${{ secrets.MARKETING_HOST_PORT }}
+          envs: DATABASE_URL,REDIS_URL,JWT_SECRET,API_URL,GHCR_TOKEN,GHCR_USER,DOCKER_REGISTRY
           script: |
+            set +x
             cd /opt/marketing
-            cat << 'EOF' > .env
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            DOCKER_REGISTRY=${{ env.REGISTRY }}
-            DOCKER_USER=${{ github.actor }}
-            REDIS_URL=${{ secrets.REDIS_URL }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            API_URL=${{ vars.API_URL }}
+            umask 077
+            cat > .env <<'EOF'
+            DATABASE_URL=$DATABASE_URL
+            DOCKER_REGISTRY=$DOCKER_REGISTRY
+            DOCKER_USER=$GHCR_USER
+            REDIS_URL=$REDIS_URL
+            JWT_SECRET=$JWT_SECRET
+            API_URL=$API_URL
             EOF
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            unset GHCR_TOKEN
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
