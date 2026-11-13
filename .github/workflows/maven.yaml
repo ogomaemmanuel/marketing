@@ -77,7 +77,6 @@ jobs:
           host: ${{ secrets.MARKETING_HOST }}
           username: ${{ secrets.MARKETING_HOST_USERNAME }}
           password: ${{secrets.MARKETING_HOST_PASSWORD}}
-          key: ${{ secrets.MARKETING_HOST_SSH_KEY }}
           port: ${{ secrets.MARKETING_HOST_PORT }}
           source: "compose.yaml"
           target: "/opt/marketing"
