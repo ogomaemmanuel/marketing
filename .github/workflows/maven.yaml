@@ -54,6 +54,7 @@ jobs:
       - name: Build and push multi-arch images with Docker Compose
         env:
           DOCKER_USER: ${{ github.actor }}
+          DOCKER_REGISTRY: ${{env.REGISTRY}}
         run: docker compose build --push
   #      - name: Build and push
   #        uses: docker/build-push-action@v3
