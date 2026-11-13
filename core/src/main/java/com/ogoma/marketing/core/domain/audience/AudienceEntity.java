@@ -31,6 +31,7 @@ public class AudienceEntity {
     private AudienceType type;
     @Column("ruleset")
     private RuleSet ruleSet;
+    @Column("is_test")
     private boolean test;
 
     private AudienceEntity() {
