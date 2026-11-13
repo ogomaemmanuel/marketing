@@ -134,7 +134,7 @@ jobs:
             printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             unset GHCR_TOKEN
             docker compose pull
-            docker compose up -d --build  --remove-orphans
+            docker compose up -d  --remove-orphans --pull always
             docker image prune -f
             
             

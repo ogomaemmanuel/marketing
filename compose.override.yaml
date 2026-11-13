@@ -1,4 +1,34 @@
 services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+        - linux/amd64
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+        - linux/amd64
+      args:
+        NODE_BASE_IMAGE: node:22-alpine
+  notification-sender:
+    build:
+      context: ./workers/transactional-message-sender
+      dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+        - linux/amd64
+  campaign-sender:
+    build:
+      context: ./workers/campaigns-batch-processor
+      platforms:
+        - linux/arm64
+        - linux/amd64
+      dockerfile: Dockerfile
   kafka:
     ports:
       - "9092:9092"
