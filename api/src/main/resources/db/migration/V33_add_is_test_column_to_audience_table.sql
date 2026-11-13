@@ -1,1 +1,1 @@
-alter table if exists audiences  add column if not exists is_test boolean default false
+alter table if exists audiences  add column if not exists is_test boolean default false;
