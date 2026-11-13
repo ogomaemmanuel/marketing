@@ -54,6 +54,7 @@ async function syncUser(accessToken: string) {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  debug: true,
   providers: [
     MicrosoftEntraID({
       authorization: {
