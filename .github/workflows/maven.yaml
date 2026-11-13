@@ -66,6 +66,9 @@ jobs:
     needs: push-image-to-docker-hub
     environment: dev
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Copy docker-compose.yml to server
         uses: appleboy/scp-action@v1
