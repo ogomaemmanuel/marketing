@@ -4,12 +4,6 @@ services:
     image: ${DOCKER_REGISTRY:-docker.io}/${DOCKER_USER:-}/marketing-service-api:latest
     networks:
       - marketing
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-      platforms:
-        - linux/arm64
-        - linux/amd64
     pull_policy: ${PULL_POLICY:-build}
     restart: unless-stopped
     ports:
@@ -39,14 +33,6 @@ services:
       - marketing
     platform: ${LINUX_PLATFORM:-linux/arm64}
     pull_policy: ${PULL_POLICY:-build}
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      platforms:
-        - linux/arm64
-        - linux/amd64
-      args:
-        NODE_BASE_IMAGE: node:22-alpine
     restart: unless-stopped
     ports:
       - "${FRONT_END_HOST_PORT:-3000}:3000"
@@ -68,12 +54,6 @@ services:
     image:  ${DOCKER_REGISTRY:-docker.io}/${DOCKER_USER:-}/marketing-transactional-message-sender:latest
     networks:
       - marketing
-    build:
-      context: ./workers/transactional-message-sender
-      dockerfile: Dockerfile
-      platforms:
-        - linux/arm64
-        - linux/amd64
     restart: unless-stopped
     pull_policy: ${PULL_POLICY:-build}
     depends_on:
@@ -95,12 +75,6 @@ services:
     image:  ${DOCKER_REGISTRY:-docker.io}/${DOCKER_USER:-}/marketing-campaign-sender:latest
     networks:
       - marketing
-    build:
-      context: ./workers/campaigns-batch-processor
-      platforms:
-        - linux/arm64
-        - linux/amd64
-      dockerfile: Dockerfile
     restart: unless-stopped
     pull_policy: ${PULL_POLICY:-build}
     depends_on:
