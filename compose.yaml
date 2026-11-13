@@ -201,8 +201,6 @@ services:
     container_name: kafka-marketing
     networks:
       - marketing
-    ports:
-      - "9092:9092"
     environment:
       # Configure Kafka for KRaft mode (No Zookeeper)
       KAFKA_NODE_ID: 1
