@@ -81,7 +81,7 @@ services:
       postgres-db:
         condition: service_healthy
     environment:
-      DB_URL: ${DB_URL:-jpostgres-db:5432/marketing-main?currentSchema=public}
+      DB_URL: ${DB_URL:-jdbc:postgresql://postgres-db:5432/marketing-main?currentSchema=public}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_USERNAME: ${DB_USERNAME}
       EMAIL_HOST: ${EMAIL_HOST:-mailpit}
