@@ -80,7 +80,7 @@ jobs:
           username: ${{ secrets.MARKETING_HOST_USERNAME }}
           password: ${{secrets.MARKETING_HOST_PASSWORD}}
           port: ${{ secrets.MARKETING_HOST_PORT }}
-          source: "compose.yaml,docker"
+          source: "compose.yaml,dynamicconfig"
           target: "/opt/marketing"
       - name: Pull and restart containers via SSH
         uses: appleboy/ssh-action@v1.2.5
